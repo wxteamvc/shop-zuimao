@@ -11,10 +11,10 @@ import {
   StyleSheet,
   Text,
   View,
-  ToastAndroid
 } from 'react-native';
 import { connect } from 'react-redux';
 import { init } from '../actions/initAction'
+import Toast from 'react-native-root-toast';
 
 class HomeView extends Component {
   
@@ -24,12 +24,13 @@ class HomeView extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(init())    
+    this.props.dispatch(init())
+        
   }
 
   componentWillReceiveProps(){
     if(this.props.homeData.status=='failed'){
-      ToastAndroid.show(this.props.homeData.message, ToastAndroid.SHORT);
+      Toast.show(this.props.homeData.message)
     }
   }
 
