@@ -11,16 +11,20 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { init } from '../actions/initAction'
 import Toast from 'react-native-root-toast';
+import JumpTop from '../component/scrollTop'
 
 class HomeView extends Component {
   
   constructor(...props){
     super(...props);
-    
+    this.state={
+      isShow:false, //是否显示跳转到顶部按钮
+    }
   }
 
   componentDidMount() {
@@ -33,6 +37,16 @@ class HomeView extends Component {
       Toast.show(this.props.homeData.message)
     }
   }
+ 
+  //滚动条监听事件
+  showJumpTop(e){
+       if(e.nativeEvent.contentOffset.y>200){
+         this.state.isShow?'':this.setState({isShow:true,})
+       }else{
+         this.state.isShow?this.setState({isShow:false,}):''
+       }
+  }
+
 
   render() {
     return (
@@ -40,7 +54,16 @@ class HomeView extends Component {
         <Text style={styles.welcome}>
           首页
         </Text>
-      </View>
+        <ScrollView 
+        onScroll={(e)=>{this.showJumpTop(e)}}
+        ref ={(ScrollView)=>{ this.ScrollView=ScrollView}}
+        >
+          <View style={{height:500,width:420,backgroundColor:'yellow'}}></View>
+          <View style={{height:500,width:420,backgroundColor:'red'}}></View>
+        </ScrollView>      
+        <JumpTop item={this.ScrollView} isShow={this.state.isShow}/>
+        </View>
+      
     );
   }
 }
