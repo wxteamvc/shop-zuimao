@@ -33,12 +33,21 @@ let Util = {
      * @param failCallback failCallback 请求失败回调
      */
     post: (url, data, successCallback, failCallback) => {
-        let formData = new FormData();
-        Object.keys(data).map(function(key) {
-            var value = data[key];
-            formData.append(key, value);
-        });
-
+        let num = 0; 
+        let formData;
+        //判断data是否为空
+        for (let key in data){
+    　　　　num++;
+    　　}
+    　　if(num==0){
+            formData=null;
+        }else{
+            formData = new FormData();
+            Object.keys(data).map(function(key) {
+                var value = data[key];
+                formData.append(key, value);
+            });
+        }
         let fetchOptions = {
             method: 'POST',
             headers: {

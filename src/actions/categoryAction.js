@@ -12,10 +12,12 @@ export function category() {
                         if(responseJson.status==1){
                             dispatch(start(Types.CATEGORY_SUCCESS,responseJson));
                         }else{
+                            
                             dispatch(error(Types.CATEGORY_FAILED,'服务器请求失败！'));
                         }
                     },
                     (error)=>{
+                        
                         dispatch(error(Types.CATEGORY_FAILED,error.message));
                     },
                 )
