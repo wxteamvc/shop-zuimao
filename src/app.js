@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
 import HomeTab from './pages/homeTab'
-
+import SignIndex from './pages/SignIndexView'
 const App = StackNavigator({
     HomeTab: {
         screen: HomeTab,
@@ -17,4 +17,4 @@ const App = StackNavigator({
     },
 });
 
-export default App;
+export default SignIndex;
