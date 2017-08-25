@@ -6,6 +6,8 @@ export const ScreenHeight = Dimensions.get('window').height;
 //状态栏高度
 export const  StatusBarHeight = StatusBar.currentHeight;
 //网站基本地址
-export const BASIC_URL = 'http://www.zuimaowang.cn/app/index.php'; 
+export const BASIC_URL = 'http://www.wxdevelop.com/we7/app/index.php'; 
 //网站首页地址
 export const HOME_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile'; 
+//商品分类页地址
+export const CATEGORY_URL = BASIC_URL + '?i=1&c=entry&m=ewei_shopv2&do=mobile&r=shop.category&mid=0';
