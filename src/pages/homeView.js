@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { init } from '../actions/initAction'
@@ -40,6 +41,9 @@ class HomeView extends Component {
         <Text style={styles.welcome}>
           首页
         </Text>
+         <TouchableOpacity onPress={()=>{this.props.navigation.navigate('SignTab')}}>
+           <Text>签到</Text>
+         </TouchableOpacity>
       </View>
 
     );

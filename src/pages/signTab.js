@@ -1,5 +1,5 @@
 /**
- * Home页面
+ * 签到页面
  * 底部tabnavigation导航
  */
 "use strict";
@@ -7,45 +7,17 @@
 import React, { Component } from 'react';
 import { TabNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import HomeView from './homeView';
-import Category from './categoryView';
-import Cart from './cartView';
-import Member from './memberView';
+import IconTwo from 'react-native-vector-icons/dist/Octicons';
+import SignIndex from './signIndexView'
 
-const HomeTab = TabNavigator({
-    HomeView: {
-        screen: HomeView,
+
+const SignTab = TabNavigator({
+    SignIndex: {
+        screen: SignIndex,
         navigationOptions:({navigation}) => ({
-            tabBarLabel:'首页',  
+            tabBarLabel:'积分签到',  
             tabBarIcon:({focused,tintColor}) => ( 
-                <Icon name="home" size={20} color={tintColor}/>
-            )    
-        }),
-    },
-    // Category: {
-    //     screen: Category,
-    //     navigationOptions:({navigation}) => ({
-    //         tabBarLabel:'分类',  
-    //         tabBarIcon:({focused,tintColor}) => ( 
-    //             <Icon name="list" size={20} color={tintColor}/>
-    //         )    
-    //     }),
-    // },
-    Cart: {
-        screen: Cart,
-        navigationOptions:({navigation}) => ({
-            tabBarLabel:'购物车',  
-            tabBarIcon:({focused,tintColor}) => ( 
-                <Icon name="shopping-cart" size={20} color={tintColor}/>
-            )    
-        }),
-    },
-    Member: {
-        screen: Member,
-        navigationOptions:({navigation}) => ({
-            tabBarLabel:'我的醉猫',  
-            tabBarIcon:({focused,tintColor}) => ( 
-                <Icon name="user-o" size={20} color={tintColor}/>
+                <IconTwo name="gift" size={20} color={tintColor}/>
             )    
         }),
     },
@@ -70,9 +42,9 @@ const HomeTab = TabNavigator({
            
         },
         tabStyle :{
-            //...
+                 //...
         }
     },
 });
 
-export default HomeTab;
+export default SignTab;
