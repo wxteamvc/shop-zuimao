@@ -5,10 +5,8 @@
 "use strict";
 
 import React, { Component } from 'react';
+import { Text, TouchableOpacity } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import HomeTab from './pages/homeTab'
-import SignTab from './pages/signTab'
-import SignRecord from './pages/signRecordView'
 import HomeTab from './pages/homeTab';
 import SignTab from './pages/signTab';
 import SignRecord from './pages/signRecordView';
@@ -19,21 +17,16 @@ import Login from './component/login';
 
 
 
+
 const App = StackNavigator({
     HomeTab: {
         screen: HomeTab,
         navigationOptions: {
-            header:null
-        },  
             header: null
         },
     },
-    SignTab:{
     SignTab: {
         screen: SignTab,
-        navigationOptions: {
-            header:null
-        },  
         navigationOptions: ({ navigation }) => ({
             headerTitle: '积分签到',
             headerTitleStyle: { alignSelf: 'center' },
@@ -41,13 +34,8 @@ const App = StackNavigator({
 
         }),
     },
-    SignRecord:{
     SignRecord: {
         screen: SignRecord,
-        navigationOptions: {
-            header:null
-        },  
-    }
         navigationOptions: ({ navigation }) => ({
             headerTitle: '详细记录',
             headerTitleStyle: { alignSelf: 'center' },
@@ -65,11 +53,16 @@ const App = StackNavigator({
                 path={'HomeTab'} />
         }),
     },
-	Login:{
+    Login: {
         screen: Login,
-        navigationOptions: {
-            // header:null
-        },  
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '登录',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight:  
+                <TouchableOpacity>
+                    <Text style={{marginRight:20,fontWeight:'bold'}}>注册</Text>
+                </TouchableOpacity>
+        }),
     },
 });
 
