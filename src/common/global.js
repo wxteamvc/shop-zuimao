@@ -5,8 +5,6 @@ export const ScreenWidth = Dimensions.get('window').width;
 export const ScreenHeight = Dimensions.get('window').height;
 //状态栏高度
 export const StatusBarHeight = StatusBar.currentHeight;
-//获取当前时间戳
-export const NOWTIME = Math.round(new Date().getTime()/1000);
 //网站基本地址
 export const BASIC_URL = 'http://www.zuimaowang.cn/app/index.php';
 //网站首页地址
@@ -19,3 +17,5 @@ export const SIGNINDEX_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=si
 export const SIGN_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=sign.dosign';
 //签到记录地址
 export const SIGNRECORD_URL =BASIC_URL+'?i=1&c=entry&m=ice_shop&do=mobile&r=sign.getrecords'
+//优惠券获取地址
+export const COUPONS_URL = BASIC_URL+'?i=1&c=entry&m=ice_shop&do=mobile&r=sale.coupon.getlist&mid=3773&page=1&cateid=&_='

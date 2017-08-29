@@ -25,7 +25,6 @@ import Toast from 'react-native-root-toast';
 export default class SignIndex extends Component {
     constructor(props) {
         super(props)
-        this.color = this.props.color ? this.props.color : '#fff';
         this.state = {
             status: false,
             errmessage: '',
@@ -157,7 +156,6 @@ export default class SignIndex extends Component {
     }
 
     render() {
-        console.log(this.props.navigation)
         if (this.state.status == 'success') {
             return (
                 <View style={{ flex: 1, backgroundColor: '#f3f3f3' }}>

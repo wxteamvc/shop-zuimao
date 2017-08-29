@@ -20,7 +20,7 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Util from '../common/util';
 import Loading from '../component/loading';
 import FlatListJumoTop from '../component/flatListJumoTop'
-import { NOWTIME, SIGNRECORD_URL, ScreenHeight } from '../common/global'
+import { SIGNRECORD_URL, ScreenHeight } from '../common/global'
 
 export default class SignRecord extends Component {
     constructor(props) {
@@ -39,9 +39,7 @@ export default class SignRecord extends Component {
     }
 
     getRecord() {
-
-        let time = NOWTIME;
-        let url = SIGNRECORD_URL + '&page=' + this.state.page + '&_=' + NOWTIME + '&__ice_shop_member_session_1=eyJpZCI6IjM3NzMiLCJvcGVuaWQiOiJ3YXBfdXNlcl8xXzE1MTkwMzE0NzUyIiwibW9iaWxlIjoiMTUxOTAzMTQ3NTIiLCJwd2QiOiJmODA4ZWIwMzBiNzhlM2JjYjBkZmFjNTE5NWI1M2NkNSIsInNhbHQiOiJINllZT0JINFdiUVJGcGY2IiwiaWNlX3Nob3BfbWVtYmVyX2hhc2giOiI3Y2I4ODNjZjRiMjYxOGYyM2E1ZmEwY2RkZjhiODUwNCJ9'
+        let url = SIGNRECORD_URL + '&page=' + this.state.page + '&_=' + Math.round(new Date().getTime()/1000) + '&__ice_shop_member_session_1=eyJpZCI6IjM3NzMiLCJvcGVuaWQiOiJ3YXBfdXNlcl8xXzE1MTkwMzE0NzUyIiwibW9iaWxlIjoiMTUxOTAzMTQ3NTIiLCJwd2QiOiJmODA4ZWIwMzBiNzhlM2JjYjBkZmFjNTE5NWI1M2NkNSIsInNhbHQiOiJINllZT0JINFdiUVJGcGY2IiwiaWNlX3Nob3BfbWVtYmVyX2hhc2giOiI3Y2I4ODNjZjRiMjYxOGYyM2E1ZmEwY2RkZjhiODUwNCJ9'
         if (global.isConnected) {
             Util.get(url,
                 (resq) => {
