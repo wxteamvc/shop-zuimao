@@ -1,4 +1,8 @@
+/**
+ * 分类页面
+ */
 "use strict";
+
 import React, { Component } from 'react';
 import {
     StyleSheet,
@@ -12,6 +16,7 @@ import { connect } from 'react-redux';
 import { category } from '../actions/categoryAction';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ScreenWidth } from '../common/global';
+import Swiper from 'react-native-swiper';
 
 class Catergry extends Component {
 
@@ -19,7 +24,7 @@ class Catergry extends Component {
         super(...props);
         this.state = {
             selectedBar: 'isrecommand',
-            selectedBarId: 'isrecommand'
+            selectedBarId: 'isrecommand',
         }
     }
 
@@ -37,9 +42,9 @@ class Catergry extends Component {
                     </View>
                     <View style={styles.main}>
                         {/* 左边导航 */}
-                        {this._leftBar()}
+                        {this.renderLeftBar()}
                         {/* 右边列表 */}
-                        {this._rightList()}
+                        {this.renderRightList()}
                     </View>
                 </View>
             );
@@ -51,7 +56,7 @@ class Catergry extends Component {
         }
     }
 
-    _leftBar() {
+    renderLeftBar() {
         let category = this.props.categoryData.data.result.category;
         if (category.parent == undefined) {
             return (
@@ -84,7 +89,7 @@ class Catergry extends Component {
         }
     }
 
-    _rightList() {
+    renderRightList() {
         let category = this.props.categoryData.data.result.category;
         if (this.state.selectedBarId != 'isrecommand') {
             var catid = this.state.selectedBarId;
@@ -94,7 +99,10 @@ class Catergry extends Component {
                 GoodsArr.push(
                     <TouchableOpacity key={i} onPress={() => { this.props.navigation.navigate('Goods', { search: { cate: GoodsList[i].id } }) }}>
                         <View style={styles.rightListView}>
-                            <Image source={{ uri: GoodsList[i].thumb }} style={styles.rightListImg} />
+                            {GoodsList[i].thumb == '' || GoodsList[i].thumb == null ?
+                                <Image source={require('../assets/images/nopic.jpg')} style={styles.rightListImg} /> :
+                                <Image source={{ uri: GoodsList[i].thumb }} style={styles.rightListImg} />
+                            }
                             <Text>{GoodsList[i].name}</Text>
                         </View>
                     </TouchableOpacity>
@@ -102,12 +110,18 @@ class Catergry extends Component {
             }
             return (
                 <View style={styles.rightListBox}>
-                    <ScrollView> 
+                    <ScrollView>
                         <View style={styles.rightList}>
+                            {/* 轮播 */}
+                            <View style={styles.swiperView}>
+                                <Swiper height={200} loop={true} index={0} autoplay={true} horizontal={true}>
+                                    {this.renderImg()}
+                                </Swiper>
+                            </View>
                             {GoodsArr}
                         </View>
                     </ScrollView>
-                </View> 
+                </View>
             );
         } else {
             var GoodsList = category.children;
@@ -118,7 +132,10 @@ class Catergry extends Component {
                         GoodsArr.push(
                             <TouchableOpacity key={i + '-' + j} onPress={() => { this.props.navigation.navigate('Goods', { search: { cate: GoodsList[i][j].id } }) }}>
                                 <View style={styles.rightListView}>
-                                    <Image source={{ uri: GoodsList[i][j].thumb }} style={styles.rightListImg} />
+                                    {GoodsList[i][j].thumb == '' || GoodsList[i][j].thumb == null ?
+                                        <Image source={require('../assets/images/nopic.jpg')} style={styles.rightListImg} /> :
+                                        <Image source={{ uri: GoodsList[i][j].thumb }} style={styles.rightListImg} />
+                                    }
                                     <Text>{GoodsList[i][j].name}</Text>
                                 </View>
                             </TouchableOpacity>
@@ -145,6 +162,38 @@ class Catergry extends Component {
             )
         }
     }
+
+    renderImg() {
+        var selectedBar = this.state.selectedBar;
+        var imgs = {
+            0:[
+                { url: 'http://www.zuimaowang.cn/attachment/images/1/2017/04/pT7Dsf7DfdSQBtTJqff7fUH30TwLa1.jpg' },
+                { url: 'http://www.zuimaowang.cn/attachment/images/1/2017/04/pT7Dsf7DfdSQBtTJqff7fUH30TwLa1.jpg' },
+            ],
+            1: [
+                { url: 'http://www.zuimaowang.cn/attachment/images/1/2017/04/pT7Dsf7DfdSQBtTJqff7fUH30TwLa1.jpg' },
+                { url: 'http://www.zuimaowang.cn/attachment/images/1/2017/04/pT7Dsf7DfdSQBtTJqff7fUH30TwLa1.jpg' },
+            ],
+            2: [
+                { url: 'http://www.zuimaowang.cn/attachment/images/1/2017/04/pT7Dsf7DfdSQBtTJqff7fUH30TwLa1.jpg' },
+                { url: 'http://www.zuimaowang.cn/attachment/images/1/2017/04/pT7Dsf7DfdSQBtTJqff7fUH30TwLa1.jpg' },
+            ],
+            3: [
+                { url: 'http://www.zuimaowang.cn/attachment/images/1/2017/04/pT7Dsf7DfdSQBtTJqff7fUH30TwLa1.jpg' },
+                { url: 'http://www.zuimaowang.cn/attachment/images/1/2017/04/pT7Dsf7DfdSQBtTJqff7fUH30TwLa1.jpg' },
+            ],
+        };
+        var imgarr = [];
+        var imgItem = {};
+        for (var i = 0; i < imgs[selectedBar].length; i++) {
+            imgarr.push(
+                <TouchableOpacity key={i} style={{ flex: 1 }}>
+                    <Image key={i} style={{ flex: 1 }} resizeMode={'stretch'} source={{ uri: imgs[selectedBar][i].url }} />
+                </TouchableOpacity>
+            );
+        }
+        return imgarr;
+    }
 }
 
 const styles = StyleSheet.create({
@@ -169,9 +218,9 @@ const styles = StyleSheet.create({
         padding: 5,
         alignItems: 'center'
     },
-    rightListBox:{
+    rightListBox: {
         flex: 3,
-        backgroundColor:'white'
+        backgroundColor: 'white'
     },
     rightListView: {
         flexDirection: 'column',
@@ -193,7 +242,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: 'white',
         flexWrap: 'wrap',
-        marginBottom:50,
+        marginBottom: 50,
+    },
+    swiperView: {
+        width: ScreenWidth * 0.75,
+        paddingLeft: 15,
+        paddingRight: 15,
+        marginTop:10,
     }
 })
 
