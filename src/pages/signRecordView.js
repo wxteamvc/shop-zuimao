@@ -13,10 +13,10 @@ import {
     View,
     TouchableOpacity,
     FlatList,
+    Image,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import Topnav from '../component/topnav';
 import Util from '../common/util';
 import Loading from '../component/loading';
 import FlatListJumoTop from '../component/flatListJumoTop'
@@ -81,13 +81,7 @@ export default class SignRecord extends Component {
 
 
 
-    renderBtn() {
-        return (
-            <TouchableOpacity style={[{ flex: 0.15, }, styles.center]}>
-                <Icon name={'home'} size={30} />
-            </TouchableOpacity>
-        )
-    }
+   
 
     renderRecord({ item }) {
         let text = '';
@@ -105,7 +99,7 @@ export default class SignRecord extends Component {
                 break;
         }
         return (
-            <View style={styles.listchildren}>
+            <View style={[styles.listchildren,{backgroundColor:'#fff'}]}>
             <View style={{ flex: 0.9 }}>
                 <View >
                     <Text style={{ fontSize: 18 }}>{item.log}</Text>
@@ -125,8 +119,7 @@ export default class SignRecord extends Component {
         if (this.state.status == 'success') {
             return (
                 <View style={{ flex: 1 }}>
-                    <Topnav {...this.props} title={'详细记录'} btn={this.renderBtn()} />
-                    <View style={styles.listcontainer}>
+                    <View style={styles.listcontainer}>         
                         <FlatListJumoTop
                             data={this.state.data}
                             renderItem={this.renderRecord}
@@ -135,15 +128,12 @@ export default class SignRecord extends Component {
                             onEndReached={() => { this.state.infoStatus == 'nomore' ? false : this.getRecord() }}
                             ListFooterComponent={this.state.infoStatus == 'nomore' ? <Text style={{ textAlign: 'center' }}>没有更多内容了</Text> : false}
                         />
-                        
                     </View>
-
                 </View>
             )
         } else {
             return (
                 <View style={{ flex: 1 }}>
-                    <Topnav {...this.props} title={'详细记录'} btn={this.renderBtn()} />
                     <Loading status={this.state.status} errmessage={this.state.errmessage} />
                 </View>
             )

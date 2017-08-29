@@ -17,7 +17,6 @@ import {
 } from 'react-native';
 import{SIGNINDEX_URL,SIGN_URL}from '../common/global'
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import Topnav from '../component/topnav';
 import Util from '../common/util';
 import Loading from '../component/loading';
 import Select from 'teaset/components/Select/Select';
@@ -158,10 +157,10 @@ export default class SignIndex extends Component {
     }
 
     render() {
+        console.log(this.props.navigation)
         if (this.state.status == 'success') {
             return (
                 <View style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
-                    <Topnav {...this.props} title={'积分签到'} btn={this.renderBtn()} />
                     <View style={styles.header}>
                         <View style={[styles.header_item]}>
                             <Text style={[styles.font, { fontSize: 18 }]}>连续签到</Text>
@@ -205,7 +204,7 @@ export default class SignIndex extends Component {
                             placeholderTextColor='#24B2F4'
                         />
                     </View>
-                    <View style={{ backgroundColor: '#fff', marginLeft: 4, marginRight: 4, padding: 10, paddingBottom: 0 }}>
+                    <View style={{ backgroundColor: '#fff', marginLeft: 4, marginRight: 4, padding: 10, paddingBottom: 0, }}>
                         <FlatList
                             data={this.state.calendar}
                             extraData={this.state}
@@ -218,7 +217,6 @@ export default class SignIndex extends Component {
         } else {
             return (
                 <View style={{ flex: 1 }}>
-                    <Topnav {...this.props} title={'积分签到'} btn={this.renderBtn()} />
                     <Loading status={this.state.status} errmessage={this.state.errmessage} />
                 </View>
             )

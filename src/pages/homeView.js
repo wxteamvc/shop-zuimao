@@ -44,6 +44,9 @@ class HomeView extends Component {
          <TouchableOpacity onPress={()=>{this.props.navigation.navigate('SignTab')}}>
            <Text>签到</Text>
          </TouchableOpacity>
+         <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Coupons')}}>
+           <Text>优惠券</Text>
+         </TouchableOpacity>
       </View>
 
     );
