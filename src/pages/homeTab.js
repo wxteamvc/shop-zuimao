@@ -22,15 +22,15 @@ const HomeTab = TabNavigator({
             )    
         }),
     },
-    // Category: {
-    //     screen: Category,
-    //     navigationOptions:({navigation}) => ({
-    //         tabBarLabel:'分类',  
-    //         tabBarIcon:({focused,tintColor}) => ( 
-    //             <Icon name="list" size={20} color={tintColor}/>
-    //         )    
-    //     }),
-    // },
+    Category: {
+        screen: Category,
+        navigationOptions:({navigation}) => ({
+            tabBarLabel:'分类',  
+            tabBarIcon:({focused,tintColor}) => ( 
+                <Icon name="list" size={20} color={tintColor}/>
+            )    
+        }),
+    },
     Cart: {
         screen: Cart,
         navigationOptions:({navigation}) => ({

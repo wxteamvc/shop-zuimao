@@ -10,4 +10,10 @@ export const CATEGORY_BEGIN = 'CATEGORY_BEGIN';
 export const CATEGORY_SUCCESS = 'CATEGORY_SUCCESS';
 //分类页加载失败动作
 export const CATEGORY_FAILED = 'CATEGORY_FAILED';
+//登陆开始动作
+export const LOGIN_BEGIN = 'LOGIN_BEGIN';
+//登陆开始动作
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+//登陆开始动作
+export const LOGIN_FAILED = 'LOGIN_FAILED';
 
