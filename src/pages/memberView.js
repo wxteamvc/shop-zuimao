@@ -50,6 +50,7 @@ class Member extends Component {
     );
   }
 
+  //登陆状态文字
   renderText(){
     if(this.props.loginData.status === "success" && this.props.memberData.status === "success"){
       let memberData = this.props.memberData.data.result.member;
