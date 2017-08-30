@@ -72,7 +72,7 @@ class Member extends Component {
       )
     } else {
       return (
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('Login', { ...this.props })}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
           <Text style={styles.fontWhite}>登陆/注册 〉</Text>
         </TouchableOpacity>
       )

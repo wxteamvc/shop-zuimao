@@ -6,11 +6,12 @@
 import React, { Component } from 'react';
 import { ScreenWidth, ScreenHeight } from '../common/global';
 import { StyleSheet, Text, View, ScrollView, TextInput, Switch, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Toast from 'react-native-root-toast';
 import { login } from '../actions/memberAction';
 
-export default class Login extends Component {
+class Login extends Component {
 
     constructor(...props) {
         super(...props);
@@ -19,7 +20,15 @@ export default class Login extends Component {
             pwd: null,
             showPwd:false,
         }
+        
     }
+
+    componentDidUpdate(nextProps) {
+        if(this.props.loginData.status=='success'){
+            Toast.show(this.props.loginData.message);
+            this.props.navigation.goBack();
+        }
+      }
 
     render() {
         return (
@@ -69,12 +78,7 @@ export default class Login extends Component {
         let mobile = this.state.mobile;
         let pwd = this.state.pwd; 
         if(mobile&&pwd){
-            this.props.navigation.state.params.dispatch(login({mobile:this.state.mobile,pwd:this.state.pwd,app:1}));
-            if(this.props.navigation.state.params.loginData.status=='success'){
-                this.props.navigation.goBack();
-            }else{
-                Toast.show(this.props.navigation.state.params.loginData.message)
-            }
+            this.props.dispatch(login({mobile:this.state.mobile,pwd:this.state.pwd,app:1}));
         }else{
             Toast.show("手机号或密码错误")
         }
@@ -125,3 +129,11 @@ const styles = StyleSheet.create({
         padding:15
     }
 });
+
+function mapStateToProps(state) {
+    return {
+      loginData: state.loginReducer,
+    }
+  }
+  
+export default connect(mapStateToProps)(Login);

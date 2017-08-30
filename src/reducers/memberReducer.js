@@ -23,7 +23,7 @@ export function loginReducer(state = loginState, action) {
             return Object.assign({}, state, {
                 status: 'success',
                 data: action.data,
-                message:'',
+                message:action.data.message,
             });
         case Types.LOGIN_FAILED:
             return Object.assign({}, state, {
