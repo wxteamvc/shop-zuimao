@@ -16,6 +16,7 @@ export const SIGNINDEX_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=si
 //签到请求地址
 export const SIGN_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=sign.dosign';
 //签到记录地址
+export const SIGNRECORD_URL =BASIC_URL+'?i=1&c=entry&m=ice_shop&do=mobile&r=sign.getrecords'
 //登陆请求地址
 //优惠券获取地址
 export const COUPONS_URL = BASIC_URL+'?i=1&c=entry&m=ice_shop&do=mobile&r=sale.coupon.getlist&mid=3773&page=1&cateid=&_='//会员中心请求地址
