@@ -13,6 +13,7 @@ import SignRecord from './pages/signRecordView';
 import Coupons from './pages/couponsView';
 import RightBtn from './component/rightBtn';
 import Login from './component/login';
+import Register from './component/register';
 
 
 
@@ -59,9 +60,17 @@ const App = StackNavigator({
             headerTitle: '登录',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight:  
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>{navigation.navigate('Register')}}>
                     <Text style={{marginRight:20,fontWeight:'bold'}}>注册</Text>
                 </TouchableOpacity>
+        }),
+    },
+    Register: {
+        screen: Register,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '注册',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
         }),
     },
 });

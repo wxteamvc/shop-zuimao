@@ -25,3 +25,7 @@ export const LOGIN_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=accoun
 export const COUPONS_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=sale.coupon.getlist&mid=3773&page=1&cateid=&_=';
 //会员中心请求地址
 export const MEMBER_INFO_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member';
+//注册短信验证地址
+export const VERIFY_CODE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=account.verifycode';
+//注册请求地址
+export const REGISTER_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=account.register'

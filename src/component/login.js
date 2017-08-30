@@ -60,12 +60,12 @@ class Login extends Component {
                     </View>
                     <View style={styles.textForget}>
                         <TouchableOpacity>
-                            <Text>忘记密码?</Text>
+                            <Text allowFontScaling={false}>忘记密码?</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.loginView}>
                         <TouchableOpacity onPress={()=>this._login()}>
-                            <Text style={this.state.mobile && this.state.pwd ?styles.loginGreen:styles.loginGray}>登陆</Text>
+                            <Text style={this.state.mobile && this.state.pwd ?styles.loginGreen:styles.loginGray} allowFontScaling={false}>登陆</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
@@ -76,17 +76,18 @@ class Login extends Component {
 
     _login(){
         let mobile = this.state.mobile;
-        let pwd = this.state.pwd; 
+        let pwd = this.state.pwd;
         if(mobile&&pwd){
-            this.props.dispatch(login({mobile:this.state.mobile,pwd:this.state.pwd,app:1}));
+            let re = /^1[3|4|5|7|8][0-9]{9}$/;
+            if (re.test(mobile)) {
+                this.props.dispatch(login({mobile:this.state.mobile,pwd:this.state.pwd,app:1}));
+            }else{
+                Toast.show("手机号格式不正确");
+            }           
         }else{
             Toast.show("手机号或密码错误")
         }
     }
-
-    // _register(){
-    //     this.props.navigation.navigate('Register')
-    // }
 
 }
 
