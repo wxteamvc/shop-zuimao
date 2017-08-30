@@ -12,6 +12,7 @@ import HomeView from './homeView';
 import Category from './categoryView';
 import Cart from './cartView';
 import Member from './memberView';
+import { fontSizeScaler as fs } from '../common/global';
 
 const HomeTab = TabNavigator({
     HomeView: {
@@ -63,10 +64,10 @@ const HomeTab = TabNavigator({
         indicatorStyle: {height: 0}, // android 中TabBar下面会显示一条线，高度设为 0 后就不显示线了， 不知道还有没有其它方法隐藏？？？
         style: {
             backgroundColor: '#fff', // TabBar 背景色
-            height:62
+            height:62,
         },
         labelStyle: {
-            
+            fontSize:13*fs
         },
         iconStyle :{
            

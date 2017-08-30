@@ -22,4 +22,5 @@ export const MEMBER_INFO_BEGIN = 'MEMBER_INFO_BEGIN';
 export const MEMBER_INFO_SUCCESS = 'MEMBER_INFO_SUCCESS';
 //请求会员中心失败
 export const MEMBER_INFO_FAILED = 'MEMBER_INFO_FAILED';
-
+//退出登陆
+export const LOGIN_OUT = 'LOGIN_OUT';

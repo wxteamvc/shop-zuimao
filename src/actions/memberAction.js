@@ -58,6 +58,12 @@ export function memberInfo() {
     }
 }
 
+export function loginOut() {
+    return {
+        type: Types.LOGIN_OUT,
+    }
+}
+
 function start(type,data={}){
     return {
         type,
