@@ -87,15 +87,15 @@ export default class Coupons extends Component {
         let main = null;
         switch (item.backtype) {
             case '0':
-                url = require('../assets/images/yh.jpg');
+                url = require('../assets/images/coupons/yh.jpg');
                 main = this.rendermain(item)
                 break;
             case '1':
-                url = require('../assets/images/zhekou.jpg');
+                url = require('../assets/images/coupons/zhekou.jpg');
                 main = this.rendermain(item)
                 break;
             case '2':
-                url = require('../assets/images/fanxian.jpg');
+                url = require('../assets/images/coupons/fanxian.jpg');
                 main = <View style={{ width: (ScreenWidth - 40) / 3, height: 82, position: 'absolute', top: 0, left: 0 }}>
                     <View style={{ alignItems: 'flex-start', marginLeft: 10, marginTop: 10 }}>
                         <Text style={{ color: '#fff', fontSize: 22, }}>
@@ -151,7 +151,7 @@ export default class Coupons extends Component {
                         range={400}
                         extraData={this.state}
                         ListHeaderComponent={<Image
-                            source={require('../assets/images/top.jpg')}
+                            source={require('../assets/images/coupons/top.jpg')}
                             resizeMode={'stretch'}
                             style={{ width: ScreenWidth, height: 300 }} />}
                         data={this.state.data}
