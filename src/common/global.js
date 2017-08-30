@@ -20,4 +20,6 @@ export const SIGN_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=sign.do
 //签到记录地址
 export const SIGNRECORD_URL =BASIC_URL+'?i=1&c=entry&m=ice_shop&do=mobile&r=sign.getrecords'
 //登陆请求地址
-export const LOGIN_URL = BASIC_URL+'?i=1&c=entry&m=ewei_shopv2&do=mobile&r=account.login';
+export const LOGIN_URL = BASIC_URL+'?i=1&c=entry&m=ice_shop&do=mobile&r=account.login';
+//会员中心请求地址
+export const MEMBER_INFO_URL = BASIC_URL+'?i=1&c=entry&m=ice_shop&do=mobile&r=member'
