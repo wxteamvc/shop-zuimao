@@ -16,4 +16,10 @@ export const LOGIN_BEGIN = 'LOGIN_BEGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 //登陆开始动作
 export const LOGIN_FAILED = 'LOGIN_FAILED';
+//请求会员中心开始
+export const MEMBER_INFO_BEGIN = 'MEMBER_INFO_BEGIN';
+//请求会员中心成功
+export const MEMBER_INFO_SUCCESS = 'MEMBER_INFO_SUCCESS';
+//请求会员中心失败
+export const MEMBER_INFO_FAILED = 'MEMBER_INFO_FAILED';
 

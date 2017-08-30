@@ -18,5 +18,6 @@ export const SIGN_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=sign.do
 //签到记录地址
 export const SIGNRECORD_URL =BASIC_URL+'?i=1&c=entry&m=ice_shop&do=mobile&r=sign.getrecords'
 //登陆请求地址
-export const LOGIN_URL = BASIC_URL+'?i=1&c=entry&m=ewei_shopv2&do=mobile&r=account.login';//优惠券获取地址
-export const COUPONS_URL = BASIC_URL+'?i=1&c=entry&m=ice_shop&do=mobile&r=sale.coupon.getlist&mid=3773&page=1&cateid=&_='
+//优惠券获取地址
+export const COUPONS_URL = BASIC_URL+'?i=1&c=entry&m=ice_shop&do=mobile&r=sale.coupon.getlist&mid=3773&page=1&cateid=&_='//会员中心请求地址
+export const MEMBER_INFO_URL = BASIC_URL+'?i=1&c=entry&m=ice_shop&do=mobile&r=member'
