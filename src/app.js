@@ -47,7 +47,7 @@ const App = StackNavigator({
     Coupons: {
         screen: Coupons,
         navigationOptions: ({ navigation }) => ({
-            headerTitle: '优惠券领取中心',
+            headerTitle: '领券中心',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <RightBtn name={'user'} size={30} navigation={navigation}
                 path={'HomeTab'} />
