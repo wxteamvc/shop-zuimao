@@ -29,7 +29,13 @@ export function loginReducer(state = loginState, action) {
             return Object.assign({}, state, {
                 status: 'failed',
                 message: action.message,
-            });    
+            });
+        case Types.LOGIN_OUT:
+            return Object.assign({}, state, {
+                status: false,
+                data: {},
+                message:'',
+            });        
         default:
             return state;
     }
