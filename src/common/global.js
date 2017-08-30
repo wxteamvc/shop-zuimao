@@ -3,10 +3,8 @@ import Dimensions from 'Dimensions';
 //屏幕宽和高
 export const ScreenWidth = Dimensions.get('window').width;
 export const ScreenHeight = Dimensions.get('window').height;
-
 //缩放比例
-const fontSizeScaler = PixelRatio.get() / PixelRatio.getFontScale();
-
+export const fontSizeScaler = (PixelRatio.get() / PixelRatio.getFontScale())/PixelRatio.get();
 //状态栏高度
 export const StatusBarHeight = StatusBar.currentHeight;
 //网站基本地址
