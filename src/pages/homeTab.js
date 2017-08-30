@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 import { TabNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import IconTwo from 'react-native-vector-icons/dist/SimpleLineIcons';
 import HomeView from './homeView';
 import Category from './categoryView';
 import Cart from './cartView';
@@ -18,7 +19,7 @@ const HomeTab = TabNavigator({
         navigationOptions:({navigation}) => ({
             tabBarLabel:'首页',  
             tabBarIcon:({focused,tintColor}) => ( 
-                <Icon name="home" size={20} color={tintColor}/>
+                <Icon name="home" size={25} color={tintColor}/>
             )    
         }),
     },
@@ -27,7 +28,7 @@ const HomeTab = TabNavigator({
         navigationOptions:({navigation}) => ({
             tabBarLabel:'分类',  
             tabBarIcon:({focused,tintColor}) => ( 
-                <Icon name="list" size={20} color={tintColor}/>
+                <IconTwo name="grid" size={25} color={tintColor}/>
             )    
         }),
     },
@@ -36,7 +37,7 @@ const HomeTab = TabNavigator({
         navigationOptions:({navigation}) => ({
             tabBarLabel:'购物车',  
             tabBarIcon:({focused,tintColor}) => ( 
-                <Icon name="shopping-cart" size={20} color={tintColor}/>
+                <Icon name="shopping-cart" size={25} color={tintColor}/>
             )    
         }),
     },
@@ -45,7 +46,7 @@ const HomeTab = TabNavigator({
         navigationOptions:({navigation}) => ({
             tabBarLabel:'我的醉猫',  
             tabBarIcon:({focused,tintColor}) => ( 
-                <Icon name="user-o" size={20} color={tintColor}/>
+                <Icon name="user-o" size={25} color={tintColor}/>
             )    
         }),
     },
@@ -62,6 +63,7 @@ const HomeTab = TabNavigator({
         indicatorStyle: {height: 0}, // android 中TabBar下面会显示一条线，高度设为 0 后就不显示线了， 不知道还有没有其它方法隐藏？？？
         style: {
             backgroundColor: '#fff', // TabBar 背景色
+            height:62
         },
         labelStyle: {
             
