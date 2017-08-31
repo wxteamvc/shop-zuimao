@@ -20,7 +20,7 @@ import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 export default class RightBtn extends Component {
 
 
-    goods({ item }) {
+    rendergoods({ item }) {
         return (
             <View style={{ marginRight: 10 }}>
                 <Image
@@ -40,9 +40,9 @@ export default class RightBtn extends Component {
 
     render() {
         return (
-            <View style={{ backgroundColor: '#fff' }}>
+            <View style={{ backgroundColor: '#fff',paddingBottom:5 }}>
                 <View style={styles.rush_head}>
-                    <View style={{ flex: 0.55 }}>
+                    <View style={{ flex: 0.4 }}>
                         <Image
                             resizeMode={'stretch'}
                             source={require('../assets/images/rush/jijiangdaoshi.png')}
@@ -55,6 +55,8 @@ export default class RightBtn extends Component {
                             source={require('../assets/images/rush/shengyushijian.png')}
                             style={{ width: 60, height: 18, marginRight: 10 }}
                         />
+                        <Text style={styles.runTime}>02</Text>
+                        <Text style={[styles.between_runTime]}>天</Text>
                         <Text style={styles.runTime}>01</Text>
                         <Text style={styles.between_runTime}>:</Text>
                         <Text style={styles.runTime}>18</Text>
@@ -66,7 +68,7 @@ export default class RightBtn extends Component {
                     showsHorizontalScrollIndicator={false}
                     horizontal={true}
                     data={[1, 2, 3, 4, 5]}
-                    renderItem={this.goods.bind(this)}
+                    renderItem={this.rendergoods.bind(this)}
                     keyExtractor={(item, index) => index}
                 />
             </View>
@@ -81,7 +83,7 @@ const styles = StyleSheet.create({
         padding: 15 
     },
     rush_head_right:{
-        flex: 0.45,
+        flex: 0.6,
          flexDirection: 'row', 
          alignItems: 'center',
     },

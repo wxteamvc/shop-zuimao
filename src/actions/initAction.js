@@ -7,8 +7,8 @@ export function init() {
         return (
             dispatch => {
                 dispatch(start(Types.INIT_BEGIN))
-                let url = 'http://www.wxdevelop.com/we7/app/index.php?i=1&c=entry&m=ewei_shopv2&do=mobile&r=goods.get_list&mid=0';
-                Util.post(url,{keywords:'rock'},
+                let url = HOME_URL;
+                Util.post(url,{app:1},
                     (responseJson)=>{
                         if(responseJson.status==1){
                             dispatch(start(Types.INIT_SUCCESS,responseJson))
@@ -16,8 +16,8 @@ export function init() {
                             dispatch(error(Types.INIT_FAILED,'服务器请求失败！'))
                         }
                     },
-                    (error)=>{
-                        dispatch(error(Types.INIT_FAILED,error.message))
+                    (errormsg)=>{
+                        dispatch(error(Types.INIT_FAILED,errormsg.message))
                     },
                 )
             }
