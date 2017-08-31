@@ -14,20 +14,25 @@ import {
     FlatList,
     Image,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+
 
 export default class RightBtn extends Component {
 
 
     goods({ item }) {
         return (
-            <View style={{ alignItems: 'center', }}>
+            <View style={{ marginRight: 10 }}>
                 <Image
-                    source={{ uri: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1504086674797&di=0d29503646b4c8b79fddf5efc81933eb&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F3bf33a87e950352a05ba82165943fbf2b3118bd1.jpg' }}
-                    style={{ width: 100, height: 100 }}
+                    source={{ uri: 'http://www.zuimaowang.cn/attachment/images/1/2017/08/rb2IPWi38L2tAiTw28pWaLDHYHFwVF.jpg' }}
+                    style={styles.goodImage}
                 />
-                <Text style={{color:'red'}}>¥258.00</Text>
-                <Text style={{ textDecorationLine:'line-through'}}>¥258.00</Text>
-
+                <Text  style={{ color: 'red' }}>&yen; 258.00</Text>
+                <Text  style={styles.oldPrice}>&yen; 258.00</Text>
+                <TouchableOpacity style={styles.buycar}>
+                   <Icon name={'cart-outline'} color={'red'}  size={14}/>
+                </TouchableOpacity>
+                  
             </View>
         )
     }
@@ -35,29 +40,30 @@ export default class RightBtn extends Component {
 
     render() {
         return (
-            <View style={{backgroundColor:'#fff'}}>
-                <View style={{flexDirection: 'row', alignItems: 'center',padding:15}}>
+            <View style={{ backgroundColor: '#fff' }}>
+                <View style={styles.rush_head}>
                     <View style={{ flex: 0.55 }}>
                         <Image
-                        resizeMode={'stretch'}
+                            resizeMode={'stretch'}
                             source={require('../assets/images/rush/jijiangdaoshi.png')}
                             style={{ width: 80, height: 35 }}
                         />
                     </View>
-                    <View style={{ flex: 0.45,flexDirection: 'row', alignItems: 'center', }}>
+                    <View style={styles.rush_head_right}>
                         <Image
-                        resizeMode={'stretch'}
+                            resizeMode={'stretch'}
                             source={require('../assets/images/rush/shengyushijian.png')}
-                            style={{ width: 60, height: 15,marginRight:10 }}
+                            style={{ width: 60, height: 18, marginRight: 10 }}
                         />
                         <Text style={styles.runTime}>01</Text>
-                        <Text>:</Text>
+                        <Text style={styles.between_runTime}>:</Text>
                         <Text style={styles.runTime}>18</Text>
-                        <Text>:</Text>
+                        <Text style={styles.between_runTime}>:</Text>
                         <Text style={styles.runTime}>46</Text>
                     </View>
                 </View>
                 <FlatList
+                    showsHorizontalScrollIndicator={false}
                     horizontal={true}
                     data={[1, 2, 3, 4, 5]}
                     renderItem={this.goods.bind(this)}
@@ -69,11 +75,38 @@ export default class RightBtn extends Component {
 }
 
 const styles = StyleSheet.create({
-   runTime:{
-    padding: 3,
-    paddingLeft:6,
-    paddingRight:6, 
-    backgroundColor: '#ccc',
-   color: '#fff' 
-   }
+    rush_head:{
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        padding: 15 
+    },
+    rush_head_right:{
+        flex: 0.45,
+         flexDirection: 'row', 
+         alignItems: 'center',
+    },
+    runTime: {
+        padding: 3,
+        paddingLeft: 6,
+        paddingRight: 6,
+        backgroundColor: '#595959',
+        color: '#fff'
+    },
+    between_runTime:{
+        paddingLeft: 3, paddingRight: 3 ,color:'#000',fontWeight: 'bold'
+    },
+    goodImage:{
+        width: 100, 
+        height: 100, 
+        borderColor: '#ccc',
+         borderWidth: 0.7,
+          marginBottom: 5
+    },
+    oldPrice:{
+        textDecorationLine: 'line-through',
+        fontSize :12
+    },
+    buycar:{
+        position: 'absolute',bottom:0,right:0,width:22,height:22,borderRadius:11,borderColor:'#ccc',borderWidth:0.7, justifyContent: 'center',alignItems: 'center',
+    }
 })

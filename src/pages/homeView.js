@@ -25,7 +25,8 @@ import Icon from 'react-native-vector-icons/dist/SimpleLineIcons';
 import IconTwo from 'react-native-vector-icons/dist/FontAwesome';
 import Banner from '../component/banner';
 import IconList from '../component/icon';
-import Rush from '../component/rush'
+import Rush from '../component/rush';
+import Findgoods from '../component/findGoods';
 
 class HomeView extends Component {
 
@@ -33,9 +34,9 @@ class HomeView extends Component {
     super(...props);
     this.state = {
       img: [
-        'http://bpic.588ku.com/element_origin_min_pic/00/00/07/10578217602a574.jpg',
-        'http://bpic.588ku.com/element_origin_min_pic/00/00/07/095780c2333ae45.jpg',
-        'http://bpic.588ku.com/element_origin_min_pic/00/00/07/095780c1e97eda9.jpg'
+        'http://www.zuimaowang.cn/attachment/images/1/2017/08/b3Le686Ezedn2wBE6dc7zTNDTiWTC3.jpg',
+        'http://www.zuimaowang.cn/attachment/images/1/2017/08/Eeh5H4RYygHA2h49AeS4a8E2hHae8S.jpg',
+        'http://www.zuimaowang.cn/attachment/images/1/2017/08/Qoo2j8DDsPoSSKPCKPlo5p6mlLlp2h.jpg'
       ]
     }
   }
@@ -87,26 +88,27 @@ class HomeView extends Component {
           <View>
             <Image
               source={require('../assets/images/ad.jpg')}
-              style={{ height: 100, width: ScreenWidth }}
+              style={styles.top_ad}
               resizeMode={'stretch'} />
           </View>
           <IconList  navigation={this.props.navigation}/>
-          <View style={{ margin: 15, height: 40, borderRadius: 20, backgroundColor: '#fff', flexDirection: "row",alignItems: 'center',}}>
+          <View style={styles.notice}>
             <Image
               source={require('../assets/images/notice.jpg')}
-              style={{ width: 60, height: 25,marginLeft:10 }}
+              style={styles.notice_hotimage}
               resizeMode={'stretch'}
             />
-            <View style={{flex:0.85,flexDirection: "row",alignItems: 'center',}}>
-            <Text style={{fontWeight:'bold',color:'#000',marginLeft:5,marginRight:5}}>：</Text>
-            <Text style={{paddingLeft:3,paddingRight:3,borderColor:'#6FDAE2',borderWidth:0.7,color:'#6FDAE2',marginRight:10,fontSize:16}}>推荐</Text>
+            <View style={styles.notice_mid}>
+            <Text style={styles.notice_mid_text1}>：</Text>
+            <Text style={styles.notice_mid_text2}>推荐</Text>
             <Text numberOfLines={1} style={{flex:1}}>热烈庆祝无锡欢波信息技术</Text>
             </View>
             <View style={{flex:0.15}}>
-            <Text style={{paddingLeft:5,borderBottomColor:'#ccc',borderLeftWidth:0.7}}>更多</Text>
+            <Text style={styles.notice_right}>更多</Text>
             </View>
           </View>
           <Rush/>
+          <Findgoods num={1}/>
         </ScrollView>
       </View>
 
@@ -155,6 +157,27 @@ const styles = StyleSheet.create({
     flex: 0.15,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  top_ad:{
+    height: 100, width: ScreenWidth
+  },
+  notice:{
+    margin: 15, height: 40, borderRadius: 20, backgroundColor: '#fff', flexDirection: "row",alignItems: 'center',
+  },
+  notice_hotimage:{
+    width: 60, height: 25,marginLeft:10
+  },
+  notice_mid:{
+    flex:0.85,flexDirection: "row",alignItems: 'center',
+  },
+  notice_mid_text1:{
+    fontWeight:'bold',color:'#000',marginLeft:5,marginRight:5
+  },
+  notice_mid_text2:{
+    paddingLeft:3,paddingRight:3,borderColor:'#6FDAE2',borderWidth:0.7,color:'#6FDAE2',marginRight:10,fontSize:16
+  },
+  notice_right:{
+    paddingLeft:5,borderBottomColor:'#ccc',borderLeftWidth:0.7
   }
 });
 

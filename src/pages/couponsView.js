@@ -68,14 +68,14 @@ export default class Coupons extends Component {
 
     rendermain(item) {
         return(
-            <View style={{ width: (ScreenWidth - 40) / 3, height: 82, position: 'absolute', top: 0, left: 0 }}>
-            <View style={{ alignItems: 'flex-start', marginLeft: 10, marginTop: 10 }}>
-                <Text style={{ color: '#fff', fontSize: 22, }}>
+            <View style={styles.coupons_top_left}>
+            <View style={styles.coupons_top_left_top}>
+                <Text style={styles.fontSize22}>
                     {item.backstr}
                 </Text>
             </View>
             <View style={{ alignItems: 'center' }}>
-                <Text style={{ color: '#fff', fontSize: 30, }}>
+                <Text style={styles.fontSize30}>
                     {item._backmoney}
                 </Text>
             </View>
@@ -96,14 +96,14 @@ export default class Coupons extends Component {
                 break;
             case '2':
                 url = require('../assets/images/coupons/fanxian.jpg');
-                main = <View style={{ width: (ScreenWidth - 40) / 3, height: 82, position: 'absolute', top: 0, left: 0 }}>
-                    <View style={{ alignItems: 'flex-start', marginLeft: 10, marginTop: 10 }}>
-                        <Text style={{ color: '#fff', fontSize: 22, }}>
+                main = <View style={styles.coupons_top_left}>
+                    <View style={styles.coupons_top_left_top}>
+                        <Text style={styles.fontSize22}>
                             {item.backstr}
                         </Text>
                     </View>
                     <View style={{ alignItems: 'center' }}>
-                        <Text style={{ color: '#fff', fontSize: 18, }}
+                        <Text style={styles.fontSize18}
                         adjustsFontSizeToFit={true}
                         >
                             返{item.backmoney}元余额
@@ -116,13 +116,13 @@ export default class Coupons extends Component {
         }
         return (
             <TouchableOpacity>
-                <View style={{ flexDirection: 'row', marginTop: 10, marginLeft: 20, marginRight: 20, }}>
+                <View style={styles.coupons}>
                     <Image
                         resizeMode={'stretch'}
-                        style={{ width: ScreenWidth - 40, height: 140, borderRadius: 5 }}
+                        style={styles.coupons_img}
                         source={url}>
-                        <View style={{ height: 55, width: ScreenWidth - 90, position: 'absolute', bottom: 0, right: 0, flexDirection: 'row', }}>
-                            <View style={{ flex: 1, justifyContent: 'center', }}>
+                        <View style={styles.coupons_bottom}>
+                            <View style={styles.coupons_bottom_left}>
                                 <Text style={{ color: '#000' }}>
                                     {item.title4}
                                 </Text>
@@ -130,7 +130,7 @@ export default class Coupons extends Component {
                                     {item.title2}
                                 </Text>
                             </View>
-                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
+                            <View style={styles.coupons_bottom_right}>
                                 <Text
                                     numberOfLines={2}
                                     style={{ fontSize: 20 }}>{item.couponname}
@@ -146,7 +146,7 @@ export default class Coupons extends Component {
     render() {
         if (this.state.status == 'success') {
             return (
-                <View style={{ flex: 1, backgroundColor: '#1C173F' }}>
+                <View style={styles.container}>
                     <FlatListJumoTop
                         range={400}
                         extraData={this.state}
@@ -171,3 +171,42 @@ export default class Coupons extends Component {
 
     }
 }
+
+
+
+const styles=StyleSheet.create({
+    container:{
+        flex: 1, backgroundColor: '#1C173F'  
+    },
+    coupons:{
+        flexDirection: 'row', marginTop: 10, marginLeft: 20, marginRight: 20,
+    },
+    coupons_img:{
+        width: ScreenWidth - 40, height: 140, borderRadius: 5
+    },
+    coupons_bottom:{
+        height: 55, width: ScreenWidth - 90, position: 'absolute', bottom: 0, right: 0, flexDirection: 'row', 
+    },
+    coupons_bottom_left:{
+        flex: 1, justifyContent: 'center',
+    },
+    coupons_bottom_right:{
+        flex: 1, justifyContent: 'center', alignItems: 'center', 
+    },
+    coupons_top_left:{
+        width: (ScreenWidth - 40) / 3, height: 82, position: 'absolute', top: 0, left: 0 
+    },
+    coupons_top_left_top:{
+        alignItems: 'flex-start', marginLeft: 10, marginTop: 10
+    },
+    fontSize18:{
+        color: '#fff', fontSize: 18,
+    },
+    fontSize22:{
+        color: '#fff', fontSize: 22,
+    },
+    fontSize30:{
+        color: '#fff', fontSize: 30,
+    },
+   
+})
