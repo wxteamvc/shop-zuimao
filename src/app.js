@@ -14,7 +14,7 @@ import Coupons from './pages/couponsView';
 import RightBtn from './component/rightBtn';
 import Login from './component/login';
 import Register from './component/register';
-
+import Goods from './pages/goodsView';
 
 
 
@@ -71,6 +71,12 @@ const App = StackNavigator({
             headerTitle: '注册',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
+        }),
+    },
+    Goods: {
+        screen: Goods,
+        navigationOptions: ({ navigation }) => ({
+            header: null
         }),
     },
 });

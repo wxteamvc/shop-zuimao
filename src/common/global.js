@@ -31,3 +31,5 @@ export const MEMBER_INFO_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=
 export const VERIFY_CODE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=account.verifycode';
 //注册请求地址
 export const REGISTER_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=account.register'
+//商品列表
+export const GOODS_URL =  BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=goods.get_list';

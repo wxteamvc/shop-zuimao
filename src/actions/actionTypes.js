@@ -24,3 +24,9 @@ export const MEMBER_INFO_SUCCESS = 'MEMBER_INFO_SUCCESS';
 export const MEMBER_INFO_FAILED = 'MEMBER_INFO_FAILED';
 //退出登陆
 export const LOGIN_OUT = 'LOGIN_OUT';
+//请求商品列表开始动作
+export const GOODS_BEGIN = 'GOODS_BEGIN';
+//请求商品列表成功动作
+export const GOODS_SUCCESS = 'GOODS_SUCCESS';
+//请求商品列表失败动作
+export const GOODS_FAILED = 'GOODS_FAILED';
