@@ -9,7 +9,8 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import IconT from 'react-native-vector-icons/dist/Foundation';
 import { memberInfo, loginOut } from '../actions/memberAction';
-import { ScreenWidth } from '../common/global'
+import { ScreenWidth } from '../common/global';
+import { fontSizeScaler as fs } from '../common/global';
 
 class Member extends Component {
 
@@ -65,8 +66,8 @@ class Member extends Component {
       let levelname = memberData.levelname == null || memberData.levelname == '' ? '[普通会员]' : memberData.levelname;
       return (
         <View>
-          <Text style={styles.fontWhite}>{name}</Text>
-          <Text style={styles.fontWhite}>{levelname}</Text>
+          <Text style={styles.fontWhite} allowFontScaling={false}>{name}</Text>
+          <Text style={styles.fontWhite} allowFontScaling={false}>{levelname}</Text>
         </View>
 
       )
@@ -85,11 +86,11 @@ class Member extends Component {
       <View style={styles.modView}>
         <View style={styles.modTop}>
           <View style={styles.modTopTextL}>
-            <Text style={{ marginLeft: 5 }}>我的订单</Text>
+            <Text style={{ marginLeft: 5 }} allowFontScaling={false}>我的订单</Text>
           </View>
           <TouchableOpacity>
             <View style={styles.modTopTextR}>
-              <Text style={{ marginRight: 5 }}>查看全部订单</Text>
+              <Text style={{ marginRight: 5 }} allowFontScaling={false}>查看全部订单</Text>
               <Icon name="angle-right" size={20} color={'#ccc'} style={{ marginRight: 5 }} />
             </View>
           </TouchableOpacity>
@@ -99,7 +100,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="address-card-o" size={30} color={'#aaa'}/>
-                        <Text>待付款</Text>
+                        <Text allowFontScaling={false}>待付款</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -107,7 +108,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="cube" size={30} color={'#aaa'}/>
-                        <Text>待发货</Text>
+                        <Text allowFontScaling={false}>待发货</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -115,7 +116,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="truck" size={30} color={'#aaa'}/>
-                        <Text>待收货</Text>
+                        <Text allowFontScaling={false}>待收货</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -123,7 +124,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="plug" size={30} color={'#aaa'}/>
-                        <Text>退换货</Text>
+                        <Text allowFontScaling={false}>退换货</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -148,11 +149,11 @@ class Member extends Component {
       <View style={styles.modView}>
       <View style={styles.modTop}>
         <View style={[styles.modTopTextL,styles.borderB]}>
-          <Text style={{ marginLeft: 5 }}>我的钱包</Text>
+          <Text style={{ marginLeft: 5 }} allowFontScaling={false}>我的钱包</Text>
         </View>
         <TouchableOpacity>
           <View style={[styles.modTopTextR,styles.borderB]}>
-            <Text style={{ marginRight: 5 }}>查看明细</Text>
+            <Text style={{ marginRight: 5 }} allowFontScaling={false}>查看明细</Text>
             <Icon name="angle-right" size={20} color={'#ccc'} style={{ marginRight: 5 }} />
           </View>
         </TouchableOpacity>
@@ -161,24 +162,24 @@ class Member extends Component {
         <View style={styles.modBottomList}>
             <TouchableOpacity>
                 <View style={styles.center}>
-                  <Text>{credit2}</Text>
-                  <Text>账户余额</Text>
+                  <Text allowFontScaling={false}>{credit2}</Text>
+                  <Text allowFontScaling={false}>账户余额</Text>
                 </View>
             </TouchableOpacity>
         </View>
         <View style={styles.modBottomList}>
             <TouchableOpacity>
                 <View style={styles.center}>
-                  <Text>{coupon}</Text>
-                  <Text>优惠券</Text>
+                  <Text allowFontScaling={false}>{coupon}</Text>
+                  <Text allowFontScaling={false}>优惠券</Text>
                 </View>
             </TouchableOpacity>
         </View>
         <View style={styles.modBottomList}>
             <TouchableOpacity>
                 <View style={styles.center}>
-                  <Text>{credit1}</Text>
-                  <Text>积分</Text>
+                  <Text allowFontScaling={false}>{credit1}</Text>
+                  <Text allowFontScaling={false}>积分</Text>
                 </View>
             </TouchableOpacity>
         </View>
@@ -196,7 +197,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="heart" size={30} color={'#FB585E'}/>
-                        <Text>我的关注</Text>
+                        <Text allowFontScaling={false}>我的关注</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -204,7 +205,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="shopping-cart" size={30} color={'#1D9D73'}/>
-                        <Text>我的购物车</Text>
+                        <Text allowFontScaling={false}>我的购物车</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -212,7 +213,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <IconT name="foot" size={30} color={'#1B8EFF'}/>
-                        <Text>我的足迹</Text>
+                        <Text allowFontScaling={false}>我的足迹</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -220,7 +221,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="credit-card" size={30} color={'#FFAB15'}/>
-                        <Text>充值记录</Text>
+                        <Text allowFontScaling={false}>充值记录</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -228,7 +229,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="gift" size={30} color={'#9400d3'}/>
-                        <Text>积分签到</Text>
+                        <Text allowFontScaling={false}>积分签到</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -236,7 +237,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="ticket" size={30} color={'#FFAB15'}/>
-                        <Text>优惠券</Text>
+                        <Text allowFontScaling={false}>优惠券</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -244,7 +245,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="bell" size={30} color={'#6b8e23'}/>
-                        <Text>消息提醒设置</Text>
+                        <Text allowFontScaling={false}>消息提醒设置</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -252,7 +253,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="map-marker" size={30} color={'#BF0000'}/>
-                        <Text>收货地址管理</Text>
+                        <Text allowFontScaling={false}>收货地址管理</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -267,7 +268,7 @@ class Member extends Component {
       return(
         <View style={{marginTop:10,backgroundColor:'#fff',padding:10}}>
             <TouchableOpacity  onPress={()=>this.props.dispatch(loginOut())}>
-                <Text style={{color:'red',textAlign:'center'}}>退出登陆</Text>
+                <Text style={{color:'red',textAlign:'center'}} allowFontScaling={false}>退出登陆</Text>
             </TouchableOpacity>
         </View>
       )

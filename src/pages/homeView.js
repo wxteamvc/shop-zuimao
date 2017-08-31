@@ -52,6 +52,21 @@ class HomeView extends Component {
     }
   }
 
+    //递归渲染魔术排版图片
+  //data渲染的数据,flag控制横纵排列默认横向,max控制最大渲染个数默认4个
+  renderImageList(data,flag=true,max=4){
+      if(data.length === 0 || max === 0) return ;
+      return (
+        <View style={{flex:1,flexDirection:flag?'row':'column'}}>
+          <Image 
+            source={{uri:data[0]}}
+            style={{flex:1}}
+          />
+          {this.renderImageList(data.slice(1),!flag,max-1)}
+        </View>
+      );
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -108,7 +123,15 @@ class HomeView extends Component {
             </View>
           </View>
           <Rush/>
+<<<<<<< HEAD
           <Findgoods num={1}/>
+=======
+
+          <View style={{width:420,height:200,flexDirection:'row'}}> 
+                {this.renderImageList(this.state.img.slice(0))}  
+          </View> 
+
+>>>>>>> 75f8e4a12d0400e23fb716616f3a5c1d82fd9cfc
         </ScrollView>
       </View>
 
