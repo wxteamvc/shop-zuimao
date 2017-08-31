@@ -112,10 +112,10 @@ class Login extends Component {
             .then(response => response.json())
             .then(
                 responseJson => {
-                    Toast.show("验证码已发送！");
+                    Toast.show(responseJson.result.message);
                 }
             ).catch((error) => {
-                Toast.show("验证码发送失败！");
+                Toast.show("验证码发送请求失败！");
             });
             
         }else{

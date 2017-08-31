@@ -70,7 +70,7 @@ class Catergry extends Component {
                     <TouchableOpacity key={i} onPress={() => { this.setState({ selectedBar: i, selectedBarId: leftBarList[i].id }) }}>
                         <View style={[styles.fdr, this.state.selectedBar == i ? styles.bgcw : styles.bgct]}>
                             <View style={[styles.f1, this.state.selectedBar == i ? styles.bgcr : styles.bgct]}></View>
-                            <View style={styles.leftBarText}><Text allowFontScaling={false}>{leftBarList[i].name}</Text></View>
+                            <View style={styles.leftBarText}><Text>{leftBarList[i].name}</Text></View>
                         </View>
                     </TouchableOpacity>
                 )
@@ -80,7 +80,7 @@ class Catergry extends Component {
                     <TouchableOpacity onPress={() => { this.setState({ selectedBar: 'isrecommand', selectedBarId: 'isrecommand' }) }}>
                         <View style={[styles.fdr, this.state.selectedBar == 'isrecommand' ? styles.bgcw : styles.bgct]}>
                             <View style={[styles.f1, this.state.selectedBar == 'isrecommand' ? styles.bgcr : styles.bgct]}></View>
-                            <View style={styles.leftBarText}><Text allowFontScaling={false}>推荐分类</Text></View>
+                            <View style={styles.leftBarText}><Text>推荐分类</Text></View>
                         </View>
                     </TouchableOpacity>
                     {leftBarArr}
@@ -103,7 +103,7 @@ class Catergry extends Component {
                                 <Image source={require('../assets/images/nopic.jpg')} style={styles.rightListImg} /> :
                                 <Image source={{ uri: GoodsList[i].thumb }} style={styles.rightListImg} />
                             }
-                            <Text allowFontScaling={false}>{GoodsList[i].name}</Text>
+                            <Text>{GoodsList[i].name}</Text>
                         </View>
                     </TouchableOpacity>
                 )
@@ -136,7 +136,7 @@ class Catergry extends Component {
                                         <Image source={require('../assets/images/nopic.jpg')} style={styles.rightListImg} /> :
                                         <Image source={{ uri: GoodsList[i][j].thumb }} style={styles.rightListImg} />
                                     }
-                                    <Text allowFontScaling={false}>{GoodsList[i][j].name}</Text>
+                                    <Text>{GoodsList[i][j].name}</Text>
                                 </View>
                             </TouchableOpacity>
                         )
@@ -152,7 +152,7 @@ class Catergry extends Component {
                                     <View style={styles.rightListIcon}>
                                         <Icon name='list' size={20} />
                                     </View>
-                                    <Text allowFontScaling={false}>所有商品</Text>
+                                    <Text>所有商品</Text>
                                 </View>
                             </TouchableOpacity>
                             {GoodsArr}

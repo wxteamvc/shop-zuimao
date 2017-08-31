@@ -12,7 +12,6 @@ import HomeView from './homeView';
 import Category from './categoryView';
 import Cart from './cartView';
 import Member from './memberView';
-import { fontSizeScaler as fs } from '../common/global';
 
 const HomeTab = TabNavigator({
     HomeView: {
@@ -67,10 +66,10 @@ const HomeTab = TabNavigator({
             height:62,
         },
         labelStyle: {
-            fontSize:13*fs
+            //...
         },
         iconStyle :{
-           
+            //...
         },
         tabStyle :{
             //...
