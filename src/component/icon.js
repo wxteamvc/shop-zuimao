@@ -15,7 +15,21 @@ export default class icon extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            list: ['葡萄酒', '白酒', '洋酒', '精选', '签到', '领券', '拼团', '限时', '促销', '充值',]
+            list: ['葡萄酒', '白酒', '洋酒', '精选', '签到', '领券', '拼团', '限时', '促销', '充值',],
+            navigate:[
+                ['Goods',{search: { cate:1178}}],
+                ['Goods',{search: { cate:1177}}],
+                ['Goods',{search: { cate:1211}}],
+                ['Goods',{search: { cate:1211}}],
+                ['SignTab',{}],
+                ['Coupons',{}],
+                ['Goods',{search: { cate:1211}}],
+                ['Goods',{search: { cate:1211}}],
+                ['Goods',{search: { cate:1211}}],
+                ['Goods',{search: { cate:1211}}],
+               
+            ]
+
         }
     }
 
@@ -59,7 +73,7 @@ export default class icon extends Component {
                     break;
             }
             icon.push(
-                <TouchableOpacity key={i} style={styles.listbtn} onPress={()=>{this.props.navigation.navigate('Coupons')}}>
+                <TouchableOpacity key={i} style={styles.listbtn} onPress={()=>{this.props.navigation.navigate(this.state.navigate[i][0],this.state.navigate[i][1])}}>
                     <Image source={url} style={styles.image} />
                     <Text >{this.state.list[i]}</Text>
                 </TouchableOpacity>

@@ -41,7 +41,7 @@ export default class Findgoods extends Component {
             <View style={styles.container}>
                 <Image
                     style={styles.bg_img}
-                    source={require('../assets/images/findgoods/fgbg.jpg')}
+                    source={require('../assets/images/fgbg.jpg')}
                     resizeMode={'stretch'}
                 >
                     <View style={styles.head}>
