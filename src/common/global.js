@@ -19,6 +19,8 @@ export const CATEGORY_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=sho
 export const SIGNINDEX_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=sign&app=1';
 //签到请求地址
 export const SIGN_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=sign.dosign';
+//签到更换月份地址
+export const SIGN_MONTHCHANGE_URL = BASIC_URL+'?i=1&c=entry&m=ice_shop&do=mobile&r=sign.getCalendar&app=1&date='
 //签到记录地址
 export const SIGNRECORD_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=sign.getrecords';
 //登陆请求地址
