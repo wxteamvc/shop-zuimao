@@ -97,7 +97,7 @@ class Catergry extends Component {
             var GoodsArr = [];
             for (let i = 0; i < GoodsList.length; i++) {
                 GoodsArr.push(
-                    <TouchableOpacity key={i} onPress={() => { this.props.navigation.navigate('Goods', { search: { cate: GoodsList[i].id } }) }}>
+                    <TouchableOpacity key={i} onPress={() => { this.props.navigation.navigate('Goods', { search: { cate: GoodsList[i].id} }) }}>
                         <View style={styles.rightListView}>
                             {GoodsList[i].thumb == '' || GoodsList[i].thumb == null ?
                                 <Image source={require('../assets/images/nopic.jpg')} style={styles.rightListImg} /> :

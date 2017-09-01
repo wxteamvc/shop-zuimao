@@ -6,13 +6,14 @@ export function goods(params={}) {
     if (global.isConnected){
         return (
             dispatch => {
-                dispatch(start(Types.GOODS_BEGIN));
+                if(params.page==1){
+                    dispatch(start(Types.GOODS_BEGIN));
+                }
                 Util.post(GOODS_URL,params,
                     (responseJson)=>{
                         if(responseJson.status==1){
-                            dispatch(start(Types.GOODS_SUCCESS,responseJson));
+                            dispatch(start(Types.GOODS_SUCCESS,responseJson,params.page));
                         }else{
-                            
                             dispatch(error(Types.GOODS_FAILED,'服务器请求失败！'));
                         }
                     },
@@ -31,10 +32,11 @@ export function goods(params={}) {
     }
 }
 
-function start(type,data={}){
+function start(type,data={},page=1){
     return {
         type,
         data,
+        page,
     }
 }
 
