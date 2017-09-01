@@ -15,7 +15,7 @@ import {
     Image,
     FlatList,
 } from 'react-native';
-import{SIGNINDEX_URL,SIGN_URL}from '../common/global'
+import{SIGNINDEX_URL,SIGN_URL,SIGN_MONTHCHANGE_URL}from '../common/global'
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Util from '../common/util';
 import Loading from '../component/loading';
@@ -72,7 +72,33 @@ export default class SignIndex extends Component {
         this.setState({
             now: item.value,
         })
-
+        let url = SIGN_MONTHCHANGE_URL+item.value+'&__ice_shop_member_session_1=eyJpZCI6IjM3NzMiLCJvcGVuaWQiOiJ3YXBfdXNlcl8xXzE1MTkwMzE0NzUyIiwibW9iaWxlIjoiMTUxOTAzMTQ3NTIiLCJwd2QiOiJmODA4ZWIwMzBiNzhlM2JjYjBkZmFjNTE5NWI1M2NkNSIsInNhbHQiOiJINllZT0JINFdiUVJGcGY2IiwiaWNlX3Nob3BfbWVtYmVyX2hhc2giOiI3Y2I4ODNjZjRiMjYxOGYyM2E1ZmEwY2RkZjhiODUwNCJ9';
+        if (global.isConnected) {
+            Util.post(url,{},
+                (resq) => {
+                    if (resq.status == 1) {
+                        this.setState({
+                            calendar:resq.result
+                        })
+                    } else {
+                        this.setState({
+                            status: 'faild',
+                            errmessage: resq.message,
+                        })
+                    }
+                },
+                (error) => {
+                    this.setState({
+                        status: 'faild',
+                        errmessage: error.message,
+                    })
+                })
+        } else {
+            this.setState({
+                status: 'faild',
+                errmessage: '当前没有网络！'
+            })
+        }
     }
 
     sign(){
