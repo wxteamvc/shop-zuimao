@@ -31,7 +31,7 @@ export default class Banner extends Component {
             val.push( 
                   
                 <TouchableOpacity key={i} >
-                    <Image source={{uri: this.props.banner[i]}} style={{ height: 200 }} resizeMode={'cover'}></Image>
+                    <Image source={{uri:DOMAIN + this.props.banner[i].thumb}} style={{ height: 200,width:ScreenWidth }} resizeMode={'stretch'}></Image>
                 </TouchableOpacity>
             )
         };
@@ -41,10 +41,10 @@ export default class Banner extends Component {
     render() {
         if(this.state.isShow){
         return (
-            <View>
+            <View style={{height:200,width:ScreenWidth}}>
                 <Swiper
                     height={200}
-                    dotStyle={{ height: 0, }}
+                    dotStyle={{ height:0, }}
                     activeDotStyle={{ height: 0, }}
                     showsButtons={false}
                     autoplay={true}
@@ -56,7 +56,7 @@ export default class Banner extends Component {
         )
     }else{
         return(
-            <View></View>
+            <View style={{height:200}}></View>
         )
     }
  }

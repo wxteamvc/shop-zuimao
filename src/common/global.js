@@ -7,6 +7,8 @@ export const ScreenHeight = Dimensions.get('window').height;
 export const fontSizeScaler = (PixelRatio.get() / PixelRatio.getFontScale())/PixelRatio.get();
 //状态栏高度
 export const StatusBarHeight = StatusBar.currentHeight;
+//图片域名
+export const DOMAIN='http://www.zuimaowang.cn/attachment/';
 //网站基本地址
 export const BASIC_URL = 'http://www.zuimaowang.cn/app/index.php';
 //网站首页地址
