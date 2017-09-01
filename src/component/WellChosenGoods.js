@@ -18,15 +18,6 @@ export default class WellChosen extends Component {
         super(...props);
         this.state = {
             isShow: false,
-            logo: [
-                'http://www.zuimaowang.cn/attachment/images/1/2016/11/Mr4BGRF59EGDHrJROHf7BRmrb4B7SE.jpg',
-                'http://www.zuimaowang.cn/attachment/images/1/2016/11/D9znu8r11AqCC1aY1rrWIRZVUYvyRc.jpg',
-                'http://www.zuimaowang.cn/attachment/images/1/2016/11/o4yHTYt4k728h6RzDZrB6ETKs8hd6P.jpg',
-                'http://www.zuimaowang.cn/attachment/images/1/2016/11/R72pzU7GgnU6pUGbhpWhBnYp2474BI.jpg',
-                'http://www.zuimaowang.cn/attachment/images/1/2016/11/la6QqH6hWQrNZszw2hvQV0S6wkQnnH.png',
-                'http://www.zuimaowang.cn/attachment/images/1/2016/11/V6sSTZk122O5OkooEko42gg3WOk5zT.png',
-                'http://www.zuimaowang.cn/attachment/images/1/2016/11/s6P14epd4NP0z54NOtyO6770YYHny6.jpg'
-            ],
         }
     }
 
@@ -41,34 +32,39 @@ export default class WellChosen extends Component {
     rendergoods({ item }) {
         return (
             <View style={styles.goodContainer}>
-                <Image
-                    source={{ uri: DOMAIN + item.thumb }}
-                    style={styles.goodImage}
-                />
+                <TouchableOpacity>
+                    <Image
+                        source={{ uri: DOMAIN + item.thumb }}
+                        style={styles.goodImage}
+                    />
+             
                 <View style={styles.goodTextContainer}>
-                    <View style={{flex:1}}>
+                    <View style={{ flex: 1 }}>
                         <Text numberOfLines={1} style={{ color: '#000' }}>{item.title}</Text>
                     </View>
-                    <View  style={{flex:1, flexDirection: 'row'}}>
-                        <Text style={{ color: 'red',flex:1 }}>&yen;{item.marketprice}</Text>
-                        <Text style={{ textDecorationLine: 'line-through',flex:1 }}>{item.productprice == 0 ? null : '￥' + item.productprice}</Text>
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <Text style={{ color: 'red', flex: 1 }}>&yen;{item.marketprice}</Text>
+                        <Text style={{ textDecorationLine: 'line-through', flex: 1 }}>{item.productprice == 0 ? null : '￥' + item.productprice}</Text>
                     </View>
                 </View>
+                </TouchableOpacity>
             </View>
         )
     }
 
     renderLogoList(num) {
         let list2 = [];
+        let url = null;
         if (this.props.category.length - num > 6) {
             var times = 6;
         } else {
             var times = this.props.category.length - num;
         }
         for (let k = 0; k < times; k++) {
+            url = this.props.category[num].thumb ? { uri: DOMAIN + this.props.category[num].thumb } : require('../assets/images/nopic.jpg')
             list2.push(
                 <TouchableOpacity key={k} style={styles.logoListBtn}>
-                    <Image source={{ uri:DOMAIN+this.props.category[num].thumb }} style={{ width: 60, height: 60 }} />
+                    <Image source={url} style={{ width: 60, height: 60 }} />
                 </TouchableOpacity>
             );
             num++;
@@ -120,13 +116,13 @@ export default class WellChosen extends Component {
                         renderItem={this.rendergoods.bind(this)}
                         keyExtractor={(item, index) => index}
                     />
-                    <View style={{ height: 130, backgroundColor: '#fff',paddingTop:15,paddingBottom:5 }}>
+                    <View style={{ height: 130, backgroundColor: '#fff', paddingTop: 15, paddingBottom: 5 }}>
                         <Swiper
                             height={110}
-                            dot={<View style={{backgroundColor:'rgba(0,0,0,.2)', width: 6, height: 6,borderRadius: 3, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}}/>}
-                            activeDot={<View style={{backgroundColor: 'red', width: 6, height: 6, borderRadius: 3, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} />}
-                            activeDotStyle={{ height: 4}}
-                            paginationStyle={{position: 'absolute',bottom:15}}
+                            dot={<View style={{ backgroundColor: 'rgba(0,0,0,.2)', width: 6, height: 6, borderRadius: 3, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3, }} />}
+                            activeDot={<View style={{ backgroundColor: 'red', width: 6, height: 6, borderRadius: 3, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3, }} />}
+                            activeDotStyle={{ height: 4 }}
+                            paginationStyle={{ position: 'absolute', bottom: 15 }}
                             showsButtons={false}
                             autoplay={true}
                             showsVerticalScrollIndicator={true}

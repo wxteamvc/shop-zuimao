@@ -1,6 +1,6 @@
 //控制带跳转到顶部的scrollview组件
 //调用组件的时候 ****必须传给scrollView要显示的内容
-//             传入 y={} 能控制滚动条滚动多少距离显示跳转按钮  默认150
+//             传入 range={} 能控制滚动条滚动多少距离显示跳转按钮  默认150
 //             传入 color={}跳转按钮背景色     默认黑色
 //             传入 right={}和bottom={}调整跳转按钮位置  默认bottom：30 right：20
 //
@@ -21,7 +21,7 @@ export default class ScrollViewJumpTop extends Component {
         this.state = {
             isShow: false, //是否显示跳转到顶部按钮
         }
-        this.y = this.props.y ? this.props.y : 150; 
+        this.range = this.props.range ? this.props.range : 150; 
         this.right = this.props.right ? this.props.right : 20; 
         this.bottom = this.props.bottom ? this.props.bottom : 30;
         this.backgroundColor = this.props.color ? this.props.color : '#000';
@@ -30,7 +30,7 @@ export default class ScrollViewJumpTop extends Component {
 
     //滚动条监听事件
     showJumpTop(e) {
-        if (e.nativeEvent.contentOffset.y > this.y) {
+        if (e.nativeEvent.contentOffset.y > this.range) {
             this.state.isShow ? '' : this.setState({ isShow: true, })
         } else {
             this.state.isShow ? this.setState({ isShow: false, }) : ''
