@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import FlatListJumoTop from '../component/flatListJumoTop';
 import Loading from '../component/loading';
 
-class Goods extends Component {
+class Goods extends React.PureComponent {
 
     constructor(...props) {
         super(...props)
@@ -163,9 +163,9 @@ class Goods extends Component {
     renderGoodsList() {
         if(this.props.goodsData.status=='success'){
             let goodsList = this.props.goodsData.list;
-            // console.log('====================================');
-            // console.log(goodsList.length);
-            // console.log('====================================');
+            console.log('====================================');
+            console.log(goodsList.length);
+            console.log('====================================');
             return (
                 <FlatListJumoTop
                     horizontal={false}
@@ -186,7 +186,7 @@ class Goods extends Component {
                         )):null;  
                     }}
                     onEndReachedThreshold={goodsList.length>6?0.2:1}
-                    
+                    ListFooterComponent={()=> goodsList.length<this.props.goodsData.total?<ActivityIndicator size={40}></ActivityIndicator>:<Text style={{textAlign:'center'}}>已经到底了~</Text>}
                 />
             )
         }
@@ -205,6 +205,7 @@ class Goods extends Component {
                     <View>
                         <TouchableOpacity>
                             <Text numberOfLines={1}>{item.title}</Text>
+                            <Text numberOfLines={1}>{item.sales}人已购买</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.goodsTitle}>
