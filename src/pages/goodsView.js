@@ -8,10 +8,12 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput,
 import { goods } from '../actions/goodsAction';
 import { category } from '../actions/categoryAction';
 import { connect } from 'react-redux';
-import { ScreenWidth, ScreenHeight } from '../common/global';
+import { ScreenWidth, ScreenHeight,DOMAIN } from '../common/global';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import IconT from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import FlatListJumoTop from '../component/flatListJumoTop';
 import Loading from '../component/loading';
+import YouLike from '../component/youlike';
 
 class Goods extends React.PureComponent {
 
@@ -162,10 +164,7 @@ class Goods extends React.PureComponent {
     //商品列表
     renderGoodsList() {
         if(this.props.goodsData.status=='success'){
-            let goodsList = this.props.goodsData.list;
-            console.log('====================================');
-            console.log(goodsList.length);
-            console.log('====================================');
+            let goodsList = this.props.goodsData.list.slice(0);
             return (
                 <FlatListJumoTop
                     horizontal={false}
@@ -228,32 +227,26 @@ class Goods extends React.PureComponent {
     //小图显示
     renderSmallView(item) {
         return (
-            <View style={styles.smallView}>
-                <View style={styles.smallViewA}>
-                    <TouchableOpacity>
-                        <Image source={{ uri: item.thumb }} style={styles.smallImg} />
-                    </TouchableOpacity>
+            <TouchableOpacity style={styles.item_container} onPress={()=>{alert('我是商品')}}>
+                <View style={styles.item_left}>
+                    <Image source={{ uri: item.thumb }} style={styles.item_img} />
                 </View>
-                <View style={styles.smallViewB}>
-                    <View style={{ padding: 5 }}>
-                        <TouchableOpacity>
-                            <Text numberOfLines={2} style={{ padding: 5 }}>{item.title}</Text>
-                        </TouchableOpacity>
+                <View style={styles.item_right}>
+                    <View >
+                        <Text numberOfLines={1} style={styles.item_title}>
+                            {item.title}
+                        </Text>
+                        <Text style={styles.item_sale}>{item.sales}人已购买</Text>
                     </View>
-                    <View style={styles.smallViewBA}>
-                        <View style={{ flex: 4 }}>
-                            <Text style={{ color: 'red' }}>￥{item.marketprice}</Text>
-                        </View>
-                        <View style={{ flex: 1 }}>
-                            <View style={styles.addCat}>
-                                <TouchableOpacity>
-                                    <Icon name="shopping-cart" size={15} color={'#fff'} />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
+                    <View style={styles.item_price_container}>
+                        <Text style={styles.item_price}>&yen; {item.marketprice}</Text>
+                        <Text style={styles.item_oldprice}> {item.productprice == 0 ? null : '￥' + item.productprice}</Text>
                     </View>
                 </View>
-            </View>
+                <TouchableOpacity style={styles.buy_car} onPress={()=>{alert('我是购物车')}}>
+                    <IconT name={'cart-outline'} color={'red'} size={20} />
+                </TouchableOpacity>
+            </TouchableOpacity>
         )
     }
 
@@ -575,29 +568,36 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 2
     },
-    smallView: {
-        borderBottomWidth: 1,
-        borderColor: '#ccc',
-        width: ScreenWidth,
-        flexDirection: 'row',
-        padding: 5
+    item_container:{
+        height: 120, borderBottomWidth: 0.5, borderColor: '#ccc', flexDirection: 'row', paddingTop: 20, paddingBottom: 20, paddingRight: 20 ,width: ScreenWidth,backgroundColor:'white'
     },
-    smallViewA: {
-        flex: 1,
-        padding: 10
+    item_left:{
+        flex: 0.25, justifyContent: 'center', alignItems: 'center',
     },
-    smallImg: {
-        width: ScreenWidth / 6,
-        height: ScreenWidth / 6
+    item_right:{
+        flex: 0.75, paddingLeft: 15, justifyContent: 'space-between' 
     },
-    smallViewB: {
-        flexDirection: 'column',
-        flex: 4
+    item_img:{
+        width: 80, height: 80 
     },
-    smallViewBA: {
-        flexDirection: 'row',
-        padding: 5
-    }
+    item_title:{
+        color: '#000', fontSize: 16 
+    },
+    item_sale:{
+        fontSize: 12, color: '#ccc', marginTop: 5
+    },
+    item_price_container:{
+        flexDirection: 'row', alignItems: 'center',
+    },
+    item_price:{
+        color: 'red', fontSize: 18 
+    },
+    item_oldprice:{
+        textDecorationLine: 'line-through', marginLeft: 10, color: '#ccc' 
+    },
+    buy_car:{
+        position: 'absolute', bottom: 25, right: 20, height: 30, width: 30, borderRadius: 15, justifyContent: 'center', alignItems: 'center', borderColor: '#ccc', borderWidth: 0.7
+    },
 });
 
 function mapStateToProps(state) {
