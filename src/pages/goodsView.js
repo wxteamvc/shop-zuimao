@@ -4,12 +4,14 @@
 "use strict";
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput,ActivityIndicator } from 'react-native';
 import { goods } from '../actions/goodsAction';
 import { category } from '../actions/categoryAction';
 import { connect } from 'react-redux';
 import { ScreenWidth, ScreenHeight } from '../common/global';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import FlatListJumoTop from '../component/flatListJumoTop';
+import Loading from '../component/loading';
 
 class Goods extends Component {
 
@@ -49,8 +51,9 @@ class Goods extends Component {
     }
 
     render() {
+        
         return (
-            <View>
+            <View style={{ flex: 1 }}>
                 {this.renderSearch()}
                 {this.renderOrderBy()}
                 {this.renderGoodsList()}
@@ -87,7 +90,11 @@ class Goods extends Component {
                     </View>
                 </View>
                 <View style={styles.changeView}>
-                    <TouchableOpacity onPress={() => { this.setState({ showType: !this.state.showType }) }}>
+                    <TouchableOpacity onPress={() => {
+                        this.setState({
+                            showType: !this.state.showType
+                        })
+                    }}>
                         <Icon name={this.state.showType == true ? 'th-list' : 'th-large'} size={30} color={'white'} />
                     </TouchableOpacity>
                 </View>
@@ -98,40 +105,36 @@ class Goods extends Component {
     // 排序视图 
     renderOrderBy() {
         return (
-            <View style={{ flexDirection: 'row', backgroundColor: '#fff', height: 45, alignItems: 'center', borderBottomWidth: 1, borderTopWidth: 1, borderColor: '#ccc' }}>
-                <View style={{ flex: 1, alignItems: 'center', borderRightWidth: 1, borderColor: '#ccc' }}>
-                    <TouchableOpacity onPress={
-                        () => {
-                            this.setState({ orderBy: 'default' });
-                            this.props.dispatch(goods(Object.assign(
+            <View style={styles.orderView}>
+                <View style={styles.orderViewChildern}>
+                    <TouchableOpacity onPress={() => {
+                        this.setState({ orderBy: 'default' });
+                        this.props.dispatch(goods(Object.assign(
+                            this.state.search,
+                            { order: '', by: '' }
+                        )));
+                    }}>
+                        <Text style={this.state.orderBy == 'default' ? styles.orderTextChecked : null}>综合</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.orderViewChildern}>
+                    <TouchableOpacity onPress={() => {
+                        this.setState({ orderBy: 'sale' });
+                        this.props.dispatch(goods(
+                            Object.assign(
                                 this.state.search,
-                                { order: '', by: '' }
-                            )));
-                        }
-                    }>
-                        <Text style={{ color: this.state.orderBy == 'default' ? 'red' : null, fontSize: 16 }}>综合</Text>
+                                { order: 'sales', by: 'desc' }
+                            )
+                        ));
+                    }}>
+                        <Text style={this.state.orderBy == 'sale' ? styles.orderTextChecked : null}>销量</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={{ flex: 1, alignItems: 'center', borderRightWidth: 1, borderColor: '#ccc' }}>
-                    <TouchableOpacity onPress={
-                        () => {
-                            this.setState({ orderBy: 'sale' });
-                            this.props.dispatch(goods(
-                                Object.assign(
-                                    this.state.search,
-                                    { order: 'sales', by: 'desc' }
-                                )
-                            ));
-                        }
-                    }>
-                        <Text style={{ color: this.state.orderBy == 'sale' ? 'red' : null, fontSize: 16 }}>销量</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={{ flex: 1, alignItems: 'center' }}>
+                <View style={styles.orderPrice}>
                     <TouchableOpacity onPress={() => this._priceOrder()}>
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ justifyContent: 'center' }}>
-                                <Text style={{ color: this.state.orderBy == 'price' ? 'red' : null, fontSize: 16 }}>价格</Text>
+                                <Text style={this.state.orderBy == 'price' ? styles.orderTextChecked : null}>价格</Text>
                             </View>
                             <View style={{ justifyContent: 'center' }}>
                                 {this.renderIconUpDown()}
@@ -139,153 +142,161 @@ class Goods extends Component {
                         </View>
                     </TouchableOpacity>
                 </View>
-                <View style={{ flex: 1, alignItems: 'center', borderLeftWidth: 1, borderColor: '#ccc' }}>
-                    <TouchableOpacity onPress={
-                        () => {
-                            this.setState({
-                                orderBy: 'filter', filterShow: true, search: {
-                                    ...this.state.search,
-                                    keywords: ""
-                                }
-                            });
-                            this.props.dispatch(category())
-                        }}>
-                        <Text style={{ color: this.state.orderBy == 'filter' ? 'red' : null, fontSize: 16 }}>筛选</Text>
+                <View style={styles.orderViewChildern}>
+                    <TouchableOpacity onPress={() => {
+                        this.setState({
+                            orderBy: 'filter', filterShow: true, search: {
+                                ...this.state.search,
+                                keywords: ""
+                            }
+                        });
+                        this.props.dispatch(category())
+                    }}>
+                        <Text style={this.state.orderBy == 'filter' ? styles.orderTextChecked : null}>筛选</Text>
                     </TouchableOpacity>
                 </View>
             </View>
         )
     }
 
-    // 商品列表视图
+    //商品列表
     renderGoodsList() {
-        let goodsList = this.props.goodsData;
-        if (goodsList.status == 'success') {
-            var goodsListObj = goodsList.data.result.list;
-            var goodsListArr = [];
-            //默认显示大图
-            if (this.state.showType == true) {
-                for (let i = 0; i < goodsListObj.length; i++) {
-                    goodsListArr.push(
-                        <View key={i} style={{ width: ScreenWidth / 2 }}>
-                            <View style={{ marginTop: 5, marginLeft: 5, marginBottom: 5 }}>
-                                <TouchableOpacity>
-                                    <Image source={{ uri: goodsListObj[i].thumb }} style={{ width: ScreenWidth / 2 - 10, height: ScreenWidth / 2 - 5 }} />
-                                </TouchableOpacity>
-                            </View>
-                            <View style={{ padding: 5 }}>
-                                <View>
-                                    <TouchableOpacity>
-                                        <Text numberOfLines={1}>{goodsListObj[i].title}</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={{ flexDirection: 'row', paddingTop: 10 }}>
-                                    <View style={{ flex: 5 }}>
-                                        <Text style={{ color: 'red' }}>￥{goodsListObj[i].marketprice}</Text>
-                                    </View>
-                                    <View style={{ flex: 1 }}>
-                                        <View style={{ width: 24, height: 24, backgroundColor: 'red', alignItems: 'center', justifyContent: 'center', borderRadius: 10, padding: 2 }}>
-                                            <TouchableOpacity>
-                                                <Icon name="shopping-cart" size={15} color={'#fff'} />
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-                    )
-                }
-            } else {
-                for (let i = 0; i < goodsListObj.length; i++) {
-                    goodsListArr.push(
-                        <View key={i} style={{ borderBottomWidth: 1, borderColor: '#ccc', width: ScreenWidth, flexDirection: 'row', padding: 5 }}>
-                            <View style={{ flex: 1, padding: 10 }}>
-                                <TouchableOpacity>
-                                    <Image source={{ uri: goodsListObj[i].thumb }} style={{ width: ScreenWidth / 6, height: ScreenWidth / 6 }} />
-                                </TouchableOpacity>
-                            </View>
-                            <View style={{ flexDirection: 'column', flex: 4 }}>
-                                <View style={{ padding: 5 }}>
-                                    <TouchableOpacity>
-                                        <Text numberOfLines={2} style={{ padding: 5 }}>{goodsListObj[i].title}</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={{ flexDirection: 'row', padding: 5 }}>
-                                    <View style={{ flex: 4 }}>
-                                        <Text style={{ color: 'red' }}>￥{goodsListObj[i].marketprice}</Text>
-                                    </View>
-                                    <View style={{ flex: 1 }}>
-                                        <View style={{ width: 24, height: 24, backgroundColor: 'red', alignItems: 'center', justifyContent: 'center', borderRadius: 10, padding: 2 }}>
-                                            <TouchableOpacity>
-                                                <Icon name="shopping-cart" size={15} color={'#fff'} />
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-                    )
-                }
-            }
+        if(this.props.goodsData.status=='success'){
+            let goodsList = this.props.goodsData.list;
+            // console.log('====================================');
+            // console.log(goodsList.length);
+            // console.log('====================================');
+            return (
+                <FlatListJumoTop
+                    horizontal={false}
+                    numColumns={2}
+                    keyExtractor={(item, index) => index}
+                    data={goodsList}
+                    renderItem={({ item }) => this.state.showType ? this.renderDigView(item) : this.renderSmallView(item)}
+                    extraData={this.state.showType}
+                    columnWrapperStyle={{ flexWrap: 'wrap' }}
+                    refreshing={true}
+                    onEndReached={()=>{
+                        goodsList.length<this.props.goodsData.total?
+                        this.props.dispatch(goods(
+                        Object.assign(
+                                this.state.search,
+                                { page:++this.state.search.page }
+                            )
+                        )):null;  
+                    }}
+                    onEndReachedThreshold={goodsList.length>6?0.2:1}
+                    
+                />
+            )
         }
+    }
+
+    //大图显示
+    renderDigView(item) {
         return (
-            <ScrollView onMomentumScrollEnd = {(e)=>this._contentViewScroll(e)}>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 150 }}>{goodsListArr}</View>
-            </ScrollView>
+            <View style={styles.bigView}>
+                <View style={styles.bigViewA}>
+                    <TouchableOpacity>
+                        <Image source={{ uri: item.thumb }} style={styles.bigImg} />
+                    </TouchableOpacity>
+                </View>
+                <View style={{ padding: 5 }}>
+                    <View>
+                        <TouchableOpacity>
+                            <Text numberOfLines={1}>{item.title}</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.goodsTitle}>
+                        <View style={{ flex: 5 }}>
+                            <Text style={{ color: 'red' }}>￥{item.marketprice}</Text>
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <View style={styles.addCat}>
+                                <TouchableOpacity>
+                                    <Icon name="shopping-cart" size={15} color={'#fff'} />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </View>
         )
     }
 
+    //小图显示
+    renderSmallView(item) {
+        return (
+            <View style={styles.smallView}>
+                <View style={styles.smallViewA}>
+                    <TouchableOpacity>
+                        <Image source={{ uri: item.thumb }} style={styles.smallImg} />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.smallViewB}>
+                    <View style={{ padding: 5 }}>
+                        <TouchableOpacity>
+                            <Text numberOfLines={2} style={{ padding: 5 }}>{item.title}</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.smallViewBA}>
+                        <View style={{ flex: 4 }}>
+                            <Text style={{ color: 'red' }}>￥{item.marketprice}</Text>
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <View style={styles.addCat}>
+                                <TouchableOpacity>
+                                    <Icon name="shopping-cart" size={15} color={'#fff'} />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    //排序筛选
     renderFilter() {
         if (this.state.filterShow == true && this.state.orderBy == 'filter') {
+            let btnObj = {
+                btn: [
+                    { title: '推荐商品', state: 'isrecommand' },
+                    { title: '新品上市', state: 'isnew' },
+                    { title: '热卖商品', state: 'ishot' },
+                    { title: '促销商品', state: 'isdiscount' },
+                    { title: '卖家包邮', state: 'issendfree' },
+                    { title: '限时抢购', state: 'istime' }
+                ]
+            };
+            let btnArr = [];
+            for (let i = 0; i < btnObj.btn.length; i++) {
+                btnArr.push(
+                    <View key={i} style={styles.filterchildren}>
+                        <TouchableOpacity onPress={() => {
+                            this._changeSearch(btnObj.btn[i].state);
+                        }}><Text style={this.state.search[btnObj.btn[i].state] == 1 ? styles.BtnChecked : styles.BtnUnchecked}>{btnObj.btn[i].title}</Text></TouchableOpacity>
+                    </View>
+                )
+            }
             return (
                 <View style={styles.filterView}>
                     <View style={styles.filterBox}>
-                        <View style={styles.filterchildren}>
-                            <TouchableOpacity onPress={() => {
-                                this._changeSearch('isrecommand');
-                            }}><Text style={this.state.search.isrecommand == 1 ? styles.BtnChecked : styles.BtnUnchecked}>推荐商品</Text></TouchableOpacity>
-                        </View>
-                        <View style={styles.filterchildren}>
-                            <TouchableOpacity onPress={() => {
-                                this._changeSearch('isnew');
-                            }}><Text style={this.state.search.isnew == 1 ? styles.BtnChecked : styles.BtnUnchecked}>新品上市</Text></TouchableOpacity>
-                        </View>
-                        <View style={styles.filterchildren}>
-                            <TouchableOpacity onPress={() => {
-                                this._changeSearch('ishot');
-                            }}><Text style={this.state.search.ishot == 1 ? styles.BtnChecked : styles.BtnUnchecked}>热卖商品</Text></TouchableOpacity>
-                        </View>
-                        <View style={styles.filterchildren}>
-                            <TouchableOpacity onPress={() => {
-                                this._changeSearch('isdiscount');
-                            }}><Text style={this.state.search.isdiscount == 1 ? styles.BtnChecked : styles.BtnUnchecked}>促销商品</Text></TouchableOpacity>
-                        </View>
-                        <View style={styles.filterchildren}>
-                            <TouchableOpacity onPress={() => {
-                                this._changeSearch('issendfree');
-                            }}><Text style={this.state.search.issendfree == 1 ? styles.BtnChecked : styles.BtnUnchecked}>卖家包邮</Text></TouchableOpacity>
-                        </View>
-                        <View style={styles.filterchildren}>
-                            <TouchableOpacity onPress={() => {
-                                this._changeSearch('istime');
-                            }}><Text style={this.state.search.istime == 1 ? styles.BtnChecked : styles.BtnUnchecked}>限时抢购</Text></TouchableOpacity>
-                        </View>
+                        {btnArr}
                     </View>
                     <View>
                         <View style={{ padding: 5 }}>
                             <Text style={styles.filterCateText}>选择分类</Text>
                         </View>
+                        {this.props.categoryData.status == 'success'?
                         <View style={styles.filterCateView}>
                             <View style={styles.cateFirst}>
-                                {/* 一级分类列表 */}
                                 {this.renderFirstCatList()}
-
                             </View>
                             <View style={{ flex: 1 }}>
-                                {/* 二级分类列表 */}
                                 {this.renderSecondCatList()}
                             </View>
-                        </View>
+                        </View>:<Loading/>}
                     </View>
                     <View style={styles.filterBottom}>
                         <View style={{ flex: 1 }}>
@@ -309,28 +320,26 @@ class Goods extends Component {
 
     //一级分类列表
     renderFirstCatList() {
-        if (this.props.categoryData.status == 'success') {
-            var firstCatList = this.props.categoryData.data.result.category.parent[0];
-            var firstCatListArr = [];
-            for (let i = 0; i < firstCatList.length; i++) {
-                firstCatListArr.push(
-                    <View key={i} style={{ margin: 5, padding: 5, backgroundColor: this.state.leftSelectedBar == i ? '#ccc' : null }}>
-                        <TouchableOpacity onPress={() => {
-                            this.setState({
-                                leftSelectedBar: i,
-                                leftSelectedBarId: firstCatList[i].id,
-                                rightSelectedBarId: null,
-                                search: {
-                                    ...this.state.search,
-                                    cate: firstCatList[i].id,
-                                }
-                            })
-                        }}>
-                            <Text style={{ textAlign: 'center' }}>{firstCatList[i].name}</Text>
-                        </TouchableOpacity>
-                    </View>
-                )
-            }
+        var firstCatList = this.props.categoryData.data.result.category.parent[0];
+        var firstCatListArr = [];
+        for (let i = 0; i < firstCatList.length; i++) {
+            firstCatListArr.push(
+                <View key={i} style={{ margin: 5, padding: 5, backgroundColor: this.state.leftSelectedBar == i ? '#ccc' : null }}>
+                    <TouchableOpacity onPress={() => {
+                        this.setState({
+                            leftSelectedBar: i,
+                            leftSelectedBarId: firstCatList[i].id,
+                            rightSelectedBarId: null,
+                            search: {
+                                ...this.state.search,
+                                cate: firstCatList[i].id,
+                            }
+                        })
+                    }}>
+                        <Text style={{ textAlign: 'center' }}>{firstCatList[i].name}</Text>
+                    </TouchableOpacity>
+                </View>
+            )
         }
         return (
             <ScrollView style={{ height: ScreenHeight / 4 }}>
@@ -428,22 +437,6 @@ class Goods extends Component {
             }
         })
     }
-
-    _contentViewScroll(e){
-        var offsetY = e.nativeEvent.contentOffset.y; //滑动距离
-        var contentSizeHeight = e.nativeEvent.contentSize.height; //scrollView contentSize高度
-        var oriageScrollHeight = e.nativeEvent.layoutMeasurement.height; //scrollView高度
-        if (offsetY + oriageScrollHeight >= contentSizeHeight){
-            //滚动到底部
-            // this.props.dispatch(goods(
-            //     Object.assign(
-            //         this.state.search,
-            //         { page: this.state.search.page+1}
-            //     )
-            // ));
-        }
-    }
-
 }
 
 const styles = StyleSheet.create({
@@ -513,6 +506,7 @@ const styles = StyleSheet.create({
     filterCateView: {
         padding: 5,
         flexDirection: 'row',
+        height:150,
     },
     cateFirst: {
         flex: 1,
@@ -532,6 +526,76 @@ const styles = StyleSheet.create({
     filterBtnOk: {
         textAlign: 'right',
         color: 'red'
+    },
+    orderView: {
+        flexDirection: 'row',
+        backgroundColor: '#fff',
+        height: 45,
+        alignItems: 'center',
+        borderBottomWidth: 1,
+        borderTopWidth: 1,
+        borderColor: '#ccc'
+    },
+    orderViewChildern: {
+        flex: 1,
+        alignItems: 'center',
+        borderRightWidth: 1,
+        borderColor: '#ccc'
+    },
+    orderPrice: {
+        flex: 1,
+        alignItems: 'center'
+    },
+    orderTextChecked: {
+        color: 'red',
+    },
+    bigView: {
+        width: ScreenWidth / 2,
+    },
+    bigViewA: {
+        marginTop: 5,
+        marginLeft: 5,
+        marginBottom: 5
+    },
+    bigImg: {
+        width: ScreenWidth / 2 - 10,
+        height: ScreenWidth / 2 - 5
+    },
+    goodsTitle: {
+        flexDirection: 'row',
+        paddingTop: 10
+    },
+    addCat: {
+        width: 24,
+        height: 24,
+        backgroundColor: 'red',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 10,
+        padding: 2
+    },
+    smallView: {
+        borderBottomWidth: 1,
+        borderColor: '#ccc',
+        width: ScreenWidth,
+        flexDirection: 'row',
+        padding: 5
+    },
+    smallViewA: {
+        flex: 1,
+        padding: 10
+    },
+    smallImg: {
+        width: ScreenWidth / 6,
+        height: ScreenWidth / 6
+    },
+    smallViewB: {
+        flexDirection: 'column',
+        flex: 4
+    },
+    smallViewBA: {
+        flexDirection: 'row',
+        padding: 5
     }
 });
 
