@@ -37,23 +37,28 @@ export default class Findgoods extends Component {
     }
 
     render() {
-        return (
-            <View style={styles.container}>
-                <Image
-                    style={styles.bg_img}
-                    source={require('../assets/images/fgbg.jpg')}
-                    resizeMode={'stretch'}
-                >
-                    <View style={styles.head}>
-                        <Text style={styles.head_text}>发现好货</Text>
-                        <Text>你身边的好购物指南</Text>
-                    </View>
-                    <View style={styles.mf_container}>
-                        {this.renderImageList(this.props.cubes.slice(0))}
-                    </View>
-                </Image>
-            </View>
-        )
+        if(this.props.cubes){
+            return (
+                <View style={styles.container}>
+                    <Image
+                        style={styles.bg_img}
+                        source={require('../assets/images/fgbg.jpg')}
+                        resizeMode={'stretch'}
+                    >
+                        <View style={styles.head}>
+                            <Text style={styles.head_text}>发现好货</Text>
+                            <Text>你身边的好购物指南</Text>
+                        </View>
+                        <View style={styles.mf_container}>
+                            {this.renderImageList(this.props.cubes.slice(0))}
+                        </View>
+                    </Image>
+                </View>
+            )
+        }else{
+            return(false)
+        }
+        
     }
 }
 

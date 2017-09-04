@@ -27,20 +27,21 @@ export default class RightBtn extends Component {
             m: '00',
             s: '00',
         }
-       this.int= setInterval(
+        this.int = setInterval(
             () => {
                 this.time()
             }
             , 1000)
+
     }
 
     componentDidMount() {
         this.time();
     }
-    
+
     componentWillUnmount() {
         clearInterval(this.int)
-     }
+    }
 
     time() {
         let [d, h, m, s] = [null, null, null, null]
@@ -71,12 +72,14 @@ export default class RightBtn extends Component {
 
     rendergoods({ item }) {
         return (
-            <View style={{ marginLeft: 5,marginRight:5 }}>
-                <Image
-                    source={{ uri: DOMAIN + item.thumb }}
-                    style={styles.goodImage}
-                />
-                <View style={{paddingLeft:5,paddingRight:5,paddingBottom:10}}>
+            <View style={{ marginLeft: 5, marginRight: 5 }}>
+                <TouchableOpacity onPress={()=>{this.props.navigate.navigate('GoodsInfo')}}>
+                    <Image
+                        source={{ uri: DOMAIN + item.thumb }}
+                        style={styles.goodImage}
+                    />
+                </TouchableOpacity>
+                <View style={{ paddingLeft: 5, paddingRight: 5, paddingBottom: 10 }}>
                     <Text style={{ color: 'red' }}>&yen; {item.marketprice}</Text>
                     <Text style={styles.oldPrice}>&yen;{item.productprice}</Text>
                 </View>
@@ -90,41 +93,47 @@ export default class RightBtn extends Component {
 
 
     render() {
-
-        return (
-            <View style={{ backgroundColor: '#fff', paddingBottom: 5 }}>
-                <View style={styles.rush_head}>
-                    <View style={{ flex: 0.4 }}>
-                        <Image
-                            resizeMode={'stretch'}
-                            source={require('../assets/images/rush/jijiangdaoshi.png')}
-                            style={{ width: 80, height: 35 }}
-                        />
+        if (this.props.istime) {
+            return (
+                <View style={{ backgroundColor: '#fff', paddingBottom: 5 }}>
+                    <View style={styles.rush_head}>
+                        <View style={{ flex: 0.4 }}>
+                            <Image
+                                resizeMode={'stretch'}
+                                source={require('../assets/images/rush/jijiangdaoshi.png')}
+                                style={{ width: 80, height: 35 }}
+                            />
+                        </View>
+                        <View style={styles.rush_head_right}>
+                            <Image
+                                resizeMode={'stretch'}
+                                source={require('../assets/images/rush/shengyushijian.png')}
+                                style={{ width: 60, height: 18, marginRight: 10 }}
+                            />
+                            <Text style={styles.runTime}>{this.state.d}</Text>
+                            <Text style={[styles.between_runTime]}>天</Text>
+                            <Text style={styles.runTime}>{this.state.h}</Text>
+                            <Text style={styles.between_runTime}>:</Text>
+                            <Text style={styles.runTime}>{this.state.m}</Text>
+                            <Text style={styles.between_runTime}>:</Text>
+                            <Text style={styles.runTime}>{this.state.s}</Text>
+                        </View>
                     </View>
-                    <View style={styles.rush_head_right}>
-                        <Image
-                            resizeMode={'stretch'}
-                            source={require('../assets/images/rush/shengyushijian.png')}
-                            style={{ width: 60, height: 18, marginRight: 10 }}
-                        />
-                        <Text style={styles.runTime}>{this.state.d}</Text>
-                        <Text style={[styles.between_runTime]}>天</Text>
-                        <Text style={styles.runTime}>{this.state.h}</Text>
-                        <Text style={styles.between_runTime}>:</Text>
-                        <Text style={styles.runTime}>{this.state.m}</Text>
-                        <Text style={styles.between_runTime}>:</Text>
-                        <Text style={styles.runTime}>{this.state.s}</Text>
-                    </View>
+                    <FlatList
+                        showsHorizontalScrollIndicator={false}
+                        horizontal={true}
+                        data={this.props.istime}
+                        renderItem={this.rendergoods.bind(this)}
+                        keyExtractor={(item, index) => index}
+                    />
                 </View>
-                <FlatList
-                    showsHorizontalScrollIndicator={false}
-                    horizontal={true}
-                    data={this.props.istime}
-                    renderItem={this.rendergoods.bind(this)}
-                    keyExtractor={(item, index) => index}
-                />
-            </View>
-        )
+            )
+        } else {
+            return (
+                false
+            )
+        }
+
     }
 }
 

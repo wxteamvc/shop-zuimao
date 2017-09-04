@@ -5,6 +5,9 @@
 "use strict";
 
 import React, { Component } from 'react';
+import {
+    Text,
+  } from 'react-native';
 import { TabNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import IconTwo from 'react-native-vector-icons/dist/SimpleLineIcons';
@@ -19,7 +22,7 @@ const HomeTab = TabNavigator({
         navigationOptions:({navigation}) => ({
             tabBarLabel:'首页',  
             tabBarIcon:({focused,tintColor}) => ( 
-                <Icon name="home" size={25} color={tintColor}/>
+                <Text style={{fontFamily:'iconfont',color:tintColor,fontSize:30}}>&#xe613;</Text>
             )    
         }),
     },
@@ -28,7 +31,7 @@ const HomeTab = TabNavigator({
         navigationOptions:({navigation}) => ({
             tabBarLabel:'分类',  
             tabBarIcon:({focused,tintColor}) => ( 
-                <IconTwo name="grid" size={25} color={tintColor}/>
+                <Text style={{fontFamily:'iconfont',color:tintColor,fontSize:25}}>&#xe682;</Text>
             )    
         }),
     },
@@ -37,16 +40,16 @@ const HomeTab = TabNavigator({
         navigationOptions:({navigation}) => ({
             tabBarLabel:'购物车',  
             tabBarIcon:({focused,tintColor}) => ( 
-                <Icon name="shopping-cart" size={25} color={tintColor}/>
+                <Text style={{fontFamily:'iconfont',color:tintColor,fontSize:30}}>&#xe62c;</Text>    
             )    
         }),
     },
     Member: {
         screen: Member,
         navigationOptions:({navigation}) => ({
-            tabBarLabel:'我的醉猫',  
+            tabBarLabel:'我的',  
             tabBarIcon:({focused,tintColor}) => ( 
-                <Icon name="user-o" size={25} color={tintColor}/>
+                <Text style={{fontFamily:'iconfont',color:tintColor,fontSize:25}}>&#xe610;</Text>    
             )    
         }),
     },
@@ -57,19 +60,20 @@ const HomeTab = TabNavigator({
     backBehavior: 'none', // 按 back 键是否跳转到第一个 Tab， none 为不跳转
     tabBarOptions: {
         activeTintColor: 'red', // 文字和图片选中颜色
-        inactiveTintColor: '#999', // 文字和图片默认颜色
+        inactiveTintColor: '#000', // 文字和图片默认颜色
         showIcon: true, // android 默认不显示 icon, 需要设置为 true 才会显示
         showLabel:true,
         indicatorStyle: {height: 0}, // android 中TabBar下面会显示一条线，高度设为 0 后就不显示线了， 不知道还有没有其它方法隐藏？？？
         style: {
             backgroundColor: '#fff', // TabBar 背景色
-            height:62,
+            height:65,
         },
         labelStyle: {
-            //...
         },
         iconStyle :{
-            //...
+           // backgroundColor:'#000',
+            width:30,
+            height:30,
         },
         tabStyle :{
             //...

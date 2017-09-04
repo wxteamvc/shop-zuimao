@@ -4,7 +4,7 @@
 "use strict";
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput,ActivityIndicator,FlatList } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput, ActivityIndicator, FlatList,StatusBar } from 'react-native';
 import { goods } from '../actions/goodsAction';
 import { category } from '../actions/categoryAction';
 import { connect } from 'react-redux';
@@ -14,70 +14,70 @@ import FlatListJumoTop from '../component/flatListJumoTop';
 import Loading from '../component/loading';
 
 class MyListItem extends React.PureComponent {
-  render() {
-    let { item,renderType } = this.props;
-    if (renderType === "big"){
-    return (
-      <View style={styles.bigView}>
-        <View style={styles.bigViewA}>
-            <TouchableOpacity>
-                <Image source={{ uri: item.thumb }} style={styles.bigImg} />
-            </TouchableOpacity>
-        </View>
-        <View style={{ padding: 5 }}>
-            <View>
-                <TouchableOpacity>
-                    <Text numberOfLines={1}>{item.title}</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.goodsTitle}>
-                <View style={{ flex: 5 }}>
-                    <Text style={{ color: 'red' }}>￥{item.marketprice}</Text>
-                </View>
-                <View style={{ flex: 1 }}>
-                    <View style={styles.addCat}>
-                        <TouchableOpacity>
-                            <Icon name="shopping-cart" size={15} color={'#fff'} />
+    render() {
+        let { item, renderType } = this.props;
+        if (renderType === "big") {
+            return (
+                <View style={styles.bigView}>
+                    <View style={styles.bigViewA}>
+                        <TouchableOpacity onPress={()=>this.props.navigate.navigate('GoodsInfo')}>
+                            <Image source={{ uri: item.thumb }} style={styles.bigImg} />
                         </TouchableOpacity>
                     </View>
-                </View>
-            </View>
-        </View>
-      </View>
-    )
-    }else if (renderType == "small"){
-        return (
-            <View style={styles.smallView}>
-                <View style={styles.smallViewA}>
-                    <TouchableOpacity>
-                        <Image source={{ uri: item.thumb }} style={styles.smallImg} />
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.smallViewB}>
                     <View style={{ padding: 5 }}>
-                        <TouchableOpacity>
-                            <Text numberOfLines={2} style={{ padding: 5 }}>{item.title}</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.smallViewBA}>
-                        <View style={{ flex: 4 }}>
-                            <Text style={{ color: 'red' }}>￥{item.marketprice}</Text>
+                        <View>
+                            <TouchableOpacity>
+                                <Text numberOfLines={1}>{item.title}</Text>
+                            </TouchableOpacity>
                         </View>
-                        <View style={{ flex: 1 }}>
-                            <View style={styles.addCat}>
-                                <TouchableOpacity>
-                                    <Icon name="shopping-cart" size={15} color={'#fff'} />
-                                </TouchableOpacity>
+                        <View style={styles.goodsTitle}>
+                            <View style={{ flex: 5 }}>
+                                <Text style={{ color: 'red' }}>￥{item.marketprice}</Text>
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <View style={styles.addCat}>
+                                    <TouchableOpacity>
+                                        <Icon name="shopping-cart" size={15} color={'#fff'} />
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
                     </View>
                 </View>
-            </View>
-        )
-    }else{
-        return <View></View>
+            )
+        } else if (renderType == "small") {
+            return (
+                <View style={styles.smallView}>
+                    <View style={styles.smallViewA}>
+                        <TouchableOpacity>
+                            <Image source={{ uri: item.thumb }} style={styles.smallImg} />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.smallViewB}>
+                        <View style={{ padding: 5 }}>
+                            <TouchableOpacity>
+                                <Text numberOfLines={2} style={{ padding: 5 }}>{item.title}</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.smallViewBA}>
+                            <View style={{ flex: 4 }}>
+                                <Text style={{ color: 'red' }}>￥{item.marketprice}</Text>
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <View style={styles.addCat}>
+                                    <TouchableOpacity>
+                                        <Icon name="shopping-cart" size={15} color={'#fff'} />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            )
+        } else {
+            return <View></View>
+        }
     }
-  }
 }
 
 class Goods extends Component {
@@ -118,12 +118,12 @@ class Goods extends Component {
     }
 
     render() {
-        
+
         return (
             <View style={{ flex: 1 }}>
                 {this.renderSearch()}
                 {this.renderOrderBy()}
-                 {this.renderGoodsList()} 
+                {this.renderGoodsList()}
                 {this.renderFilter()}
             </View>
         );
@@ -178,7 +178,7 @@ class Goods extends Component {
                         this.setState({ orderBy: 'default' });
                         this.props.dispatch(goods(Object.assign(
                             this.state.search,
-                            { order: '', by: '',page:1 }
+                            { order: '', by: '', page: 1 }
                         )));
                     }}>
                         <Text style={this.state.orderBy == 'default' ? styles.orderTextChecked : null}>综合</Text>
@@ -190,7 +190,7 @@ class Goods extends Component {
                         this.props.dispatch(goods(
                             Object.assign(
                                 this.state.search,
-                                { order: 'sales', by: 'desc',page:1 }
+                                { order: 'sales', by: 'desc', page: 1 }
                             )
                         ));
                     }}>
@@ -233,7 +233,7 @@ class Goods extends Component {
     // }
     //商品列表
     renderGoodsList() {
-        if(this.props.goodsData.status=='success'){
+        if (this.props.goodsData.status == 'success') {
             let goodsList = this.props.goodsData.list;
             return (
                 <FlatListJumoTop
@@ -245,17 +245,17 @@ class Goods extends Component {
                     extraData={this.state.showType}
                     columnWrapperStyle={{ flexWrap: 'wrap' }}
                     refreshing={true}
-                    onEndReached={()=>{
-                        goodsList.length<this.props.goodsData.total?
-                        this.props.dispatch(goods(
-                        Object.assign(
-                                this.state.search,
-                                { page:++this.state.search.page }
-                            )
-                        )):null;  
+                    onEndReached={() => {
+                        goodsList.length < this.props.goodsData.total ?
+                            this.props.dispatch(goods(
+                                Object.assign(
+                                    this.state.search,
+                                    { page: ++this.state.search.page }
+                                )
+                            )) : null;
                     }}
-                    onEndReachedThreshold={goodsList.length>6?0.2:1}
-                    ListFooterComponent={()=> goodsList.length<this.props.goodsData.total?<ActivityIndicator size={40}></ActivityIndicator>:<Text style={{textAlign:'center'}}>已经到底了~</Text>
+                    onEndReachedThreshold={goodsList.length > 6 ? 0.2 : 1}
+                    ListFooterComponent={() => goodsList.length < this.props.goodsData.total ? <ActivityIndicator size={40}></ActivityIndicator> : <Text style={{ textAlign: 'center' }}>已经到底了~</Text>
                     }
 
                 />
@@ -264,16 +264,16 @@ class Goods extends Component {
     }
 
     //大图显示
-    renderDigView = ({item}) =>{
-        return (     
-            <MyListItem item={item} renderType={'big'}/>
+    renderDigView = ({ item }) => {
+        return (
+            <MyListItem item={item} renderType={'big'}  navigate={this.props.navigation}/>
         )
     }
 
     //小图显示
-    renderSmallView=({item}) => {
-        return (     
-            <MyListItem item={item} renderType={'small'}/>
+    renderSmallView = ({ item }) => {
+        return (
+            <MyListItem item={item} renderType={'small'} navigate={this.props.navigation}/>
         )
     }
 
@@ -309,15 +309,15 @@ class Goods extends Component {
                         <View style={{ padding: 5 }}>
                             <Text style={styles.filterCateText}>选择分类</Text>
                         </View>
-                        {this.props.categoryData.status == 'success'?
-                        <View style={styles.filterCateView}>
-                            <View style={styles.cateFirst}>
-                                {this.renderFirstCatList()}
-                            </View>
-                            <View style={{ flex: 1 }}>
-                                {this.renderSecondCatList()}
-                            </View>
-                        </View>:<Loading/>}
+                        {this.props.categoryData.status == 'success' ?
+                            <View style={styles.filterCateView}>
+                                <View style={styles.cateFirst}>
+                                    {this.renderFirstCatList()}
+                                </View>
+                                <View style={{ flex: 1 }}>
+                                    {this.renderSecondCatList()}
+                                </View>
+                            </View> : <Loading />}
                     </View>
                     <View style={styles.filterBottom}>
                         <View style={{ flex: 1 }}>
@@ -331,7 +331,7 @@ class Goods extends Component {
                                 this.props.dispatch(goods(
                                     Object.assign(
                                         this.state.search,
-                                        { page:1 }
+                                        { page: 1 }
                                     )
                                 ))
                             }}>
@@ -427,7 +427,7 @@ class Goods extends Component {
             this.props.dispatch(goods(
                 Object.assign(
                     this.state.search,
-                    { order: 'marketprice', by: 'desc',page:1 }
+                    { order: 'marketprice', by: 'desc', page: 1 }
                 )
             ));
         } else if (this.state.priceOrder == 'up') {
@@ -438,7 +438,7 @@ class Goods extends Component {
             this.props.dispatch(goods(
                 Object.assign(
                     this.state.search,
-                    { order: 'marketprice', by: 'asc',page:1 }
+                    { order: 'marketprice', by: 'asc', page: 1 }
                 )
             ));
         } else {
@@ -449,7 +449,7 @@ class Goods extends Component {
             this.props.dispatch(goods(
                 Object.assign(
                     this.state.search,
-                    { order: 'marketprice', by: 'desc',page:1 }
+                    { order: 'marketprice', by: 'desc', page: 1 }
                 )
             ));
         }
@@ -532,7 +532,7 @@ const styles = StyleSheet.create({
     filterCateView: {
         padding: 5,
         flexDirection: 'row',
-        height:150,
+        height: 150,
     },
     cateFirst: {
         flex: 1,

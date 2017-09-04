@@ -15,7 +15,7 @@ import RightBtn from './component/rightBtn';
 import Login from './component/login';
 import Register from './component/register';
 import Goods from './pages/goodsView';
-
+import GoodsInfo from './pages/goodsInfoView';
 
 
 
@@ -31,7 +31,7 @@ const App = StackNavigator({
         navigationOptions: ({ navigation }) => ({
             headerTitle: '积分签到',
             headerTitleStyle: { alignSelf: 'center' },
-            headerRight: <RightBtn name={'home'} size={30} navigation={navigation} path={'HomeTab'} />
+            
 
         }),
     },
@@ -40,8 +40,7 @@ const App = StackNavigator({
         navigationOptions: ({ navigation }) => ({
             headerTitle: '详细记录',
             headerTitleStyle: { alignSelf: 'center' },
-            headerRight: <RightBtn name={'home'} size={30} navigation={navigation}
-                path={'HomeTab'} />
+           
 
         }),
     },
@@ -50,8 +49,7 @@ const App = StackNavigator({
         navigationOptions: ({ navigation }) => ({
             headerTitle: '领券中心',
             headerTitleStyle: { alignSelf: 'center' },
-            headerRight: <RightBtn name={'user'} size={30} navigation={navigation}
-                path={'HomeTab'} />
+           
         }),
     },
     Login: {
@@ -79,6 +77,12 @@ const App = StackNavigator({
             header: null
         }),
     },
+    GoodsInfo:{
+        screen: GoodsInfo,
+        navigationOptions: ({ navigation }) => ({
+            header: null
+        }),
+    }
 });
 
 export default App;

@@ -29,7 +29,6 @@ export default class Notice extends Component {
       }
  
       componentWillUnmount() {
-    
          this.timeOut && clearTimeout(this.timeOut)
       }
 
