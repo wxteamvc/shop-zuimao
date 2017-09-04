@@ -21,13 +21,17 @@ export default class WellChosen extends Component {
         }
     }
 
-    componentDidMount() {
-        setTimeout(() => {
-            this.setState({
-                isShow: true,
-            })
-        }, 0);
-    }
+    componentDidMount(){
+        this.timeOut = setTimeout(()=>{
+             this.setState({
+              isShow:true,
+          })
+         },0); 
+      }
+ 
+      componentWillUnmount() {
+         this.timeOut && clearTimeout(this.timeOut)
+      }
 
     rendergoods({ item }) {
         return (

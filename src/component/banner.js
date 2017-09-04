@@ -19,12 +19,17 @@ export default class Banner extends Component {
 
     }
     componentDidMount(){
-        setTimeout(()=>{
+       this.timeOut = setTimeout(()=>{
             this.setState({
              isShow:true,
          })
         },0); 
      }
+
+     componentWillUnmount() {
+        this.timeOut && clearTimeout(this.timeOut)
+     }
+
     banner = () => {
         var val = [];
         for (let i = 0; i < this.props.banner.length; i++) {

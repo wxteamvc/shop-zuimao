@@ -27,7 +27,7 @@ export default class RightBtn extends Component {
             m: '00',
             s: '00',
         }
-        setInterval(
+       this.int= setInterval(
             () => {
                 this.time()
             }
@@ -37,6 +37,10 @@ export default class RightBtn extends Component {
     componentDidMount() {
         this.time();
     }
+    
+    componentWillUnmount() {
+        clearInterval(this.int)
+     }
 
     time() {
         let [d, h, m, s] = [null, null, null, null]

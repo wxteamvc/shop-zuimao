@@ -45,11 +45,11 @@ class HomeView extends Component {
     this.props.dispatch(init())
   }
 
-  componentWillReceiveProps() {
-    if (this.props.homeData.status == 'failed') {
-      Toast.show(this.props.homeData.message)
-    }
-  }
+  // componentWillReceiveProps() {
+  //   if (this.props.homeData.status == 'failed') {
+  //     Toast.show(this.props.homeData.message)
+  //   }
+  // }
 
 
 
