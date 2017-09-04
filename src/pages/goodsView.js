@@ -4,18 +4,83 @@
 "use strict";
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput,ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput,ActivityIndicator,FlatList } from 'react-native';
 import { goods } from '../actions/goodsAction';
 import { category } from '../actions/categoryAction';
 import { connect } from 'react-redux';
-import { ScreenWidth, ScreenHeight,DOMAIN } from '../common/global';
+import { ScreenWidth, ScreenHeight } from '../common/global';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import IconT from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import FlatListJumoTop from '../component/flatListJumoTop';
 import Loading from '../component/loading';
-import YouLike from '../component/youlike';
 
-class Goods extends React.PureComponent {
+class MyListItem extends React.PureComponent {
+  render() {
+    let { item,renderType } = this.props;
+    if (renderType === "big"){
+    return (
+      <View style={styles.bigView}>
+        <View style={styles.bigViewA}>
+            <TouchableOpacity>
+                <Image source={{ uri: item.thumb }} style={styles.bigImg} />
+            </TouchableOpacity>
+        </View>
+        <View style={{ padding: 5 }}>
+            <View>
+                <TouchableOpacity>
+                    <Text numberOfLines={1}>{item.title}</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.goodsTitle}>
+                <View style={{ flex: 5 }}>
+                    <Text style={{ color: 'red' }}>￥{item.marketprice}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                    <View style={styles.addCat}>
+                        <TouchableOpacity>
+                            <Icon name="shopping-cart" size={15} color={'#fff'} />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        </View>
+      </View>
+    )
+    }else if (renderType == "small"){
+        return (
+            <View style={styles.smallView}>
+                <View style={styles.smallViewA}>
+                    <TouchableOpacity>
+                        <Image source={{ uri: item.thumb }} style={styles.smallImg} />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.smallViewB}>
+                    <View style={{ padding: 5 }}>
+                        <TouchableOpacity>
+                            <Text numberOfLines={2} style={{ padding: 5 }}>{item.title}</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.smallViewBA}>
+                        <View style={{ flex: 4 }}>
+                            <Text style={{ color: 'red' }}>￥{item.marketprice}</Text>
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <View style={styles.addCat}>
+                                <TouchableOpacity>
+                                    <Icon name="shopping-cart" size={15} color={'#fff'} />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        )
+    }else{
+        return <View></View>
+    }
+  }
+}
+
+class Goods extends Component {
 
     constructor(...props) {
         super(...props)
@@ -58,7 +123,7 @@ class Goods extends React.PureComponent {
             <View style={{ flex: 1 }}>
                 {this.renderSearch()}
                 {this.renderOrderBy()}
-                {this.renderGoodsList()}
+                 {this.renderGoodsList()} 
                 {this.renderFilter()}
             </View>
         );
@@ -113,7 +178,7 @@ class Goods extends React.PureComponent {
                         this.setState({ orderBy: 'default' });
                         this.props.dispatch(goods(Object.assign(
                             this.state.search,
-                            { order: '', by: '' }
+                            { order: '', by: '',page:1 }
                         )));
                     }}>
                         <Text style={this.state.orderBy == 'default' ? styles.orderTextChecked : null}>综合</Text>
@@ -125,7 +190,7 @@ class Goods extends React.PureComponent {
                         this.props.dispatch(goods(
                             Object.assign(
                                 this.state.search,
-                                { order: 'sales', by: 'desc' }
+                                { order: 'sales', by: 'desc',page:1 }
                             )
                         ));
                     }}>
@@ -160,18 +225,23 @@ class Goods extends React.PureComponent {
             </View>
         )
     }
-
+    // componentWillUpdate(){
+    //     console.log('begin');
+    // }
+    // componentDidUpdate(){
+    //     console.log('end');
+    // }
     //商品列表
     renderGoodsList() {
         if(this.props.goodsData.status=='success'){
-            let goodsList = this.props.goodsData.list.slice(0);
+            let goodsList = this.props.goodsData.list;
             return (
                 <FlatListJumoTop
                     horizontal={false}
                     numColumns={2}
                     keyExtractor={(item, index) => index}
                     data={goodsList}
-                    renderItem={({ item }) => this.state.showType ? this.renderDigView(item) : this.renderSmallView(item)}
+                    renderItem={this.state.showType ? this.renderDigView : this.renderSmallView}
                     extraData={this.state.showType}
                     columnWrapperStyle={{ flexWrap: 'wrap' }}
                     refreshing={true}
@@ -185,68 +255,25 @@ class Goods extends React.PureComponent {
                         )):null;  
                     }}
                     onEndReachedThreshold={goodsList.length>6?0.2:1}
-                    ListFooterComponent={()=> goodsList.length<this.props.goodsData.total?<ActivityIndicator size={40}></ActivityIndicator>:<Text style={{textAlign:'center'}}>已经到底了~</Text>}
+                    ListFooterComponent={()=> goodsList.length<this.props.goodsData.total?<ActivityIndicator size={40}></ActivityIndicator>:<Text style={{textAlign:'center'}}>已经到底了~</Text>
+                    }
+
                 />
             )
         }
     }
 
     //大图显示
-    renderDigView(item) {
-        return (
-            <View style={styles.bigView}>
-                <View style={styles.bigViewA}>
-                    <TouchableOpacity>
-                        <Image source={{ uri: item.thumb }} style={styles.bigImg} />
-                    </TouchableOpacity>
-                </View>
-                <View style={{ padding: 5 }}>
-                    <View>
-                        <TouchableOpacity>
-                            <Text numberOfLines={1}>{item.title}</Text>
-                            <Text numberOfLines={1}>{item.sales}人已购买</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.goodsTitle}>
-                        <View style={{ flex: 5 }}>
-                            <Text style={{ color: 'red' }}>￥{item.marketprice}</Text>
-                        </View>
-                        <View style={{ flex: 1 }}>
-                            <View style={styles.addCat}>
-                                <TouchableOpacity>
-                                    <Icon name="shopping-cart" size={15} color={'#fff'} />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </View>
-                </View>
-            </View>
+    renderDigView = ({item}) =>{
+        return (     
+            <MyListItem item={item} renderType={'big'}/>
         )
     }
 
     //小图显示
-    renderSmallView(item) {
-        return (
-            <TouchableOpacity style={styles.item_container} onPress={()=>{alert('我是商品')}}>
-                <View style={styles.item_left}>
-                    <Image source={{ uri: item.thumb }} style={styles.item_img} />
-                </View>
-                <View style={styles.item_right}>
-                    <View >
-                        <Text numberOfLines={1} style={styles.item_title}>
-                            {item.title}
-                        </Text>
-                        <Text style={styles.item_sale}>{item.sales}人已购买</Text>
-                    </View>
-                    <View style={styles.item_price_container}>
-                        <Text style={styles.item_price}>&yen; {item.marketprice}</Text>
-                        <Text style={styles.item_oldprice}> {item.productprice == 0 ? null : '￥' + item.productprice}</Text>
-                    </View>
-                </View>
-                <TouchableOpacity style={styles.buy_car} onPress={()=>{alert('我是购物车')}}>
-                    <IconT name={'cart-outline'} color={'red'} size={20} />
-                </TouchableOpacity>
-            </TouchableOpacity>
+    renderSmallView=({item}) => {
+        return (     
+            <MyListItem item={item} renderType={'small'}/>
         )
     }
 
@@ -301,7 +328,12 @@ class Goods extends React.PureComponent {
                         <View style={{ flex: 1 }}>
                             <TouchableOpacity onPress={() => {
                                 this.setState({ filterShow: false });
-                                this.props.dispatch(goods(this.state.search))
+                                this.props.dispatch(goods(
+                                    Object.assign(
+                                        this.state.search,
+                                        { page:1 }
+                                    )
+                                ))
                             }}>
                                 <Text style={styles.filterBtnOk}>确定</Text>
                             </TouchableOpacity>
@@ -390,12 +422,12 @@ class Goods extends React.PureComponent {
         if (this.state.priceOrder == null) {
             this.setState({
                 orderBy: 'price',
-                priceOrder: 'up'
+                priceOrder: 'up',
             });
             this.props.dispatch(goods(
                 Object.assign(
                     this.state.search,
-                    { order: 'marketprice', by: 'desc' }
+                    { order: 'marketprice', by: 'desc',page:1 }
                 )
             ));
         } else if (this.state.priceOrder == 'up') {
@@ -406,7 +438,7 @@ class Goods extends React.PureComponent {
             this.props.dispatch(goods(
                 Object.assign(
                     this.state.search,
-                    { order: 'marketprice', by: 'asc' }
+                    { order: 'marketprice', by: 'asc',page:1 }
                 )
             ));
         } else {
@@ -417,7 +449,7 @@ class Goods extends React.PureComponent {
             this.props.dispatch(goods(
                 Object.assign(
                     this.state.search,
-                    { order: 'marketprice', by: 'desc' }
+                    { order: 'marketprice', by: 'desc',page:1 }
                 )
             ));
         }
@@ -568,36 +600,29 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 2
     },
-    item_container:{
-        height: 120, borderBottomWidth: 0.5, borderColor: '#ccc', flexDirection: 'row', paddingTop: 20, paddingBottom: 20, paddingRight: 20 ,width: ScreenWidth,backgroundColor:'white'
+    smallView: {
+        borderBottomWidth: 1,
+        borderColor: '#ccc',
+        width: ScreenWidth,
+        flexDirection: 'row',
+        padding: 5
     },
-    item_left:{
-        flex: 0.25, justifyContent: 'center', alignItems: 'center',
+    smallViewA: {
+        flex: 1,
+        padding: 10
     },
-    item_right:{
-        flex: 0.75, paddingLeft: 15, justifyContent: 'space-between' 
+    smallImg: {
+        width: ScreenWidth / 6,
+        height: ScreenWidth / 6
     },
-    item_img:{
-        width: 80, height: 80 
+    smallViewB: {
+        flexDirection: 'column',
+        flex: 4
     },
-    item_title:{
-        color: '#000', fontSize: 16 
-    },
-    item_sale:{
-        fontSize: 12, color: '#ccc', marginTop: 5
-    },
-    item_price_container:{
-        flexDirection: 'row', alignItems: 'center',
-    },
-    item_price:{
-        color: 'red', fontSize: 18 
-    },
-    item_oldprice:{
-        textDecorationLine: 'line-through', marginLeft: 10, color: '#ccc' 
-    },
-    buy_car:{
-        position: 'absolute', bottom: 25, right: 20, height: 30, width: 30, borderRadius: 15, justifyContent: 'center', alignItems: 'center', borderColor: '#ccc', borderWidth: 0.7
-    },
+    smallViewBA: {
+        flexDirection: 'row',
+        padding: 5
+    }
 });
 
 function mapStateToProps(state) {
