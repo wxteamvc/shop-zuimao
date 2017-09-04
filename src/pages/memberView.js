@@ -197,7 +197,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="heart" size={30} color={'#FB585E'}/>
-                        <Text>我的关注</Text>
+                        <Text style={styles.fontS}>我的关注</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -205,7 +205,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="shopping-cart" size={30} color={'#1D9D73'}/>
-                        <Text>我的购物车</Text>
+                        <Text style={styles.fontS}>购物车</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -213,7 +213,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <IconT name="foot" size={30} color={'#1B8EFF'}/>
-                        <Text>我的足迹</Text>
+                        <Text style={styles.fontS}>我的足迹</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -221,7 +221,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="credit-card" size={30} color={'#FFAB15'}/>
-                        <Text>充值记录</Text>
+                        <Text style={styles.fontS}>充值记录</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -229,7 +229,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="gift" size={30} color={'#9400d3'}/>
-                        <Text>积分签到</Text>
+                        <Text style={styles.fontS}>积分签到</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -237,7 +237,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="ticket" size={30} color={'#FFAB15'}/>
-                        <Text>优惠券</Text>
+                        <Text style={styles.fontS}>优惠券</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -245,7 +245,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="bell" size={30} color={'#6b8e23'}/>
-                        <Text>消息提醒设置</Text>
+                        <Text style={styles.fontS}>消息提醒</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -253,7 +253,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="map-marker" size={30} color={'#BF0000'}/>
-                        <Text>收货地址管理</Text>
+                        <Text style={styles.fontS}>地址管理</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -350,6 +350,9 @@ const styles = StyleSheet.create({
     width:(ScreenWidth-10)/4,
     marginTop:10,
     marginBottom:10,
+  },
+  fontS:{
+    fontSize:12
   }
 });
 

@@ -35,3 +35,9 @@ export const VERIFY_CODE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=
 export const REGISTER_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=account.register'
 //商品列表
 export const GOODS_URL =  BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=goods.get_list';
+//购物车请求地址
+export const CART_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.cart&app=1';
+//购物车商品勾选请求地址
+export const CART_SELECT_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.cart.select';
+//购物车商品数量更新请求地址
+export const CART_UPDATE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.cart.update';

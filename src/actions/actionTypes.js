@@ -30,3 +30,9 @@ export const GOODS_BEGIN = 'GOODS_BEGIN';
 export const GOODS_SUCCESS = 'GOODS_SUCCESS';
 //请求商品列表失败动作
 export const GOODS_FAILED = 'GOODS_FAILED';
+//请求购物车信息开始
+export const CART_BEGIN = 'CART_BEGIN';
+//请求购物车信息成功
+export const CART_SUCCESS = 'CART_SUCCESS';
+//请求购物车信息失败
+export const CART_FAILED = 'CART_FAILED';

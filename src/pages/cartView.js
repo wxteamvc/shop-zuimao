@@ -1,47 +1,294 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
 "use strict";
 
+
 import React, { Component } from 'react';
+
 import {
   AppRegistry,
   StyleSheet,
   Text,
   View,
+  TouchableOpacity,
+  Image,
+  ScrollView
 } from 'react-native';
+import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { cart } from '../actions/cartAction';
+import { ScreenWidth, ScreenHeight, CART_SELECT_URL, CART_UPDATE_URL } from '../common/global';
+import Toast from 'react-native-root-toast';
 
-class CartView extends Component {
-  
-  constructor(...props){
-    super(...props);
+class Cart extends Component {
+
+  constructor(...props) {
+    super(...props)
+  }
+
+  componentDidUpdate(nextProps) {
+    let { loginData, memberData } = this.props;
+    //请求购物车
+    if (loginData.status === "success" && memberData.status === false) {
+      this.props.dispatch(cart(loginData.data.result.token))
+    }
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          购物车
-        </Text>
-      </View>
-    );
+    // console.log('====================================');
+    // console.log(this.props.cartData);
+    // console.log('====================================');
+    if (this.props.loginData.status === 'success') {
+      if (this.props.cartData.status === 'success') {
+        return this.cartRender();
+      } else {
+        return false;
+      }
+    } else {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={{ textAlign: 'center', fontSize: 20 }}>您还没有登陆哦~</Text>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
+            <Text style={{ textAlign: 'center', fontSize: 18, backgroundColor: '#0271BC', borderRadius: 10, padding: 10, color: '#fff', marginTop: 10 }}>立即登录</Text>
+          </TouchableOpacity>
+        </View>
+      )
+    }
   }
+
+  cartRender() {
+    if (this.props.cartData.data.result.list.length > 0) {
+      let cartList = this.props.cartData.data.result.list;//购物车列表
+      let total = this.props.cartData.data.result.total;//购物车统计数量
+      let totalprice = this.props.cartData.data.result.totalprice;//购物车统计价格
+      let ischeckall = this.props.cartData.data.result.ischeckall;//购物车是否全选
+      let cartListArr = [];
+      for (let i = 0; i < cartList.length; i++) {
+        cartListArr.push(
+          <View key={i} style={styles.listView}>
+            <View style={styles.listA}>
+              <TouchableOpacity onPress={() => this._select(cartList[i].id, cartList[i].selected)}>
+                {cartList[i].selected == 1 ? <Icon name="check-circle" size={25} color={'#EF4F4F'} /> : <Icon name="circle-thin" size={25} />}
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 2,justifyContent:'center' }}>
+              <Image source={{ uri: cartList[i].thumb }} style={styles.img} />
+            </View>
+            <View style={{ flex: 8 }}>
+              <Text numberOfLines={1} style={{marginBottom:10}}>{cartList[i].title}</Text>
+              {this.ctitleRender(cartList[i])}
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 4 }}>
+                  <Text style={styles.price}>￥{cartList[i].marketprice}</Text>
+                </View>
+                <View style={{ flex: 1,justifyContent:'center',alignItems:'center' }}>
+                  <Text style={{color:'red'}}>×{cartList[i].total}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <TouchableOpacity onPress={() => this._total(cartList[i].id, cartList[i].total, 'minus')}>
+                    <Text style={styles.minusPlus}>-</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={{ flex: 1 }}><Text style={styles.num}>{cartList[i].total}</Text></View>
+                <View style={{ flex: 1 }}>
+                  <TouchableOpacity onPress={() => this._total(cartList[i].id, cartList[i].total, 'plus')}>
+                    <Text style={styles.minusPlus}>+</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+
+          </View>
+        )
+      }
+      return (
+        <View style={styles.cartView}>
+          {this.renderTop()}
+          <ScrollView style={{ width: ScreenWidth }}>
+            {cartListArr}
+            <View style={{ height: 100 }}></View>
+          </ScrollView>
+          <View style={styles.cartBottom}>
+            <View style={styles.cartBottomA}>
+              <TouchableOpacity>
+                {ischeckall == '1' ? <Icon name="check-circle" size={25} color={'#EF4F4F'} /> : <Icon name="circle-thin" size={25} />}
+              </TouchableOpacity>
+              <Text style={{ paddingLeft: 10 }}>全选</Text>
+            </View>
+            <View style={{ flex: 5 }}>
+              <Text>合计：<Text style={{ color: 'red' }}>￥{totalprice}</Text></Text>
+              <Text>不含运费</Text>
+            </View>
+            <View style={{ flex: 3 }}>
+              <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity>
+                  <Text style={styles.payBtn}>结算({total})</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </View>
+      )
+    } else {
+      return (
+        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+          <Icon name="shopping-cart" size={80} color={'#aaa'} />
+          <Text style={{ color: '#aaa' }}>购物车空空如也~</Text>
+        </View>
+      )
+    }
+  }
+
+  ctitleRender(data) {
+    return data.isdiscount == 1 ? this.textRender('促销', '#ff00ff') : null;
+  }
+
+  textRender(text, color) {
+    return (
+      <Text numberOfLines={2} style={{ borderRadius: 5, backgroundColor: color, color: '#fff', width: 50, textAlign: 'center',marginBottom:10 }}>{text}</Text>
+    )
+  }
+
+  renderTop() {
+    return (
+      <View style={styles.cartTop}>
+        <View style={styles.cartTitle}><Text style={styles.colorWhite}>我的购物车</Text></View>
+        <View style={styles.cartEdit}>
+          <TouchableOpacity>
+            <Text style={styles.colorWhite}>编辑</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+  }
+
+  _select(id, select) {
+    let sel = select == 1 ? 0 : 1;
+    fetch(CART_SELECT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: '&id=' + id + '&select=' + sel,
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson.status == 1) {
+          this.props.dispatch(cart(this.props.loginData.data.result.token))
+        } else {
+          Toast.show('服务器请求失败');
+          this.props.dispatch(cart(this.props.loginData.data.result.token))
+        }
+      })
+      .catch((error) => {
+        Toast.show('服务器请求失败');
+      });
+  }
+
+  _total(id, total, type) {
+    if (type === 'minus') {
+      let num = total - 1;
+      if (num >= 1) {
+        fetch(CART_UPDATE_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: '&id=' + id + '&total=' + num,
+        })
+          .then(response => response.json())
+          .then(responseJson => {
+            if (responseJson.status == 1) {
+              this.props.dispatch(cart(this.props.loginData.data.result.token))
+            } else {
+              Toast.show('服务器请求失败');
+              this.props.dispatch(cart(this.props.loginData.data.result.token))
+            }
+          })
+          .catch((error) => {
+            Toast.show('服务器请求失败');
+          });
+      }
+    }
+    if (type === 'plus') {
+      let num = total * 1 + 1;
+      fetch(CART_UPDATE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: '&id=' + id + '&total=' + num,
+      })
+        .then(response => response.json())
+        .then(responseJson => {
+          if (responseJson.status == 1) {
+            this.props.dispatch(cart(this.props.loginData.data.result.token))
+          } else {
+            Toast.show('服务器请求失败');
+            this.props.dispatch(cart(this.props.loginData.data.result.token))
+          }
+        })
+        .catch((error) => {
+          Toast.show('服务器请求失败');
+        });
+    }
+  }
+
+  _fetch(id, params) {
+
+  }
+
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+  cartView: {
+    alignItems: 'center', height: ScreenHeight - 63
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  cartTop: {
+    flexDirection: 'row', paddingLeft: 10, paddingRight: 10, paddingBottom: 15, backgroundColor: '#C10001', borderBottomWidth: 1, borderColor: '#aaa', marginBottom: 10, paddingTop: 30
   },
-});
+  cartTitle: {
+    flex: 8, justifyContent: 'center', alignItems: 'center'
+  },
+  cartEdit: {
+    flex: 1, justifyContent: 'center', alignItems: 'center'
+  },
+  colorWhite: {
+    color: '#fff'
+  },
+  cartBottom: {
+    width: ScreenWidth, position: 'absolute', bottom: 0, flexDirection: 'row', backgroundColor: '#fff', padding: 10, borderTopWidth: 1, borderColor: '#ddd'
+  },
+  cartBottomA: {
+    flexDirection: 'row', flex: 2
+  },
+  payBtn: {
+    textAlign: 'center', width: 100, borderRadius: 10, color: '#fff', backgroundColor: '#EF4F4F', padding: 10
+  },
+  listView: {
+    flexDirection: 'row', backgroundColor: '#fff', padding: 10, borderBottomWidth: 1, borderColor: '#ddd'
+  },
+  listA: {
+    flex: 1, alignItems: 'center', justifyContent: 'center'
+  },
+  img: {
+    width: 50, height: 50, borderRadius: 10
+  },
+  minusPlus: {
+    flex: 1, borderWidth: 1, borderColor: '#aaa', textAlign: 'center', backgroundColor: '#eee', paddingTop: 3, paddingBottom: 3
+  },
+  num: {
+    flex: 1.5, borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#aaa', textAlign: 'center', paddingTop: 3, paddingBottom: 3
+  },
+  price: {
+    color: 'red',
+  }
+})
 
-export default CartView;
+function mapStateToProps(state) {
+  return {
+    loginData: state.loginReducer,
+    memberData: state.memberInfoReducer,
+    cartData: state.cartReducer
+  }
+}
+
+export default connect(mapStateToProps)(Cart);
