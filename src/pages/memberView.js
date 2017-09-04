@@ -5,6 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity,  } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import IconT from 'react-native-vector-icons/dist/Foundation';
@@ -53,6 +54,7 @@ class Member extends Component {
           {this.renderOther()}
           {this.renderLoginOut()}
           <View style={{height:50}}></View>
+          <View style={{ height: 50 }}></View>
         </ScrollView>
       </View>
     );
@@ -128,13 +130,46 @@ class Member extends Component {
                     </View>
                 </TouchableOpacity>
             </View>
+          <View style={styles.modBottomList}>
+            <TouchableOpacity>
+              <View style={styles.center}>
+                <Icon name="address-card-o" size={30} color={'#aaa'} />
+                <Text>待付款</Text>
+              </View>
+            </TouchableOpacity>
           </View>
+          <View style={styles.modBottomList}>
+            <TouchableOpacity>
+              <View style={styles.center}>
+                <Icon name="cube" size={30} color={'#aaa'} />
+                <Text>待发货</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.modBottomList}>
+            <TouchableOpacity>
+              <View style={styles.center}>
+                <Icon name="truck" size={30} color={'#aaa'} />
+                <Text>待收货</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.modBottomList}>
+            <TouchableOpacity>
+              <View style={styles.center}>
+                <Icon name="plug" size={30} color={'#aaa'} />
+                <Text>退换货</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     )
   }
 
   //我的钱包
   renderMoney(){
+  renderMoney() {
     if (this.props.loginData.status === "success" && this.props.memberData.status === "success") {
       let memberData = this.props.memberData.data.result.member;
       var credit2= memberData.credit2;
@@ -144,12 +179,30 @@ class Member extends Component {
       var credit2= '0.00';
       var credit1= '0';
       var coupon= '0';
+      var credit2 = memberData.credit2;
+      var credit1 = memberData.credit1;
+      var coupon = memberData.coupon;
+    } else {
+      var credit2 = '0.00';
+      var credit1 = '0';
+      var coupon = '0';
     }
     return(
+    return (
       <View style={styles.modView}>
       <View style={styles.modTop}>
         <View style={[styles.modTopTextL,styles.borderB]}>
           <Text style={{ marginLeft: 5 }}>我的钱包</Text>
+        <View style={styles.modTop}>
+          <View style={[styles.modTopTextL, styles.borderB]}>
+            <Text style={{ marginLeft: 5 }}>我的钱包</Text>
+          </View>
+          <TouchableOpacity>
+            <View style={[styles.modTopTextR, styles.borderB]}>
+              <Text style={{ marginRight: 5 }}>查看明细</Text>
+              <Icon name="angle-right" size={20} color={'#ccc'} style={{ marginRight: 5 }} />
+            </View>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity>
           <View style={[styles.modTopTextR,styles.borderB]}>
@@ -160,28 +213,47 @@ class Member extends Component {
       </View>
       <View style={styles.modBottom}>
         <View style={styles.modBottomList}>
+        <View style={styles.modBottom}>
+          <View style={styles.modBottomList}>
             <TouchableOpacity>
                 <View style={styles.center}>
                   <Text>{credit2}</Text>
                   <Text>账户余额</Text>
                 </View>
+              <View style={styles.center}>
+                <Text>{credit2}</Text>
+                <Text>账户余额</Text>
+              </View>
             </TouchableOpacity>
         </View>
         <View style={styles.modBottomList}>
+          </View>
+          <View style={styles.modBottomList}>
             <TouchableOpacity>
                 <View style={styles.center}>
                   <Text>{coupon}</Text>
                   <Text>优惠券</Text>
                 </View>
+              <View style={styles.center}>
+                <Text>{coupon}</Text>
+                <Text>优惠券</Text>
+              </View>
             </TouchableOpacity>
         </View>
         <View style={styles.modBottomList}>
+          </View>
+          <View style={styles.modBottomList}>
             <TouchableOpacity>
                 <View style={styles.center}>
                   <Text>{credit1}</Text>
                   <Text>积分</Text>
                 </View>
+              <View style={styles.center}>
+                <Text>{credit1}</Text>
+                <Text>积分</Text>
+              </View>
             </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
@@ -191,13 +263,15 @@ class Member extends Component {
   //其他
   renderOther(){
     return(
+  renderOther() {
+    return (
       <View style={styles.modView}>
         <View style={[styles.modBottom,{flexWrap:'wrap'}]}>
             <View style={styles.modBottomOther}>
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="heart" size={30} color={'#FB585E'}/>
-                        <Text style={styles.fontS}>我的关注</Text>
+                        <Text>我的关注</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -205,7 +279,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="shopping-cart" size={30} color={'#1D9D73'}/>
-                        <Text style={styles.fontS}>购物车</Text>
+                        <Text>我的购物车</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -213,7 +287,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <IconT name="foot" size={30} color={'#1B8EFF'}/>
-                        <Text style={styles.fontS}>我的足迹</Text>
+                        <Text>我的足迹</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -221,7 +295,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="credit-card" size={30} color={'#FFAB15'}/>
-                        <Text style={styles.fontS}>充值记录</Text>
+                        <Text>充值记录</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -229,7 +303,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="gift" size={30} color={'#9400d3'}/>
-                        <Text style={styles.fontS}>积分签到</Text>
+                        <Text>积分签到</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -237,7 +311,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="ticket" size={30} color={'#FFAB15'}/>
-                        <Text style={styles.fontS}>优惠券</Text>
+                        <Text>优惠券</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -245,7 +319,7 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="bell" size={30} color={'#6b8e23'}/>
-                        <Text style={styles.fontS}>消息提醒</Text>
+                        <Text>消息提醒设置</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -253,23 +327,151 @@ class Member extends Component {
                 <TouchableOpacity>
                     <View style={styles.center}>
                         <Icon name="map-marker" size={30} color={'#BF0000'}/>
-                        <Text style={styles.fontS}>地址管理</Text>
+                        <Text>收货地址管理</Text>
                     </View>
                 </TouchableOpacity>
             </View>
+        <View style={[styles.modBottom, { flexWrap: 'wrap' }]}>
+          <View style={styles.modBottomOther}>
+            <TouchableOpacity>
+              <View style={styles.center}>
+                <Icon name="heart" size={30} color={'#FB585E'} />
+                <Text>我的关注</Text>
+              </View>
+            </TouchableOpacity>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           </View>
+          <View style={styles.modBottomOther}>
+            <TouchableOpacity>
+              <View style={styles.center}>
+                <Icon name="shopping-cart" size={30} color={'#1D9D73'} />
+                <Text>我的购物车</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.modBottomOther}>
+            <TouchableOpacity>
+              <View style={styles.center}>
+                <IconT name="foot" size={30} color={'#1B8EFF'} />
+                <Text>我的足迹</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.modBottomOther}>
+            <TouchableOpacity>
+              <View style={styles.center}>
+                <Icon name="credit-card" size={30} color={'#FFAB15'} />
+                <Text>充值记录</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.modBottomOther}>
+            <TouchableOpacity>
+              <View style={styles.center}>
+                <Icon name="gift" size={30} color={'#9400d3'} />
+                <Text>积分签到</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.modBottomOther}>
+            <TouchableOpacity>
+              <View style={styles.center}>
+                <Icon name="ticket" size={30} color={'#FFAB15'} />
+                <Text>优惠券</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.modBottomOther}>
+            <TouchableOpacity>
+              <View style={styles.center}>
+                <Icon name="bell" size={30} color={'#6b8e23'} />
+                <Text>消息提醒设置</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.modBottomOther}>
+            <TouchableOpacity>
+              <View style={styles.center}>
+                <Icon name="map-marker" size={30} color={'#BF0000'} />
+                <Text>收货地址管理</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     )
   }
 
   //退出登陆
   renderLoginOut(){
+  renderLoginOut() {
     if (this.props.loginData.status === "success" && this.props.memberData.status === "success") {
       return(
         <View style={{marginTop:10,backgroundColor:'#fff',padding:10}}>
             <TouchableOpacity  onPress={()=>this.props.dispatch(loginOut())}>
                 <Text style={{color:'red',textAlign:'center'}}>退出登陆</Text>
             </TouchableOpacity>
+      return (
+        <View style={{ marginTop: 10, backgroundColor: '#fff', padding: 10 }}>
+          <TouchableOpacity onPress={() => this.props.dispatch(loginOut())}>
+            <Text style={{ color: 'red', textAlign: 'center' }}>退出登陆</Text>
+          </TouchableOpacity>
         </View>
       )
     }
@@ -323,36 +525,51 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     paddingBottom:10,
+    paddingBottom: 10,
   },
   modTopTextR: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
     paddingBottom:10,
+    paddingBottom: 10,
   },
   modBottom:{
     flexDirection:'row',
+  modBottom: {
+    flexDirection: 'row',
   },
   modBottomList:{
     flex:1,
     marginTop:10,
     marginBottom:10,
+  modBottomList: {
+    flex: 1,
+    marginTop: 10,
+    marginBottom: 10,
   },
   center:{
     justifyContent:'center',
     alignItems:'center',
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   borderB:{
     borderBottomWidth:1,
     borderColor:'#eee',
+  borderB: {
+    borderBottomWidth: 1,
+    borderColor: '#eee',
   },
   modBottomOther:{
     width:(ScreenWidth-10)/4,
     marginTop:10,
     marginBottom:10,
-  },
-  fontS:{
-    fontSize:12
+  modBottomOther: {
+    width: (ScreenWidth - 10) / 4,
+    marginTop: 10,
+    marginBottom: 10,
   }
 });
 

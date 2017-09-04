@@ -14,6 +14,7 @@ import {
     TouchableOpacity,
     FlatList,
     Image,
+    StatusBar,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -117,6 +118,10 @@ export default class SignRecord extends Component {
         if (this.state.status == 'success') {
             return (
                 <View style={{ flex: 1 }}>
+                      <StatusBar
+                       translucent={false}
+                       backgroundColor="#000"
+                    />
                     <View style={styles.listcontainer}>         
                         <FlatListJumoTop
                             data={this.state.data}

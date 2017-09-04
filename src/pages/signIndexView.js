@@ -14,6 +14,7 @@ import {
     TouchableOpacity,
     Image,
     FlatList,
+    StatusBar,
 } from 'react-native';
 import{SIGNINDEX_URL,SIGN_URL,SIGN_MONTHCHANGE_URL}from '../common/global'
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -185,6 +186,10 @@ export default class SignIndex extends Component {
         if (this.state.status == 'success') {
             return (
                 <View style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
+                      <StatusBar
+                       translucent={false}
+                       backgroundColor="#000"
+                    />
                     <View style={styles.header}>
                         <View style={[styles.header_item]}>
                             <Text style={[styles.font, { fontSize: 18 }]}>连续签到</Text>

@@ -36,7 +36,7 @@ export default class MidAd extends Component {
             )
         } else {
             return (
-                <View></View>
+                false
             )
         }
 

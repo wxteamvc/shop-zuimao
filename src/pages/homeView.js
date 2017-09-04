@@ -45,11 +45,11 @@ class HomeView extends Component {
     this.props.dispatch(init())
   }
 
-  componentWillReceiveProps() {
-    if (this.props.homeData.status == 'failed') {
-      Toast.show(this.props.homeData.message)
-    }
-  }
+  // componentWillReceiveProps() {
+  //   if (this.props.homeData.status == 'failed') {
+  //     Toast.show(this.props.homeData.message)
+  //   }
+  // }
 
 
 
@@ -97,10 +97,10 @@ class HomeView extends Component {
             <Ad ad={topad} />
             <IconList navigation={this.props.navigation} />
             <Notices notices={notices} />
-            <Rush istime={istime} />
+            <Rush istime={istime}  navigate={this.props.navigation}/>
             <Findgoods cubes={cubes} />
             <Ad ad={bannersclone} />
-            <WellChosen ad={bottomad} recommands={recommands} category={category} />
+            <WellChosen ad={bottomad} recommands={recommands} category={category}  navigate={this.props.navigation}/>
             <YouLike  youlike={youlike}/>
           </ScrollViewJumpTop>
         </View>

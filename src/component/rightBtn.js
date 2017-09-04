@@ -27,7 +27,6 @@ export default class RightBtn extends Component {
         )
     }
 }
-
 const styles = StyleSheet.create({
     center: {
         justifyContent: 'center',

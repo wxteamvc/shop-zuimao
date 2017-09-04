@@ -21,18 +21,22 @@ export default class WellChosen extends Component {
         }
     }
 
-    componentDidMount() {
-        setTimeout(() => {
-            this.setState({
-                isShow: true,
-            })
-        }, 0);
-    }
+    componentDidMount(){
+        this.timeOut = setTimeout(()=>{
+             this.setState({
+              isShow:true,
+          })
+         },0); 
+      }
+ 
+      componentWillUnmount() {
+         this.timeOut && clearTimeout(this.timeOut)
+      }
 
     rendergoods({ item }) {
         return (
             <View style={styles.goodContainer}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>{this.props.navigate.navigate('GoodsInfo')}}>
                     <Image
                         source={{ uri: DOMAIN + item.thumb }}
                         style={styles.goodImage}
@@ -72,16 +76,21 @@ export default class WellChosen extends Component {
         return (list2)
     }
     renderLogoBanner() {
-        var nav = []
-        for (var i = 0; i < Math.ceil(this.props.category.length / 6); i++) {
-            nav.push(
-                <View key={i} style={styles.logoBanner}>
-                    {this.renderLogoList(i * 6)}
-                </View>
-            )
-
+        if(this.props.category.length!=0){
+            var nav = []
+            for (var i = 0; i < Math.ceil(this.props.category.length / 6); i++) {
+                nav.push(
+                    <View key={i} style={styles.logoBanner}>
+                        {this.renderLogoList(i * 6)}
+                    </View>
+                )
+    
+            }
+            return (nav)
+        }else{
+            return(false)
         }
-        return (nav)
+        
     }
 
     renderImg() {
