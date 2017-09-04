@@ -178,7 +178,7 @@ class Goods extends Component {
                         this.setState({ orderBy: 'default' });
                         this.props.dispatch(goods(Object.assign(
                             this.state.search,
-                            { order: '', by: '' }
+                            { order: '', by: '',page:1 }
                         )));
                     }}>
                         <Text style={this.state.orderBy == 'default' ? styles.orderTextChecked : null}>综合</Text>
@@ -190,7 +190,7 @@ class Goods extends Component {
                         this.props.dispatch(goods(
                             Object.assign(
                                 this.state.search,
-                                { order: 'sales', by: 'desc' }
+                                { order: 'sales', by: 'desc',page:1 }
                             )
                         ));
                     }}>
@@ -328,7 +328,12 @@ class Goods extends Component {
                         <View style={{ flex: 1 }}>
                             <TouchableOpacity onPress={() => {
                                 this.setState({ filterShow: false });
-                                this.props.dispatch(goods(this.state.search))
+                                this.props.dispatch(goods(
+                                    Object.assign(
+                                        this.state.search,
+                                        { page:1 }
+                                    )
+                                ))
                             }}>
                                 <Text style={styles.filterBtnOk}>确定</Text>
                             </TouchableOpacity>
@@ -417,12 +422,12 @@ class Goods extends Component {
         if (this.state.priceOrder == null) {
             this.setState({
                 orderBy: 'price',
-                priceOrder: 'up'
+                priceOrder: 'up',
             });
             this.props.dispatch(goods(
                 Object.assign(
                     this.state.search,
-                    { order: 'marketprice', by: 'desc' }
+                    { order: 'marketprice', by: 'desc',page:1 }
                 )
             ));
         } else if (this.state.priceOrder == 'up') {
@@ -433,7 +438,7 @@ class Goods extends Component {
             this.props.dispatch(goods(
                 Object.assign(
                     this.state.search,
-                    { order: 'marketprice', by: 'asc' }
+                    { order: 'marketprice', by: 'asc',page:1 }
                 )
             ));
         } else {
@@ -444,7 +449,7 @@ class Goods extends Component {
             this.props.dispatch(goods(
                 Object.assign(
                     this.state.search,
-                    { order: 'marketprice', by: 'desc' }
+                    { order: 'marketprice', by: 'desc',page:1 }
                 )
             ));
         }
