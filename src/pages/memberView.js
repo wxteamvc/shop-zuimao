@@ -4,7 +4,7 @@
 "use strict";
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity,  } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import IconT from 'react-native-vector-icons/dist/Foundation';
@@ -16,6 +16,10 @@ class Member extends Component {
 
   constructor(...props) {
     super(...props);
+    this.state={
+      confBGC:'transparent',
+      iconC:'#fff',
+    }
   }
 
   componentDidUpdate(nextProps) {
@@ -28,17 +32,9 @@ class Member extends Component {
 
   render() {
     return (
-      <View>
-        <ScrollView>
+      <View style={{flex:1}}>
+        <ScrollView showsVerticalScrollIndicator={false} onScroll={(e)=>this._conBGC(e)}>
           <View style={styles.topView}>
-            <View style={styles.conf}>
-              <TouchableOpacity>
-                <Icon name='cog' color={'white'} style={styles.icon} />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Icon name='commenting-o' color={'white'} style={styles.icon} />
-              </TouchableOpacity>
-            </View>
             <View style={styles.row}>
               <View style={styles.userIconView}>
                 <Icon name='user-o' color={'#E14135'} size={50} />
@@ -52,10 +48,35 @@ class Member extends Component {
           {this.renderMoney()}
           {this.renderOther()}
           {this.renderLoginOut()}
-          <View style={{ height: 50 }}></View>
         </ScrollView>
+        <View style={{backgroundColor:this.state.confBGC,paddingTop: 20,position:'absolute',top:0,width:ScreenWidth}}>
+          <View style={styles.conf}>
+              <TouchableOpacity>
+                <Icon name='cog' color={this.state.iconC} style={styles.icon} />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Icon name='commenting-o' color={this.state.iconC} style={styles.icon} />
+              </TouchableOpacity>
+            </View>
+        </View>
+        <View style={{backgroundColor:'#E14135',position:'absolute',top:0,width:ScreenWidth,height:30}}></View>
       </View>
     );
+  }
+
+  _conBGC(e){
+    if(e.nativeEvent.contentOffset.y>=100){
+      this.setState({
+        confBGC:'rgba(255, 255, 255,0.9)',
+        iconC:'#000',
+      })
+    }
+    else{
+      this.setState({
+        confBGC:'transparent',
+        iconC:'#fff',
+      })
+    }
   }
 
   //登陆状态文字
@@ -66,7 +87,7 @@ class Member extends Component {
       let levelname = memberData.levelname == null || memberData.levelname == '' ? '[普通会员]' : memberData.levelname;
       return (
         <View>
-          <Text style={styles.fontWhite}>{name}</Text>
+          <Text style={[styles.fontWhite,{fontSize:18}]}>{name}</Text>
           <Text style={styles.fontWhite}>{levelname}</Text>
         </View>
 
@@ -74,7 +95,7 @@ class Member extends Component {
     } else {
       return (
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
-          <Text style={styles.fontWhite}>登陆/注册 〉</Text>
+          <Text style={[styles.fontWhite,styles.fontS]}>登陆/注册 〉</Text>
         </TouchableOpacity>
       )
     }
@@ -86,12 +107,12 @@ class Member extends Component {
       <View style={styles.modView}>
         <View style={styles.modTop}>
           <View style={styles.modTopTextL}>
-            <Text style={{ marginLeft: 5 }}>我的订单</Text>
+            <Text style={[styles.fontS,{ marginRight: 5 }]}>我的订单</Text>
           </View>
           <TouchableOpacity>
             <View style={styles.modTopTextR}>
-              <Text style={{ marginRight: 5 }}>查看全部订单</Text>
-              <Icon name="angle-right" size={20} color={'#ccc'} style={{ marginRight: 5 }} />
+              <Text style={[styles.fontS,{ marginRight: 5 }]}>查看全部订单</Text>
+              <Icon name="angle-right" size={20} color={'#ccc'} style={{ marginRight: 5,marginTop:5 }} />
             </View>
           </TouchableOpacity>
         </View>
@@ -100,7 +121,7 @@ class Member extends Component {
             <TouchableOpacity>
               <View style={styles.center}>
                 <Icon name="address-card-o" size={30} color={'#aaa'} />
-                <Text>待付款</Text>
+                <Text style={styles.fontS}>待付款</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -108,7 +129,7 @@ class Member extends Component {
             <TouchableOpacity>
               <View style={styles.center}>
                 <Icon name="cube" size={30} color={'#aaa'} />
-                <Text>待发货</Text>
+                <Text style={styles.fontS}>待发货</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -116,7 +137,7 @@ class Member extends Component {
             <TouchableOpacity>
               <View style={styles.center}>
                 <Icon name="truck" size={30} color={'#aaa'} />
-                <Text>待收货</Text>
+                <Text style={styles.fontS}>待收货</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -124,7 +145,7 @@ class Member extends Component {
             <TouchableOpacity>
               <View style={styles.center}>
                 <Icon name="plug" size={30} color={'#aaa'} />
-                <Text>退换货</Text>
+                <Text style={styles.fontS}>退换货</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -149,12 +170,12 @@ class Member extends Component {
       <View style={styles.modView}>
         <View style={styles.modTop}>
           <View style={[styles.modTopTextL, styles.borderB]}>
-            <Text style={{ marginLeft: 5 }}>我的钱包</Text>
+            <Text style={[styles.fontS,{ marginRight: 5 }]}>我的钱包</Text>
           </View>
           <TouchableOpacity>
             <View style={[styles.modTopTextR, styles.borderB]}>
-              <Text style={{ marginRight: 5 }}>查看明细</Text>
-              <Icon name="angle-right" size={20} color={'#ccc'} style={{ marginRight: 5 }} />
+              <Text style={[styles.fontS,{ marginRight: 5 }]}>查看明细</Text>
+              <Icon name="angle-right" size={20} color={'#ccc'} style={{ marginRight: 5 ,marginTop:5}} />
             </View>
           </TouchableOpacity>
         </View>
@@ -162,24 +183,24 @@ class Member extends Component {
           <View style={styles.modBottomList}>
             <TouchableOpacity>
               <View style={styles.center}>
-                <Text>{credit2}</Text>
-                <Text>账户余额</Text>
+                <Text style={{fontSize:16}}>{credit2}</Text>
+                <Text style={styles.fontS}>账户余额</Text>
               </View>
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomList}>
             <TouchableOpacity>
               <View style={styles.center}>
-                <Text>{coupon}</Text>
-                <Text>优惠券</Text>
+                <Text style={{fontSize:16}}>{coupon}</Text>
+                <Text style={styles.fontS}>优惠券</Text>
               </View>
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomList}>
             <TouchableOpacity>
               <View style={styles.center}>
-                <Text>{credit1}</Text>
-                <Text>积分</Text>
+                <Text style={{fontSize:16}}>{credit1}</Text>
+                <Text style={styles.fontS}>积分</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -287,7 +308,7 @@ const styles = StyleSheet.create({
   topView: {
     height: 170,
     backgroundColor: '#E14135',
-    paddingTop: 20
+    paddingTop: 70
   },
   conf: {
     flexDirection: 'row',
@@ -352,7 +373,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   fontS:{
-    fontSize:12
+    fontSize:12,
+    marginTop:8
   }
 });
 

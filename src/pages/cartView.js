@@ -3,15 +3,7 @@
 
 import React, { Component } from 'react';
 
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  ScrollView
-} from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { cart } from '../actions/cartAction';
@@ -33,9 +25,6 @@ class Cart extends Component {
   }
 
   render() {
-    // console.log('====================================');
-    // console.log(this.props.cartData);
-    // console.log('====================================');
     if (this.props.loginData.status === 'success') {
       if (this.props.cartData.status === 'success') {
         return this.cartRender();
@@ -69,18 +58,18 @@ class Cart extends Component {
                 {cartList[i].selected == 1 ? <Icon name="check-circle" size={25} color={'#EF4F4F'} /> : <Icon name="circle-thin" size={25} />}
               </TouchableOpacity>
             </View>
-            <View style={{ flex: 2,justifyContent:'center' }}>
+            <View style={{ flex: 2, justifyContent: 'center' }}>
               <Image source={{ uri: cartList[i].thumb }} style={styles.img} />
             </View>
             <View style={{ flex: 8 }}>
-              <Text numberOfLines={1} style={{marginBottom:10}}>{cartList[i].title}</Text>
+              <Text numberOfLines={1} style={{ marginBottom: 10 }}>{cartList[i].title}</Text>
               {this.ctitleRender(cartList[i])}
               <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 4 }}>
                   <Text style={styles.price}>￥{cartList[i].marketprice}</Text>
                 </View>
-                <View style={{ flex: 1,justifyContent:'center',alignItems:'center' }}>
-                  <Text style={{color:'red'}}>×{cartList[i].total}</Text>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                  <Text style={{ color: 'red' }}>×{cartList[i].total}</Text>
                 </View>
                 <View style={{ flex: 1 }}>
                   <TouchableOpacity onPress={() => this._total(cartList[i].id, cartList[i].total, 'minus')}>
@@ -102,13 +91,18 @@ class Cart extends Component {
       return (
         <View style={styles.cartView}>
           {this.renderTop()}
-          <ScrollView style={{ width: ScreenWidth }}>
+          <ScrollView showsVerticalScrollIndicator={false} style={{ width: ScreenWidth }}>
+            <View style={{backgroundColor:'white',flexDirection:'row',borderBottomWidth:1,borderColor:'#eee',padding:10,alignItems:'center'}}>
+              <Text style={{fontFamily:'iconfont',fontSize:25,marginRight:10,flex:1}}>&#xe60c;</Text>
+              <Text style={{flex:10}}>自营店铺</Text>
+              <Icon name="angle-right" size={20} style={{flex:0.5}} />
+            </View>
             {cartListArr}
             <View style={{ height: 100 }}></View>
           </ScrollView>
           <View style={styles.cartBottom}>
             <View style={styles.cartBottomA}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => this._select('all', ischeckall)}>
                 {ischeckall == '1' ? <Icon name="check-circle" size={25} color={'#EF4F4F'} /> : <Icon name="circle-thin" size={25} />}
               </TouchableOpacity>
               <Text style={{ paddingLeft: 10 }}>全选</Text>
@@ -143,7 +137,7 @@ class Cart extends Component {
 
   textRender(text, color) {
     return (
-      <Text numberOfLines={2} style={{ borderRadius: 5, backgroundColor: color, color: '#fff', width: 50, textAlign: 'center',marginBottom:10 }}>{text}</Text>
+      <Text numberOfLines={2} style={{ borderRadius: 5, backgroundColor: color, color: '#fff', width: 50, textAlign: 'center', marginBottom: 10 }}>{text}</Text>
     )
   }
 

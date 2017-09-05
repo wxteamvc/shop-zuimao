@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { VERIFY_CODE_URL,REGISTER_URL} from '../common/global';
-import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity,StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import IconT from 'react-native-vector-icons/dist/Foundation';
@@ -34,6 +34,7 @@ class Login extends Component {
     render() {
         return (
             <View>
+                <StatusBar translucent={false} backgroundColor="#000" />
                 <ScrollView>
                     <View style={styles.inputView}>
                         <View style={styles.inputMobile}>
