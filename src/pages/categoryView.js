@@ -111,8 +111,17 @@ class Catergry extends Component {
                                     {this.renderImg()}
                                 </Swiper>
                             </View>
+                            <View style={{width: ScreenWidth * 0.75-20,margin:10,flexDirection:'row',alignItems:'center',backgroundColor:'#eee',height:35}}>
+                                <Text style={{width:5,backgroundColor:'#C10001',flex:0.2,height:35}}>&nbsp;</Text>
+                                <Text style={{flex:7,paddingLeft:10}}>品牌</Text>
+                                <TouchableOpacity style={{flex:3,flexDirection:'row',alignItems:'center'}} onPress={() => { this.props.navigation.navigate('Goods', { search: { cate:this.state.selectedBarId} }) }}>
+                                    <Text style={{flex:5}}>查看所有</Text>
+                                    <Icon name="angle-right" size={20} style={{ marginRight: 5 ,flex:1}} />
+                                </TouchableOpacity>
+                            </View>
                             {GoodsArr}
                         </View>
+                        <Text style={{textAlign:'center',padding:10}}>DUANG~已经到底了哦</Text>
                     </ScrollView>
                 </View>
             );
@@ -150,6 +159,7 @@ class Catergry extends Component {
                             </TouchableOpacity>
                             {GoodsArr}
                         </View>
+                        <Text style={{textAlign:'center',padding:10}}>DUANG~已经到底了哦</Text>
                     </ScrollView>
                 </View>
             )

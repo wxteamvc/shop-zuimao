@@ -255,7 +255,7 @@ class Goods extends Component {
                             )) : null;
                     }}
                     onEndReachedThreshold={goodsList.length > 6 ? 0.2 : 1}
-                    ListFooterComponent={() => goodsList.length < this.props.goodsData.total ? <ActivityIndicator size={40}></ActivityIndicator> : <Text style={{ textAlign: 'center' }}>已经到底了~</Text>
+                    ListFooterComponent={() => goodsList.length < this.props.goodsData.total ? <ActivityIndicator size={40}></ActivityIndicator> : <Text style={{ textAlign: 'center' }}>DUANG~已经到底了哦</Text>
                     }
                     showsVerticalScrollIndicator={false}
                 />
