@@ -192,12 +192,12 @@ class Catergry extends Component {
 const styles = StyleSheet.create({
     f1: { flex: 1 },
     bgcw: { backgroundColor: 'white' },
-    bgcr: { backgroundColor: 'red' },
+    bgcr: { backgroundColor: '#C10001' },
     bgct: { backgroundColor: 'transparent' },
     fdr: { flexDirection: 'row' },
     fdc: { flexDirection: 'column' },
     searchBar: {
-        backgroundColor: 'red',
+        backgroundColor: '#C10001',
         width: ScreenWidth,
         height: 40,
         justifyContent: 'center'

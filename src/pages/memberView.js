@@ -37,7 +37,7 @@ class Member extends Component {
           <View style={styles.topView}>
             <View style={styles.row}>
               <View style={styles.userIconView}>
-                <Icon name='user-o' color={'#E14135'} size={50} />
+                <Icon name='user-o' color={'#C10001'} size={50} />
               </View>
               <View style={styles.loginStatus}>
                 {this.renderText()}
@@ -59,7 +59,7 @@ class Member extends Component {
               </TouchableOpacity>
             </View>
         </View>
-        <View style={{backgroundColor:'#E14135',position:'absolute',top:0,width:ScreenWidth,height:30}}></View>
+        <View style={{backgroundColor:'#C10001',position:'absolute',top:0,width:ScreenWidth,height:30}}></View>
       </View>
     );
   }
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
   },
   topView: {
     height: 170,
-    backgroundColor: '#E14135',
+    backgroundColor: '#C10001',
     paddingTop: 70
   },
   conf: {
