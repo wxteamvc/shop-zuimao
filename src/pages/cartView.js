@@ -234,7 +234,7 @@ class Cart extends Component {
 
 const styles = StyleSheet.create({
   cartView: {
-    alignItems: 'center', height: ScreenHeight - 63
+    alignItems: 'center', flex:1
   },
   cartTop: {
     flexDirection: 'row', paddingLeft: 10, paddingRight: 10, paddingBottom: 15, backgroundColor: '#C10001', borderBottomWidth: 1, borderColor: '#aaa', marginBottom: 10, paddingTop: 30
