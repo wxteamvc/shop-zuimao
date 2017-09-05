@@ -75,7 +75,7 @@ export default class icon extends Component {
             icon.push(
                 <TouchableOpacity key={i} style={styles.listbtn} onPress={()=>{this.props.navigation.navigate(this.state.navigate[i][0],this.state.navigate[i][1])}}>
                     <Image source={url} style={styles.image} />
-                    <Text >{this.state.list[i]}</Text>
+                    <Text style={{fontSize:12}}>{this.state.list[i]}</Text>
                 </TouchableOpacity>
             )
 
