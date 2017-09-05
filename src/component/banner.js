@@ -6,7 +6,7 @@ import {
     Text,
     View,
     Image,
-    TouchableOpacity,
+    TouchableWithoutFeedback,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { DOMAIN,ScreenWidth } from '../common/global';
@@ -35,9 +35,9 @@ export default class Banner extends Component {
         for (let i = 0; i < this.props.banner.length; i++) {
             val.push( 
                   
-                <TouchableOpacity key={i} >
-                    <Image source={{uri:DOMAIN + this.props.banner[i].thumb}} style={{ height: 200,width:ScreenWidth }} resizeMode={'stretch'}></Image>
-                </TouchableOpacity>
+                <TouchableWithoutFeedback key={i}  onPress={()=>{alert('我要跳啦')}}>
+                    <Image source={{uri:DOMAIN + this.props.banner[i].thumb}} style={{ flex:1 }} resizeMode={'stretch'}></Image>
+                </TouchableWithoutFeedback>
             )
         };
         return (val);
@@ -46,9 +46,9 @@ export default class Banner extends Component {
     render() {
         if(this.state.isShow){
         return (
-            <View style={{height:200,width:ScreenWidth}}>
+            <View style={{height:160,width:ScreenWidth}}>
                 <Swiper
-                    height={200}
+                    height={160}
                     dotStyle={{ height:0, }}
                     activeDotStyle={{ height: 0, }}
                     showsButtons={false}

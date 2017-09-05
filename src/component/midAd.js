@@ -5,7 +5,7 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableOpacity,
+    TouchableWithoutFeedback,
     Image,
 } from 'react-native';
 import { COUPONS_URL, ScreenWidth, DOMAIN } from '../common/global';
@@ -20,12 +20,12 @@ export default class MidAd extends Component {
             let ad = []
             for (let i = 0; i < this.props.ad.length; i++) {
                 ad.push(
-                    <TouchableOpacity key={i}>
+                    <TouchableWithoutFeedback key={i}>
                         <Image
                             source={{ uri: DOMAIN + this.props.ad[i].thumb }}
                             style={styles.ad}
                             resizeMode={'stretch'} />
-                    </TouchableOpacity>
+                    </TouchableWithoutFeedback>
                 )
 
             }

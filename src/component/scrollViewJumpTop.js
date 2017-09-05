@@ -44,6 +44,8 @@ export default class ScrollViewJumpTop extends Component {
                 <ScrollView
                     onScroll={(e) => { this.showJumpTop(e) }}
                     ref={(ScrollView) => { this.ScrollView = ScrollView }}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator ={false}
                 >
                     {this.props.children}
                 </ScrollView>
