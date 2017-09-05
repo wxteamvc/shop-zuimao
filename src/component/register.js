@@ -195,18 +195,22 @@ const styles = StyleSheet.create({
         padding:15,
     },
     loginGray:{
+        fontSize:18,
         textAlign:'center',
         flex:1,
         backgroundColor:'#ccc',
         color:'white',
         padding:15,
+        borderRadius:5
     },
     loginGreen:{
+        fontSize:18,
         textAlign:'center',
         flex:1,
-        backgroundColor:'#4CD662',
+        backgroundColor:'#C10001',
         color:'white',
         padding:15,
+        borderRadius:5
     },
     codeView:{
         flex:2.5,

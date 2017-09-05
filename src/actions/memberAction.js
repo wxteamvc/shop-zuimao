@@ -12,7 +12,7 @@ export function login(params={}) {
                         if(responseJson.status==1){
                             dispatch(start(Types.LOGIN_SUCCESS,responseJson));
                         }else{
-                            dispatch(error(Types.LOGIN_FAILED,responseJson.result.message));
+                            dispatch(error(Types.LOGIN_FAILED,responseJson.message));
                         }
                     },
                     (error)=>{
