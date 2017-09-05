@@ -5,7 +5,7 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableOpacity,
+    TouchableWithoutFeedback,
     Image,
 } from 'react-native';
 import { COUPONS_URL, ScreenWidth, DOMAIN } from '../common/global';
@@ -23,13 +23,13 @@ export default class Findgoods extends Component {
         if (data.length === 0 || max === 0) return;
         return (
             <View style={{ flex: 1, flexDirection: flag ? 'row' : 'column',}}>
-                <TouchableOpacity style={{ flex: 1 }}>
+                <TouchableWithoutFeedback style={{ flex: 1 }}>
                     <Image
                         resizeMode={'stretch'}
                         source={{ uri: DOMAIN + data[0].img }}
                         style={{ flex: 1, margin: 3 }}
                     />
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
                 {this.renderImageList(data.slice(1), !flag, max - 1)}
 
             </View>

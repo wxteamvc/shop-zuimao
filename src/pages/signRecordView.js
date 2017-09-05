@@ -11,7 +11,6 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableOpacity,
     FlatList,
     Image,
     StatusBar,
@@ -99,7 +98,7 @@ export default class SignRecord extends Component {
         }
         return (
             <View style={[styles.listchildren,{backgroundColor:'#fff'}]}>
-            <View style={{ flex: 0.9 }}>
+            <View style={{ flex: 0.8 }}>
                 <View >
                     <Text style={{ fontSize: 18 }}>{item.log}</Text>
                 </View>
@@ -108,7 +107,7 @@ export default class SignRecord extends Component {
                     <Text style={{ marginLeft: 10, fontSize: 15 }}>{item.date}</Text>
                 </View>
             </View>
-            <View style={[{ flex: 0.1 }, styles.center]}>
+            <View style={[{ flex: 0.2 }, styles.center]}>
                 <Text style={{ fontSize: 18, color: '#24b2f4' }}>+ {item.credit}</Text>
             </View>
         </View>

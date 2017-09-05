@@ -97,7 +97,7 @@ export default class RightBtn extends Component {
             return (
                 <View style={{ backgroundColor: '#fff', paddingBottom: 5 }}>
                     <View style={styles.rush_head}>
-                        <View style={{ flex: 0.4 }}>
+                        <View style={{ flex: 0.35 }}>
                             <Image
                                 resizeMode={'stretch'}
                                 source={require('../assets/images/rush/jijiangdaoshi.png')}
@@ -144,9 +144,10 @@ const styles = StyleSheet.create({
         padding: 15
     },
     rush_head_right: {
-        flex: 0.6,
+        flex: 0.65,
         flexDirection: 'row',
         alignItems: 'center',
+        
     },
     runTime: {
         padding: 3,

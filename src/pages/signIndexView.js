@@ -191,11 +191,11 @@ export default class SignIndex extends Component {
                        backgroundColor="#000"
                     />
                     <View style={styles.header}>
-                        <View style={[styles.header_item]}>
+                        <View style={[styles.header_item,{flex:0.3}]}>
                             <Text style={[styles.font, { fontSize: 18 }]}>连续签到</Text>
                             <Text style={styles.font2}>{this.state.orderday}天</Text>
                         </View>
-                        <View style={[styles.header_item]}>
+                        <View style={[styles.header_item,{flex:0.4}]}>
                             <Image
                                 source={require('../assets/images/header.jpg')}
                                 style={styles.image}
@@ -206,10 +206,10 @@ export default class SignIndex extends Component {
                             disabled ={this.state.signed?true:false}
                             onPress={()=>{this.sign()}}
                             style={[styles.btn, { marginTop: 5 }]}>
-                                <Text style={{ fontSize: 20, color: '#fff' }}>{this.state.signed? '今日已签' : '点击签到'}</Text>
+                                <Text style={{ fontSize: 18, color: '#fff' }}>{this.state.signed? '今日已签' : '点击签到'}</Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={[styles.header_item]}>
+                        <View style={[styles.header_item,{flex:0.3}]}>
                             <Text style={[styles.font, { fontSize: 18 }]}>总签到</Text>
                             <Text style={styles.font2}>{this.state.sum}天</Text>
                         </View>
@@ -233,12 +233,13 @@ export default class SignIndex extends Component {
                             placeholderTextColor='#24B2F4'
                         />
                     </View>
-                    <View style={{ backgroundColor: '#fff', marginLeft: 4, marginRight: 4, padding: 10, paddingBottom: 0, }}>
+                    <View style={{ flex:1,backgroundColor: '#fff', marginLeft: 4, marginRight: 4, padding: 10, paddingBottom: 0, }}>
                         <FlatList
                             data={this.state.calendar}
                             extraData={this.state}
                             renderItem={this.renderDateList.bind(this)}
                             keyExtractor={(item, index) => index}
+                            showsVerticalScrollIndicator ={false}
                         />
                     </View>
                 </View>
@@ -263,7 +264,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     header_item: {
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
