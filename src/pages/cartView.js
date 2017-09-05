@@ -14,6 +14,10 @@ class Cart extends Component {
 
   constructor(...props) {
     super(...props)
+    this.state={
+      isedit:false,
+      ids:[],
+    }
   }
 
   componentDidUpdate(nextProps) {
@@ -54,7 +58,7 @@ class Cart extends Component {
         cartListArr.push(
           <View key={i} style={styles.listView}>
             <View style={styles.listA}>
-              <TouchableOpacity onPress={() => this._select(cartList[i].id, cartList[i].selected)}>
+              <TouchableOpacity onPress={() => {this._select(cartList[i].id, cartList[i].selected)}}>
                 {cartList[i].selected == 1 ? <Icon name="check-circle" size={25} color={'#EF4F4F'} /> : <Icon name="circle-thin" size={25} />}
               </TouchableOpacity>
             </View>
@@ -65,11 +69,8 @@ class Cart extends Component {
               <Text numberOfLines={1} style={{ marginBottom: 10 }}>{cartList[i].title}</Text>
               {this.ctitleRender(cartList[i])}
               <View style={{ flexDirection: 'row' }}>
-                <View style={{ flex: 4 }}>
-                  <Text style={styles.price}>￥{cartList[i].marketprice}</Text>
-                </View>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                  <Text style={{ color: 'red' }}>×{cartList[i].total}</Text>
+                <View style={{ flex: 5}}>
+                  <Text style={styles.price}>&yen;<Text style={{fontSize:18}}>{cartList[i].marketprice}</Text></Text>
                 </View>
                 <View style={{ flex: 1 }}>
                   <TouchableOpacity onPress={() => this._total(cartList[i].id, cartList[i].total, 'minus')}>
@@ -98,6 +99,7 @@ class Cart extends Component {
               <Icon name="angle-right" size={20} style={{flex:0.5}} />
             </View>
             {cartListArr}
+            <Text style={{textAlign:'center',padding:10}}>DUANG~已经到底了哦</Text>
             <View style={{ height: 100 }}></View>
           </ScrollView>
           <View style={styles.cartBottom}>
@@ -108,7 +110,7 @@ class Cart extends Component {
               <Text style={{ paddingLeft: 10 }}>全选</Text>
             </View>
             <View style={{ flex: 5 }}>
-              <Text>合计：<Text style={{ color: 'red' }}>￥{totalprice}</Text></Text>
+              <Text>合计：<Text style={{ color: 'red' }}>&yen;{totalprice}</Text></Text>
               <Text>不含运费</Text>
             </View>
             <View style={{ flex: 3 }}>
@@ -146,8 +148,8 @@ class Cart extends Component {
       <View style={styles.cartTop}>
         <View style={styles.cartTitle}><Text style={styles.colorWhite}>我的购物车</Text></View>
         <View style={styles.cartEdit}>
-          <TouchableOpacity>
-            <Text style={styles.colorWhite}>编辑</Text>
+          <TouchableOpacity onPress={()=>this.setState({isedit:!this.state.isedit})}>
+            <Text style={styles.colorWhite}>{this.state.isedit?'完成':'编辑'}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -234,7 +236,7 @@ class Cart extends Component {
 
 const styles = StyleSheet.create({
   cartView: {
-    alignItems: 'center', height: ScreenHeight - 63
+    alignItems: 'center', flex:1
   },
   cartTop: {
     flexDirection: 'row', paddingLeft: 10, paddingRight: 10, paddingBottom: 15, backgroundColor: '#C10001', borderBottomWidth: 1, borderColor: '#aaa', marginBottom: 10, paddingTop: 30
@@ -267,7 +269,7 @@ const styles = StyleSheet.create({
     width: 50, height: 50, borderRadius: 10
   },
   minusPlus: {
-    flex: 1, borderWidth: 1, borderColor: '#aaa', textAlign: 'center', backgroundColor: '#eee', paddingTop: 3, paddingBottom: 3
+    flex: 1, borderWidth: 1, borderColor: '#aaa', textAlign: 'center', paddingTop: 3, paddingBottom: 3
   },
   num: {
     flex: 1.5, borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#aaa', textAlign: 'center', paddingTop: 3, paddingBottom: 3

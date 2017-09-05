@@ -1,6 +1,7 @@
 import * as Types from "./actionTypes";
 import { LOGIN_URL,MEMBER_INFO_URL } from '../common/global';
 import Util from '../common/util';
+import Toast from 'react-native-root-toast';
 
 export function login(params={}) {
     if (global.isConnected){
@@ -12,7 +13,8 @@ export function login(params={}) {
                         if(responseJson.status==1){
                             dispatch(start(Types.LOGIN_SUCCESS,responseJson));
                         }else{
-                            dispatch(error(Types.LOGIN_FAILED,responseJson.result.message));
+                            Toast.show(responseJson.message);
+                            dispatch(error(Types.LOGIN_FAILED,responseJson.message));
                         }
                     },
                     (error)=>{

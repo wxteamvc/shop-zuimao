@@ -66,7 +66,7 @@ class Login extends Component {
                     </View>
                     <View style={styles.loginView}>
                         <TouchableOpacity onPress={()=>this._login()}>
-                            <Text style={this.state.mobile && this.state.pwd ?styles.loginGreen:styles.loginGray} allowFontScaling={false}>登陆</Text>
+                            <Text style={this.state.mobile && this.state.pwd ?styles.loginGreen:styles.loginGray} allowFontScaling={false}>登 陆</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
@@ -117,13 +117,16 @@ const styles = StyleSheet.create({
         padding:15,
     },
     loginGray:{
+        fontSize:18,
         textAlign:'center',
         flex:1,
         backgroundColor:'#ccc',
         color:'white',
-        padding:15
+        padding:15,
+        borderRadius:5
     },
     loginGreen:{
+        fontSize:18,
         textAlign:'center',
         flex:1,
         backgroundColor:'#C10001',
