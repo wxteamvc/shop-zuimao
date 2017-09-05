@@ -217,7 +217,7 @@ class Member extends Component {
           <View style={styles.modBottomOther}>
             <TouchableOpacity>
               <View style={styles.center}>
-                <Icon name="heart" size={30} color={'#FB585E'} />
+                <Icon name="heart" size={25} color={'#FB585E'} />
                 <Text style={styles.fontS}>我的关注</Text>
               </View>
             </TouchableOpacity>
@@ -225,7 +225,7 @@ class Member extends Component {
           <View style={styles.modBottomOther}>
             <TouchableOpacity>
               <View style={styles.center}>
-                <Icon name="shopping-cart" size={30} color={'#1D9D73'} />
+                <Icon name="shopping-cart" size={25} color={'#1D9D73'} />
                 <Text style={styles.fontS}>购物车</Text>
               </View>
             </TouchableOpacity>
@@ -233,7 +233,7 @@ class Member extends Component {
           <View style={styles.modBottomOther}>
             <TouchableOpacity>
               <View style={styles.center}>
-                <IconT name="foot" size={30} color={'#1B8EFF'} />
+                <IconT name="foot" size={25} color={'#1B8EFF'} />
                 <Text style={styles.fontS}>我的足迹</Text>
               </View>
             </TouchableOpacity>
@@ -241,7 +241,7 @@ class Member extends Component {
           <View style={styles.modBottomOther}>
             <TouchableOpacity>
               <View style={styles.center}>
-                <Icon name="credit-card" size={30} color={'#FFAB15'} />
+                <Icon name="credit-card" size={25} color={'#FFAB15'} />
                 <Text style={styles.fontS}>充值记录</Text>
               </View>
             </TouchableOpacity>
@@ -249,7 +249,7 @@ class Member extends Component {
           <View style={styles.modBottomOther}>
             <TouchableOpacity>
               <View style={styles.center}>
-                <Icon name="gift" size={30} color={'#9400d3'} />
+                <Icon name="gift" size={25} color={'#9400d3'} />
                 <Text style={styles.fontS}>积分签到</Text>
               </View>
             </TouchableOpacity>
@@ -257,7 +257,7 @@ class Member extends Component {
           <View style={styles.modBottomOther}>
             <TouchableOpacity>
               <View style={styles.center}>
-                <Icon name="ticket" size={30} color={'#FFAB15'} />
+                <Icon name="ticket" size={25} color={'#FFAB15'} />
                 <Text style={styles.fontS}>优惠券</Text>
               </View>
             </TouchableOpacity>
@@ -265,7 +265,7 @@ class Member extends Component {
           <View style={styles.modBottomOther}>
             <TouchableOpacity>
               <View style={styles.center}>
-                <Icon name="bell" size={30} color={'#6b8e23'} />
+                <Icon name="bell" size={25} color={'#6b8e23'} />
                 <Text style={styles.fontS}>消息提醒</Text>
               </View>
             </TouchableOpacity>
@@ -273,7 +273,7 @@ class Member extends Component {
           <View style={styles.modBottomOther}>
             <TouchableOpacity>
               <View style={styles.center}>
-                <Icon name="map-marker" size={30} color={'#BF0000'} />
+                <Icon name="map-marker" size={25} color={'#BF0000'} />
                 <Text style={styles.fontS}>地址管理</Text>
               </View>
             </TouchableOpacity>
@@ -320,15 +320,15 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   userIconView: {
-    flex: 1,
+    width:70,
+    height:70,
     backgroundColor: 'white',
-    borderRadius: 60,
-    padding: 10,
+    borderRadius: 70,
     alignItems: 'center',
+    justifyContent:'center',
     marginLeft: 30
   },
   loginStatus: {
-    flex: 6,
     marginLeft: 20,
     justifyContent: 'center',
   },
