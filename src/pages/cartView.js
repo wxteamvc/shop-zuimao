@@ -66,10 +66,7 @@ class Cart extends Component {
               {this.ctitleRender(cartList[i])}
               <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 4 }}>
-                  <Text style={styles.price}>￥{cartList[i].marketprice}</Text>
-                </View>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                  <Text style={{ color: 'red' }}>×{cartList[i].total}</Text>
+                  <Text style={styles.price}>&yen;<Text style={{fontSize:18}}>{cartList[i].marketprice}</Text></Text>
                 </View>
                 <View style={{ flex: 1 }}>
                   <TouchableOpacity onPress={() => this._total(cartList[i].id, cartList[i].total, 'minus')}>
