@@ -257,7 +257,7 @@ class Goods extends Component {
                     onEndReachedThreshold={goodsList.length > 6 ? 0.2 : 1}
                     ListFooterComponent={() => goodsList.length < this.props.goodsData.total ? <ActivityIndicator size={40}></ActivityIndicator> : <Text style={{ textAlign: 'center' }}>已经到底了~</Text>
                     }
-
+                    showsVerticalScrollIndicator={false}
                 />
             )
         }
@@ -492,6 +492,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        paddingRight:10
     },
     filterView: {
         width: ScreenWidth,

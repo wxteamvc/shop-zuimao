@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { ScreenWidth, ScreenHeight } from '../common/global';
-import { StyleSheet, Text, View, ScrollView, TextInput, Switch, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TextInput, Switch, TouchableOpacity,StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Toast from 'react-native-root-toast';
@@ -24,7 +24,7 @@ class Login extends Component {
     }
 
     componentDidUpdate(nextProps) {
-        if(this.props.loginData.status=='success'){
+        if(this.props.loginData.status==='success'){
             Toast.show(this.props.loginData.message);
             this.props.navigation.goBack();
         }
@@ -33,6 +33,7 @@ class Login extends Component {
     render() {
         return (
             <View>
+                <StatusBar translucent={false} backgroundColor="#000" />
                 <ScrollView>
                     <View style={styles.inputView}>
                         <View style={styles.inputMobile}>
@@ -125,9 +126,10 @@ const styles = StyleSheet.create({
     loginGreen:{
         textAlign:'center',
         flex:1,
-        backgroundColor:'#4CD662',
+        backgroundColor:'#C10001',
         color:'white',
-        padding:15
+        padding:15,
+        borderRadius:5
     }
 });
 

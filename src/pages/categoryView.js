@@ -4,14 +4,7 @@
 "use strict";
 
 import React, { Component } from 'react';
-import {
-    StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
-    Image,
-    ScrollView,
-} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { category } from '../actions/categoryAction';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -97,7 +90,7 @@ class Catergry extends Component {
             var GoodsArr = [];
             for (let i = 0; i < GoodsList.length; i++) {
                 GoodsArr.push(
-                    <TouchableOpacity key={i} onPress={() => { this.props.navigation.navigate('Goods', { search: { cate: GoodsList[i].id} }) }}>
+                    <TouchableOpacity key={i} onPress={() => { this.props.navigation.navigate('Goods', { search: { cate: GoodsList[i].id } }) }}>
                         <View style={styles.rightListView}>
                             {GoodsList[i].thumb == '' || GoodsList[i].thumb == null ?
                                 <Image source={require('../assets/images/nopic.jpg')} style={styles.rightListImg} /> :
@@ -110,7 +103,7 @@ class Catergry extends Component {
             }
             return (
                 <View style={styles.rightListBox}>
-                    <ScrollView>
+                    <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={styles.rightList}>
                             {/* 轮播 */}
                             <View style={styles.swiperView}>
@@ -166,7 +159,7 @@ class Catergry extends Component {
     renderImg() {
         var selectedBar = this.state.selectedBar;
         var imgs = {
-            0:[
+            0: [
                 { url: 'http://www.zuimaowang.cn/attachment/images/1/2017/04/pT7Dsf7DfdSQBtTJqff7fUH30TwLa1.jpg' },
                 { url: 'http://www.zuimaowang.cn/attachment/images/1/2017/04/pT7Dsf7DfdSQBtTJqff7fUH30TwLa1.jpg' },
             ],
@@ -248,7 +241,7 @@ const styles = StyleSheet.create({
         width: ScreenWidth * 0.75,
         paddingLeft: 15,
         paddingRight: 15,
-        marginTop:10,
+        marginTop: 10,
     }
 })
 
