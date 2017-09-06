@@ -11,7 +11,7 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableOpacity,
+    TouchableWithoutFeedback,
     Image,
     StatusBar,
 } from 'react-native';
@@ -116,7 +116,7 @@ export default class Coupons extends Component {
                 break;
         }
         return (
-            <TouchableOpacity>
+            <TouchableWithoutFeedback onPress={()=>{alert('我要领啦')}}>
                 <View style={styles.coupons}>
                     <Image
                         resizeMode={'stretch'}
@@ -141,7 +141,7 @@ export default class Coupons extends Component {
                         {main}
                     </Image>
                 </View>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
         )
     }
     render() {

@@ -43,3 +43,5 @@ export const CART_SELECT_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=
 export const CART_UPDATE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.cart.update';
 //购物车商品删除请求地址
 export const CART_REMOVE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.cart.remove';
+//商品详情请求地址
+export const GOODINFO_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=goods.detail&app=1'

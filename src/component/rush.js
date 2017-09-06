@@ -73,7 +73,7 @@ export default class RightBtn extends Component {
     rendergoods({ item }) {
         return (
             <View style={{ marginLeft: 5, marginRight: 5 }}>
-                <TouchableOpacity onPress={()=>{this.props.navigate.navigate('GoodsInfo')}}>
+                <TouchableOpacity onPress={()=>{this.props.navigate.navigate('GoodsInfo',{id:item.id})}}>
                     <Image
                         source={{ uri: DOMAIN + item.thumb }}
                         style={styles.goodImage}

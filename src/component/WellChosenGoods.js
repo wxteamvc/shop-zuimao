@@ -36,7 +36,7 @@ export default class WellChosen extends Component {
     rendergoods({ item }) {
         return (
             <View style={styles.goodContainer}>
-                <TouchableOpacity onPress={()=>{this.props.navigate.navigate('GoodsInfo')}}>
+                <TouchableOpacity onPress={()=>{this.props.navigate.navigate('GoodsInfo',{id:item.id})}}>
                     <Image
                         source={{ uri: DOMAIN + item.thumb }}
                         style={styles.goodImage}
@@ -46,9 +46,9 @@ export default class WellChosen extends Component {
                     <View style={{ flex: 1 }}>
                         <Text numberOfLines={1} style={{ color: '#000' }}>{item.title}</Text>
                     </View>
-                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                    <View style={{ flex: 1}}>
                         <Text style={{ color: 'red', flex: 1 }}>&yen;{item.marketprice}</Text>
-                        <Text style={{ textDecorationLine: 'line-through', flex: 1 }}>{item.productprice == 0 ? null : '￥' + item.productprice}</Text>
+                        <Text style={{ textDecorationLine: 'line-through', flex: 1,fontSize:12 }}>{item.productprice == 0 ? null : '￥' + item.productprice}</Text>
                     </View>
                 </View>
                 </TouchableOpacity>
