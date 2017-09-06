@@ -43,3 +43,16 @@ export const CART_SELECT_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=
 export const CART_UPDATE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.cart.update';
 //商品详情请求地址
 export const GOODINFO_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=goods.detail&app=1';
+//评论统计请求地址
+export const GOODCHATCOUNT_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=goods.detail.get_comments&app=1';
+//评论列表请求地址
+export function GOODCHATLIST_URL(condition={}){
+    let data={
+        id:'',
+        page:'',
+        level:'',
+        date:'',
+    };
+    Object.assign(data,condition);
+   return (BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=goods.detail.get_comment_list&app=1&id='+data.id+'&page='+data.page+'&level='+data.level+'&getcount=1&_='+data.date);
+} 
