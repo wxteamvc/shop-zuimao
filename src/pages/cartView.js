@@ -7,7 +7,7 @@ import { AppRegistry, StyleSheet, Text, View, TouchableOpacity, Image, ScrollVie
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { cart } from '../actions/cartAction';
-import { ScreenWidth, ScreenHeight, CART_SELECT_URL, CART_UPDATE_URL } from '../common/global';
+import { ScreenWidth, ScreenHeight, CART_SELECT_URL, CART_UPDATE_URL,CART_REMOVE_URL } from '../common/global';
 import Toast from 'react-native-root-toast';
 
 class Cart extends Component {
@@ -58,9 +58,16 @@ class Cart extends Component {
         cartListArr.push(
           <View key={i} style={styles.listView}>
             <View style={styles.listA}>
+              {this.state.isedit?
+                <TouchableOpacity onPress={()=>this.setState({
+                  ids:this._editIds(cartList[i].id),
+                  })}>
+                {this.renderCheckIcon(cartList[i].id)}
+              </TouchableOpacity>:
               <TouchableOpacity onPress={() => {this._select(cartList[i].id, cartList[i].selected)}}>
                 {cartList[i].selected == 1 ? <Icon name="check-circle" size={25} color={'#EF4F4F'} /> : <Icon name="circle-thin" size={25} />}
               </TouchableOpacity>
+              }
             </View>
             <View style={{ flex: 2, justifyContent: 'center' }}>
               <Image source={{ uri: cartList[i].thumb }} style={styles.img} />
@@ -102,25 +109,27 @@ class Cart extends Component {
             <Text style={{textAlign:'center',padding:10}}>DUANG~已经到底了哦</Text>
             <View style={{ height: 100 }}></View>
           </ScrollView>
-          <View style={styles.cartBottom}>
-            <View style={styles.cartBottomA}>
-              <TouchableOpacity onPress={() => this._select('all', ischeckall)}>
-                {ischeckall == '1' ? <Icon name="check-circle" size={25} color={'#EF4F4F'} /> : <Icon name="circle-thin" size={25} />}
-              </TouchableOpacity>
-              <Text style={{ paddingLeft: 10 }}>全选</Text>
-            </View>
-            <View style={{ flex: 5 }}>
-              <Text>合计：<Text style={{ color: 'red' }}>&yen;{totalprice}</Text></Text>
-              <Text>不含运费</Text>
-            </View>
-            <View style={{ flex: 3 }}>
-              <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity>
-                  <Text style={styles.payBtn}>结算({total})</Text>
+          {this.state.isedit?this.cartBottomEditRender(cartList):
+            <View style={styles.cartBottom}>
+              <View style={styles.cartBottomA}>
+                <TouchableOpacity onPress={() => this._select('all', ischeckall)}>
+                  {ischeckall == '1' ? <Icon name="check-circle" size={25} color={'#EF4F4F'} /> : <Icon name="circle-thin" size={25} />}
                 </TouchableOpacity>
+                <Text style={{ paddingLeft: 10 }}>全选</Text>
+              </View>
+              <View style={{ flex: 5 }}>
+                <Text>合计：<Text style={{ color: 'red' }}>&yen;{totalprice}</Text></Text>
+                <Text>不含运费</Text>
+              </View>
+              <View style={{ flex: 3 }}>
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableOpacity>
+                    <Text style={styles.payBtn}>结算({total})</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
+          }
         </View>
       )
     } else {
@@ -133,6 +142,70 @@ class Cart extends Component {
     }
   }
 
+  renderCheckIcon(id){
+    for(let key in this.state.ids){
+      if(this.state.ids[key]==id){
+        return(<Icon name="check-circle" size={25} color={'#EF4F4F'} />)
+      }
+    }
+    return (<Icon name="circle-thin" size={25} />)
+  }
+
+  _editIds(id){
+    let ids = this.state.ids;
+    for(let key in this.state.ids){
+      if(this.state.ids[key]==id){
+         ids.splice(key, 1);
+         return ids;
+      }
+    }
+    return this.state.ids.concat(id)
+  }
+
+  cartBottomEditRender(cartList){
+    let count = cartList.length;
+    return(
+      <View style={styles.cartBottom}>
+      <View style={styles.cartBottomA}>
+        <TouchableOpacity onPress={()=>this._editCheckAll()}>
+          {count == this.state.ids.length ? <Icon name="check-circle" size={25} color={'#EF4F4F'} /> : <Icon name="circle-thin" size={25} />}
+        </TouchableOpacity>
+        <Text style={{ paddingLeft: 10 }}>全选</Text>
+      </View>
+      <View style={{ flex: 5 }}></View>
+      <View style={{ flex: 3 }}>
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity onPress={()=>this._remove()}>
+            <Text style={styles.payBtn}>删除</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+    )
+  }
+
+  _remove(){
+    let params = '&ids[]='+this.state.ids;
+    this._fetch(CART_REMOVE_URL,params);
+  }
+
+  _editCheckAll(){
+    let cartList = this.props.cartData.data.result.list;
+    let checkedALL = cartList.length == this.state.ids.length?0:1;
+    let idArr=[];
+    this.setState({
+      ids:[],
+    })
+    if(checkedALL==1){
+      for(let j = 0;j<cartList.length;j++){
+        idArr=idArr.concat(cartList[j].id)
+      }
+      this.setState({
+        ids:idArr,
+      })
+    }
+  }
+  
   ctitleRender(data) {
     return data.isdiscount == 1 ? this.textRender('促销', '#ff00ff') : null;
   }
@@ -158,16 +231,37 @@ class Cart extends Component {
 
   _select(id, select) {
     let sel = select == 1 ? 0 : 1;
-    fetch(CART_SELECT_URL, {
+    let params = '&id=' + id + '&select=' + sel;
+    this._fetch(CART_SELECT_URL,params);
+  }
+
+  _total(id, total, type) {
+    if (type === 'minus') {
+      let num = total - 1;
+      if (num >= 1) {
+        let params = '&id=' + id + '&total=' + num;
+        this._fetch(CART_UPDATE_URL,params);
+      }  
+    }
+    if (type === 'plus') {
+      let num = total * 1 + 1;
+      let params = '&id=' + id + '&total=' + num;
+      this._fetch(CART_UPDATE_URL,params);
+    }  
+  }
+
+  _fetch(url,params){
+    fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: '&id=' + id + '&select=' + sel,
+      body: params,
     })
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.status == 1) {
+          if(this.state.isedit){this.setState({isedit:false})}
           this.props.dispatch(cart(this.props.loginData.data.result.token))
         } else {
           Toast.show('服务器请求失败');
@@ -178,60 +272,6 @@ class Cart extends Component {
         Toast.show('服务器请求失败');
       });
   }
-
-  _total(id, total, type) {
-    if (type === 'minus') {
-      let num = total - 1;
-      if (num >= 1) {
-        fetch(CART_UPDATE_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: '&id=' + id + '&total=' + num,
-        })
-          .then(response => response.json())
-          .then(responseJson => {
-            if (responseJson.status == 1) {
-              this.props.dispatch(cart(this.props.loginData.data.result.token))
-            } else {
-              Toast.show('服务器请求失败');
-              this.props.dispatch(cart(this.props.loginData.data.result.token))
-            }
-          })
-          .catch((error) => {
-            Toast.show('服务器请求失败');
-          });
-      }
-    }
-    if (type === 'plus') {
-      let num = total * 1 + 1;
-      fetch(CART_UPDATE_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: '&id=' + id + '&total=' + num,
-      })
-        .then(response => response.json())
-        .then(responseJson => {
-          if (responseJson.status == 1) {
-            this.props.dispatch(cart(this.props.loginData.data.result.token))
-          } else {
-            Toast.show('服务器请求失败');
-            this.props.dispatch(cart(this.props.loginData.data.result.token))
-          }
-        })
-        .catch((error) => {
-          Toast.show('服务器请求失败');
-        });
-    }
-  }
-
-  _fetch(id, params) {
-
-  }
-
 }
 
 const styles = StyleSheet.create({
