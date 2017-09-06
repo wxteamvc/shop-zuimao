@@ -16,7 +16,7 @@ import Login from './component/login';
 import Register from './component/register';
 import Goods from './pages/goodsView';
 import GoodsInfo from './pages/goodsInfoView';
-
+import IsTime from './pages/isTimeView';
 
 
 const App = StackNavigator({
@@ -83,6 +83,12 @@ const App = StackNavigator({
     },
     GoodsInfo:{
         screen: GoodsInfo,
+        navigationOptions: ({ navigation }) => ({
+            header: null
+        }),
+    },
+    IsTime:{
+        screen: IsTime,
         navigationOptions: ({ navigation }) => ({
             header: null
         }),

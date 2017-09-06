@@ -24,7 +24,7 @@ export default class icon extends Component {
                 ['SignTab',{}],
                 ['Coupons',{}],
                 ['Goods',{search: { cate:1211}}],
-                ['Goods',{search: { cate:1211}}],
+                ['IsTime',{search: { istime:1}}],
                 ['Goods',{search: { cate:1211}}],
                 ['Goods',{search: { cate:1211}}],
                
