@@ -47,6 +47,7 @@ export default class FlatListJumpTop extends Component {
                     onScroll={(e) => { this.showJumpTop(e) }}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator ={false}
+                    getItemLayout={(data, index) => ( {length: 50, offset: 50 * index, index} )}
                 />
                 <TouchableOpacity
                     onPress={() => { this.FlatList.scrollToIndex({ viewPosition: 0, index: 0 }) }}
