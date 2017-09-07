@@ -12,6 +12,7 @@ import {
     ScrollView,
     Image,
     FlatList,
+    Modal,
 } from 'react-native';
 import ScrollViewJumpTop from '../component/scrollViewJumpTop';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -22,7 +23,7 @@ import Util from '../common/util';
 import Loading from '../component/loading';
 import co from 'co';
 import FlatListJumpTop from '../component/flatListJumoTop';
-
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 
 export default class GoodsInfo extends Component {
@@ -38,24 +39,30 @@ export default class GoodsInfo extends Component {
             level: '',
             goodsNum: 1,
             showUnSend: false,
-            showRights: false,
             showNum: false,
             data: {},
             chatCount: {},
             chat: [],
-
+            modalVisible: false,
+            modalValue: [],
+            modalText: '',
+            d: '00',
+            h: '00',
+            m: '00',
+            s: '00',
+            istimer:true,
         }
         this.info = {
             uSend: [
                 '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市'
             ],
-            rights: [
-                '满99免基础运费（20kg以内）', '醉猫售后', '醉猫准达', '211限时达', '货到付款', '自提',
-            ]
 
         }
     }
 
+    componentWillUnmount() {
+        clearInterval(this.timer)
+    }
 
     gen = function* () {
         let { id } = this.props.navigation.state.params;
@@ -117,7 +124,9 @@ export default class GoodsInfo extends Component {
                     />
                     <View style={{ flex: 1, }}>
                         <View style={styles.topNav}>
-                            <TouchableOpacity style={[{ flex: 0.1, },]} onPress={() => { this.props.navigation.goBack() }}>
+                            <TouchableOpacity style={[{ flex: 0.1, },]} onPress={() => {
+                              this.props.navigation.goBack(null)
+                                 }}>
                                 <Icon name={'angle-left'} size={30} color={'#ccc'} style={{ marginLeft: 10 }} />
                             </TouchableOpacity>
                             <View style={styles.topNavRight}>
@@ -137,19 +146,16 @@ export default class GoodsInfo extends Component {
                                             <Text style={{ fontSize: 16, color: this.state.page == 3 ? 'red' : '#000', }}>参数</Text>
                                         </TouchableOpacity>
                                     </View> : null}
-                                {this.state.chatCountStatus == 'success' ?
-                                    this.state.chatCount.all != 0 ?
-                                        <View style={[{ borderColor: this.state.page == 4 ? 'red' : '#ccc', }, styles.top]}>
-                                            <TouchableOpacity onPress={() => {
-                                                this.setState({ page: 4 })
-                                                this.getChatList()
-                                            }}>
-                                                <Text style={{ fontSize: 16, color: this.state.page == 4 ? 'red' : '#000', }}>评价</Text>
-                                            </TouchableOpacity>
-                                        </View> : null : null
+                                {this.state.chatCountStatus == 'success' && this.state.chatCount.count.all > 0 ?
+                                    <View style={[{ borderColor: this.state.page == 4 ? 'red' : '#ccc', }, styles.top]}>
+                                        <TouchableOpacity onPress={() => {
+                                            this.setState({ page: 4 })
+                                            this.getChatList()
+                                        }}>
+                                            <Text style={{ fontSize: 16, color: this.state.page == 4 ? 'red' : '#000', }}>评价</Text>
+                                        </TouchableOpacity>
+                                    </View> : false
                                 }
-
-
                             </View>
                         </View>
                         {this.show()}
@@ -177,8 +183,22 @@ export default class GoodsInfo extends Component {
                         </View>
                     </View>
                     {this.renderUnSend()}
-                    {this.renderRights()}
                     {this.renderNum()}
+                    <Modal
+                        ref={(Modal) => { this.modal = Modal }}
+                        visible={this.state.modalVisible}
+                        transparent={true}
+                        onRequestClose={() => {
+                            this.setModalVisible(false)
+                        }}
+                    >
+                        <ImageViewer
+                            style={{ backgroundColor: '#fff' }}
+                            imageUrls={this.state.modalValue}
+                            renderHeader={() => this.renderImageViwerHerder()}
+                            renderFooter={() => this.renderImageViwerHerder()}
+                        />
+                    </Modal>
                 </View>
             )
         } else {
@@ -190,6 +210,28 @@ export default class GoodsInfo extends Component {
         }
 
     }
+
+    renderImageViwerHerder() {
+        return (
+            <View style={{ backgroundColor: '#fff', opacity: 0.7, height: 30, flexDirection: 'row', }}>
+                <TouchableOpacity
+                    onPress={() => { this.setModalVisible(false) }}
+                    style={[{ flex: 0.1 }, styles.center]}>
+                    <Icon name={'angle-left'} color={'#000'} size={30} />
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
+
+    renderImageViwerFooter() {
+        return (
+            <View style={{ backgroundColor: '#fff', opacity: 0.7, width: ScreenWidth, height: 500 }}>
+                <Text style={{ color: '#000' }}>{this.state.modalText}</Text>
+            </View>
+        )
+    }
+
 
     show() {
         if (this.state.page == 1) {
@@ -211,7 +253,7 @@ export default class GoodsInfo extends Component {
                     <View style={styles.motaiBottom}>
                         <View style={[styles.rowCenter, styles.usbTop, { height: 60 }]}>
                             <View style={[{ flex: 0.9 }]}>
-                                <Text style={styles.showNumTopText}>&yen;16666666</Text>
+                                <Text style={styles.showNumTopText}>&yen;{this.state.data.goods.marketprice}</Text>
                             </View>
                             <View style={[{ flex: 0.1, }, styles.center]}>
                                 <TouchableOpacity
@@ -248,7 +290,7 @@ export default class GoodsInfo extends Component {
                     </View>
                     <Image
                         style={styles.showNumImg}
-                        source={{ uri: 'http://www.zuimaowang.cn/attachment/images/1/2017/08/I8nOeWnby798WZ9WFYOYFYYHnEe2E8.jpg' }} />
+                        source={{ uri: this.state.data.goods.thumb }} />
                 </View>
             )
         }
@@ -263,10 +305,7 @@ export default class GoodsInfo extends Component {
                 <Text style={[styles.smallBtn, { borderRadius: 15 }]}>{item}</Text>
             </View>
         )
-
     }
-
-
 
     renderUnSend() {
         if (this.state.showUnSend) {
@@ -298,9 +337,7 @@ export default class GoodsInfo extends Component {
         }
     }
 
-
-
-    getChatList(condition = {}, isAdd = 1) {
+    getChatList(condition = {}, isAdd = 0) {
         let data = {
             id: this.props.navigation.state.params.id,
             date: Math.round(new Date().getTime() / 1000)
@@ -331,12 +368,11 @@ export default class GoodsInfo extends Component {
             })
     }
 
-
     //评论
     renderChat() {
         if (this.state.chatListStatus == 'success') {
             return (
-                <View style={{ flex: 1, }}>
+                <View style={{ flex: 1, backgroundColor: '#EFEFEF' }}>
                     <View style={styles.chatTop}>
                         <TouchableOpacity
                             onPress={() => {
@@ -348,7 +384,7 @@ export default class GoodsInfo extends Component {
                                     page: 1,
                                     level: ''
                                 }
-                                this.getChatList(data, 0)
+                                this.getChatList(data)
                             }}
                             style={[styles.chatBtn, { backgroundColor: this.state.level == '' ? 'orange' : '#FFEEEE' }]}
                         >
@@ -364,7 +400,7 @@ export default class GoodsInfo extends Component {
                                     page: 1,
                                     level: 'good'
                                 }
-                                this.getChatList(data, 0)
+                                this.getChatList(data)
                             }}
                             style={[styles.chatBtn, { backgroundColor: this.state.level == 'good' ? 'orange' : '#FFEEEE' }]}>
                             <Text style={{ color: this.state.level == 'good' ? '#fff' : '#ccc' }}>好评({this.state.chatCount.count.good})</Text>
@@ -379,7 +415,7 @@ export default class GoodsInfo extends Component {
                                     page: 1,
                                     level: 'normal'
                                 }
-                                this.getChatList(data, 0)
+                                this.getChatList(data)
                             }}
                             style={[styles.chatBtn, { backgroundColor: this.state.level == 'normal' ? 'orange' : '#FFEEEE' }]}>
                             <Text style={{ color: this.state.level == 'normal' ? '#fff' : '#ccc' }}>中评({this.state.chatCount.count.normal})</Text>
@@ -394,7 +430,7 @@ export default class GoodsInfo extends Component {
                                     page: 1,
                                     level: 'bad'
                                 }
-                                this.getChatList(data, 0)
+                                this.getChatList(data)
                             }}
                             style={[styles.chatBtn, { backgroundColor: this.state.level == 'bad' ? 'orange' : '#ccc' }]}>
                             <Text style={{ color: this.state.level == 'bad' ? '#fff' : '#000' }}>差评({this.state.chatCount.count.bad})</Text>
@@ -409,7 +445,7 @@ export default class GoodsInfo extends Component {
                                     page: 1,
                                     level: 'pic'
                                 }
-                                this.getChatList(data, 0)
+                                this.getChatList(data)
                             }}
                             style={[styles.chatBtn, { backgroundColor: this.state.level == 'pic' ? 'orange' : '#FFEEEE' }]}>
                             <Text style={{ color: this.state.level == 'pic' ? '#fff' : '#ccc' }}>晒图({this.state.chatCount.count.pic})</Text>
@@ -431,8 +467,13 @@ export default class GoodsInfo extends Component {
                                     page: this.state.chatPage,
                                     level: this.state.level
                                 }
-                                this.getChatList(data)
+                                this.getChatList(data, 1)
                             }}
+                        ListFooterComponent={
+                            <View style={[{ flex: 1, paddingBottom: 15, paddingTop: 15 }, styles.center]}>
+                                <Text>亲~没有更多评论了哦</Text>
+                            </View>
+                        }
                     />
                 </View>
             )
@@ -443,9 +484,15 @@ export default class GoodsInfo extends Component {
                 </View>
             )
         }
-
     }
 
+    setModalVisible(visible, value = [], text = '') {
+        this.setState({
+            modalVisible: visible,
+            modalValue: value,
+            modalText: text,
+        });
+    }
 
     renderChatList({ item }) {
         let star = []
@@ -453,7 +500,6 @@ export default class GoodsInfo extends Component {
             star.push(
                 <Icon key={i} name={'star'} color={'orange'} />
             )
-
         }
         let url = null;
         if (item.headimgurl) {
@@ -462,19 +508,25 @@ export default class GoodsInfo extends Component {
             url = require('../assets/images/header.jpg')
         }
         let img = [];
-        for (let i = 0; i < item.images.length; i++) {
-            img.push(
-                <Image
-                    key={i}
-                    resizeMode ={'cover'}
-                    source={{ uri: item.images[i] }}
-                    style={{ width: (ScreenWidth - 20) / 3, height: (ScreenWidth - 20) / 3}}
-                />
-            )
+        let modalImages = [];
 
+        for (let i = 0; i < item.images.length; i++) {
+            modalImages.push({ url: item.images[i] })
+            img.push(
+                <TouchableOpacity
+                    key={i}
+                    onPress={() => { this.setModalVisible(true, modalImages, item.content) }}
+                >
+                    <Image
+                        resizeMode={'cover'}
+                        source={{ uri: item.images[i] }}
+                        style={{ width: (ScreenWidth - 20) / 3, height: (ScreenWidth - 20) / 3 }}
+                    />
+                </TouchableOpacity>
+            )
         }
         return (
-            <View style={styles.chatList}>
+            <View style={[styles.chatList, { marginTop: 10 }]}>
                 <View style={styles.chatListTop}>
                     <View style={styles.rowCenter}>
                         <Image
@@ -484,50 +536,23 @@ export default class GoodsInfo extends Component {
                     <Text style={{ color: '#ccc' }}>{item.createtime}</Text>
                 </View>
                 <View style={styles.chatListStar}>{star}</View>
-                <View><Text style={{ color: '#000' }}>{item.content}</Text></View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', }}>
-                    {img}
+                <View style={{ paddingTop: 10, paddingBottom: 10 }}><Text style={{ color: '#000' }}>{item.content}</Text>
                 </View>
+                {item.images.length > 0 ?
+                    <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', marginTop: 10, marginBottom: 10 }}>
+                        {img}
+                    </View> : false}
+                {item.reply_content ?
+                    <View style={{ paddingTop: 10, paddingBottom: 10 }}>
+                        <View style={{ backgroundColor: '#ccc', padding: 10, marginTop: 10, marginBottom: 10 }}>
+                            <Text>[ 醉猫回复 ]：{item.reply_content}</Text>
+                        </View>
+                        <View style={{ width: 0, height: 0, borderWidth: 8, borderColor: 'transparent', borderBottomColor: '#ccc', position: 'absolute', top: 5, left: 18 }}></View>
+                    </View>
+                    : false}
             </View>
         )
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     renderParameterList({ item }) {
         return (
@@ -550,59 +575,7 @@ export default class GoodsInfo extends Component {
         )
     }
 
-    //渲染所有权益
-    renderRights() {
-        if (this.state.showRights) {
-            return (
-                <View style={styles.motaiContainer}>
-                    <View style={styles.motaiTop}></View>
-                    <View style={styles.motaiBottom}>
-                        <View style={[styles.rowCenter, styles.usbTop]}>
-                            <View style={styles.unSendTopLeft}>
-                                <Text>服务说明</Text>
-                            </View>
-                            <View style={styles.unSendTopRight}
-                            >
-                                <TouchableOpacity onPress={() => { this.setState({ showRights: false }) }}>
-                                    <Icon name={'close'} size={16} color={'#ccc'} />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        <FlatList
-                            data={this.info.rights}
-                            keyExtractor={(item, index) => index}
-                            renderItem={({ item }) => {
-                                return (
-                                    <View style={styles.rightsList}>
-                                        <Icon name={'check-circle-o'} color={'orange'} size={20} />
-                                        <Text numberOfLines={1} style={{ marginLeft: 5 }}>{item}</Text>
-                                    </View>
-                                )
-                            }}
-                            showsVerticalScrollIndicator={false}
 
-                        />
-                    </View>
-                </View>
-            )
-        }
-
-
-    }
-
-    //取前三条权益渲染
-    renderThreeRights() {
-        let rights = []
-        for (let i = 0; i < this.info.rights.slice(0, 3).length; i++) {
-            rights.push(
-                <View key={i} style={styles.rightsList}>
-                    <Icon name={'check-circle-o'} color={'green'} size={20} />
-                    <Text style={{ marginLeft: 5 }}>{this.info.rights[i]}</Text>
-                </View>
-            )
-        }
-        return (rights)
-    }
 
 
     renderInfo() {
@@ -625,37 +598,50 @@ export default class GoodsInfo extends Component {
         )
     }
 
+    renderGoodsChatList({ item }) {
+        let star = []
+        for (let i = 0; i < item.level; i++) {
+            star.push(
+                <Icon key={i} name={'star'} color={'orange'} />
+            )
+        }
+        return (
+            <View style={[styles.chatList, { marginTop: 10 }]}>
+                <View style={styles.chatListTop}>
+                    <Text style={{ color: '#000' }}>{item.nickname}</Text>
+                    <Text style={{ color: '#ccc' }}>{item.createtime}</Text>
+                </View>
+                <View style={styles.chatListStar}>{star}</View>
+                <View><Text style={{ color: '#000' }}>{item.content}</Text></View>
+            </View>
+        )
+    }
     renderGoodsChat() {
-        if (this.state.chatCountStatus == 'success') {
+        if (this.state.chatCountStatus == 'success' && this.state.chatCount.list.length > 0) {
             return (
                 <View style={styles.goodsChat}>
                     <View style={styles.rowBetween}>
                         <Text>商品评价( {this.state.chatCount.count.all}人评论 )</Text>
                         {this.state.chatCount.count.all != 0 ? <Text>好评度<Text style={{ color: 'red' }}>{this.state.chatCount.percent}%</Text></Text> : null}
                     </View>
-                    {this.state.chatCount.list.length != 0 ?
-                        <FlatList
-                            data={this.state.chatCount.list}
-                            keyExtractor={(item, index) => index}
-                            renderItem={this.renderChatList.bind(this)}
-                            showsVerticalScrollIndicator={false}
-                            ListFooterComponent={
-                                <View style={[{ flex: 1, paddingBottom: 15, paddingTop: 15 }, styles.center]}>
-                                    <TouchableOpacity
-                                        style={{ flex: 0.4 }}
-                                        onPress={() => {
-                                            this.setState({ page: 4 })
-                                            this.getChatList()
-                                        }}>
-                                        <Text style={[styles.btn, { color: 'red' }]}>点击查看所有评论</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            }
-                        /> :
-                        <View style={[styles.center, { padding: 15 }]}>
-                            <Text style={{ fontSize: 12 }}>亲 暂无评论哦~~</Text>
-                        </View>
-                    }
+                    <FlatList
+                        data={this.state.chatCount.list}
+                        keyExtractor={(item, index) => index}
+                        renderItem={this.renderGoodsChatList.bind(this)}
+                        showsVerticalScrollIndicator={false}
+                        ListFooterComponent={
+                            <View style={[{ flex: 1, paddingBottom: 15, paddingTop: 15 }, styles.center]}>
+                                <TouchableOpacity
+                                    style={{ flex: 0.4 }}
+                                    onPress={() => {
+                                        this.setState({ page: 4 })
+                                        this.getChatList()
+                                    }}>
+                                    <Text style={[styles.btn, { color: 'red' }]}>点击查看所有评论</Text>
+                                </TouchableOpacity>
+                            </View>
+                        }
+                    />
                 </View>
             )
 
@@ -664,7 +650,74 @@ export default class GoodsInfo extends Component {
         }
 
     }
+    rushtime(date) {
+        let [d, h, m, s] = [null, null, null, null];
+        let time = date - Math.round(new Date().getTime() / 1000);
+        if (time == 0) {
+            co(this.gen.bind(this)).then(function () {
+                console.log('加载完成')
+            })
+        } else {
+            d = parseInt(time / 86400)
+            h = parseInt((time - 86400 * d) / 3600);
+            m = parseInt((time - 86400 * d - 3600 * h) / 60);
+            s = time - 86400 * d - 3600 * h - 60 * m;
+            d = d < 10 ? '0' + d : d
+            h = h < 10 ? '0' + h : h
+            m = m < 10 ? '0' + m : m
+            s = s < 10 ? '0' + s : s
+            this.setState({
+                istimer:false,
+                d: d,
+                h: h,
+                m: m,
+                s: s,
+            })
+        }
 
+    }
+
+    rush=()=> {
+        let text = '';
+        let date = Math.round(new Date().getTime() / 1000);
+        if (date < this.state.data.goods.timestart) {
+            text = '距离限时购开始'
+            if(this.state.istimer){
+                this.timer = setInterval(
+                    () => {
+                        this.rushtime(this.state.data.goods.timestart)
+                    }
+                    , 1000)  
+            }
+           
+        } else if (date >= this.state.data.goods.timestart && date < this.state.data.goods.timeend) {
+            text = '距离限时购结束'
+            if(this.state.istimer){
+                this.timer = setInterval(
+                    () => {
+                        this.rushtime(this.state.data.goods.timeend)
+                    }
+                    , 1000)
+            }
+        } else {
+            text = '限时购已经结束'
+        }
+
+        return (
+            <View style={styles.rush_head}>
+                <View style={styles.rush_head_left}><Text style={{color:'#fff'}}>{text}</Text></View>
+                <View style={styles.rush_head_right}>
+                <Text style={styles.runTime}>{this.state.d}</Text>
+                <Text style={[styles.between_runTime]}>天</Text>
+                <Text style={styles.runTime}>{this.state.h}</Text>
+                <Text style={styles.between_runTime}>:</Text>
+                <Text style={styles.runTime}>{this.state.m}</Text>
+                <Text style={styles.between_runTime}>:</Text>
+                <Text style={styles.runTime}>{this.state.s}</Text>
+                </View>
+            </View>
+        )
+    }
 
     renderGoods() {
         var val = [];
@@ -673,6 +726,7 @@ export default class GoodsInfo extends Component {
                 <Image key={index} source={{ uri: DOMAIN + this.state.data.thumbs[index] }} style={{ height: 400 }} resizeMode={'stretch'}></Image>
             )
         }
+
         return (
             <View style={{ flex: 1, backgroundColor: '#EFEFEF' }}>
                 <ScrollView
@@ -703,6 +757,7 @@ export default class GoodsInfo extends Component {
                             <Text style={styles.goodsNowPrice}>&yen;{this.state.data.goods.marketprice}</Text>
                             <Text style={styles.goodsOldPrice}>&yen;{this.state.data.goods.productprice}</Text>
                         </View>
+                        {this.state.data.goods.istime == 1 ? this.rush(): false}
                         <View style={[styles.rowYCenter, { paddingTop: 5, paddingLeft: 5 }]}>
                             <Text numberOfLines={1} style={{ flex: 1 }}>快递：{this.state.data.goods.issendfree ? '包邮' : this.state.data.goods.dispatchprice + '元'}</Text>
                             <Text numberOfLines={1} style={{ flex: 1 }}>库存：{this.state.data.goods.total}</Text>
@@ -728,21 +783,42 @@ export default class GoodsInfo extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.goodsRights}>
-                        <View style={styles.goodsRightsLeft}>
-                            {this.renderThreeRights()}
-                        </View>
-                        <View style={[{ flex: 0.1 }, styles.center]}>
-                            <TouchableOpacity onPress={() => this.setState({ showRights: true })}>
-                                <Text style={{ fontSize: 20 }}>...</Text>
-                            </TouchableOpacity>
-                        </View>
-
+                        {this.state.data.goods.cash == 2 ?
+                            <View style={styles.rightsList}>
+                                <Icon name={'check-circle-o'} color={'orange'} size={20} />
+                                <Text style={{ marginLeft: 5 }}>货到付款</Text>
+                            </View>
+                            : false}
+                        {this.state.data.goods.quality == 1 ?
+                            <View style={styles.rightsList}>
+                                <Icon name={'check-circle-o'} color={'orange'} size={20} />
+                                <Text style={{ marginLeft: 5 }}>正品保障</Text>
+                            </View>
+                            : false}
+                        {this.state.data.goods.repair == 1 ?
+                            <View style={styles.rightsList}>
+                                <Icon name={'check-circle-o'} color={'orange'} size={20} />
+                                <Text style={{ marginLeft: 5 }}>保修</Text>
+                            </View>
+                            : false}
+                        {this.state.data.goods.invoice == 1 ?
+                            <View style={styles.rightsList}>
+                                <Icon name={'check-circle-o'} color={'orange'} size={20} />
+                                <Text style={{ marginLeft: 5 }}>发票</Text>
+                            </View>
+                            : false}
+                        {this.state.data.goods.seven == 1 ?
+                            <View style={styles.rightsList}>
+                                <Icon name={'check-circle-o'} color={'orange'} size={20} />
+                                <Text style={{ marginLeft: 5 }}>7天退换</Text>
+                            </View>
+                            : false}
                     </View>
-                    <TouchableOpacity activeOpacity={1} onPress={() => { this.setState({ showNum: true }) }}>
-                        <View style={styles.goodsNum}>
-                            <Text style={{ fontSize: 16 }}>数量<Text>{this.state.goodsNum != 1 ? ':已选择' + this.state.goodsNum + '件' : null}</Text></Text>
-                            <Icon name={'angle-right'} size={25} />
-                        </View>
+                    <TouchableOpacity
+                        style={styles.goodsNum}
+                        activeOpacity={1} onPress={() => { this.setState({ showNum: true }) }}>
+                        <Text style={{ fontSize: 16 }}>数量<Text>{this.state.goodsNum != 1 ? ':已选择' + this.state.goodsNum + '件' : null}</Text></Text>
+                        <Icon name={'angle-right'} size={25} />
                     </TouchableOpacity>
                     {this.renderGoodsChat()}
                     <View style={styles.goodsBottom}>
@@ -878,13 +954,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row', alignItems: 'center', padding: 10,
     },
     chatList: {
-        flex: 1, padding: 5, paddingLeft: 10, paddingRight: 10, borderBottomWidth: 0.7, borderColor: '#ccc'
+        flex: 1, padding: 5, paddingLeft: 10, paddingRight: 10, borderBottomWidth: 0.7, borderColor: '#ccc', backgroundColor: '#fff'
     },
     chatListTop: {
-        flexDirection: 'row', justifyContent: 'space-between'
+        flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10
     },
     chatListStar: {
-        flexDirection: 'row', marginTop: 10, marginBottom: 5
+        flexDirection: 'row', paddingTop: 10,
     },
     goodsTitle: {
         paddingTop: 5, flex: 0.85, color: '#000', fontSize: 16, borderRightWidth: 1, borderColor: '#ccc'
@@ -902,13 +978,10 @@ const styles = StyleSheet.create({
         borderColor: '#ccc', borderBottomWidth: 0.3, marginTop: 8, backgroundColor: '#fff'
     },
     goodsRights: {
-        borderColor: '#ccc', borderBottomWidth: 0.3, flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', marginTop: 8
-    },
-    goodsRightsLeft: {
-        flex: 0.9, flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap'
+        borderColor: '#ccc', borderBottomWidth: 0.7, flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', backgroundColor: '#fff', marginTop: 8
     },
     goodsNum: {
-        height: 30, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#fff', padding: 20
+        flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#fff', padding: 15
     },
     goodsChat: {
         backgroundColor: '#fff', marginTop: 8
@@ -926,11 +999,39 @@ const styles = StyleSheet.create({
         fontSize: 12
     },
     chatTop: {
-        flexDirection: 'row', flexWrap: 'wrap', marginBottom: 20, borderColor: '#ccc', borderBottomWidth: 0.5, padding: 15, paddingTop: 0
+        flexDirection: 'row', flexWrap: 'wrap', borderColor: '#ccc', borderBottomWidth: 0.5, padding: 15, paddingTop: 0, backgroundColor: '#fff'
     },
     chatBtn: {
         padding: 5, borderRadius: 15, marginRight: 10, marginTop: 10, paddingLeft: 15, paddingRight: 15
-    }
+    },
+    runTime: {
+        padding: 3,
+        paddingLeft: 6,
+        paddingRight: 6,
+        backgroundColor: '#595959',
+        color: '#fff'
+    },
+    between_runTime: {
+        paddingLeft: 3, paddingRight: 3, color: '#000', fontWeight: 'bold'
+    },
+    rush_head:{
+        flexDirection: 'row',paddingTop:5,paddingBottom:5
+    },
+    rush_head_left: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor:'#EF4F4F', 
+        padding:3,
+        paddingLeft:10,
+        paddingRight:10,
+        borderRadius:5
+    },
+    rush_head_right: {
+        marginLeft:15,
+        flexDirection: 'row',
+        alignItems: 'center',
+        
+    },
 
 
 })  
