@@ -105,7 +105,7 @@ class Goods extends Component {
                 by: "",
                 merchid: "",
                 page: 1,
-                nowtime: "",
+                _: Math.round(new Date().getTime()),
             }
         }
     }

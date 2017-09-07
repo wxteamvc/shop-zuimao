@@ -17,7 +17,7 @@ import Register from './component/register';
 import Goods from './pages/goodsView';
 import GoodsInfo from './pages/goodsInfoView';
 import IsTime from './pages/isTimeView';
-
+import IsDiscount from './pages/isDiscountView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -89,6 +89,12 @@ const App = StackNavigator({
     },
     IsTime:{
         screen: IsTime,
+        navigationOptions: ({ navigation }) => ({
+            header: null
+        }),
+    },
+    IsDiscount:{
+        screen: IsDiscount,
         navigationOptions: ({ navigation }) => ({
             header: null
         }),

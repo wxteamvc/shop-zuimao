@@ -14,7 +14,7 @@ import IconThree from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import FlatListJumoTop from '../component/flatListJumoTop';
 import Loading from '../component/loading';
 
-class IsTime extends Component {
+class IsDiscount extends Component {
 
     constructor(...props) {
         super(...props)
@@ -28,68 +28,28 @@ class IsTime extends Component {
                 issendfree: "",
                 istime: "",
                 cate: "",
-                order: "timeend",
+                order: "isdiscount_time",
                 by: "asc",
                 merchid: "",
                 page: 1,
                 _: Math.round(new Date().getTime()),
             },
-            timeDayA: 0,
-            timeDayB: 0,
-            timeHourA: 0,
-            timeHourB: 0,
-            timeMinA: 0,
-            timeMinB: 0,
-            timeSecA: 0,
-            timeSecB: 0,
-            // timeMsec:0,
         }
     }
 
     componentDidMount() {
-        this.state.timer = setInterval(() => { this._timer() }, 1000);
         this.setState(Object.assign(
             this.state.search, this.props.navigation.state.params.search
         ))
         this.props.dispatch(goods(this.state.search));
     }
-    componentWillUnmount() {
-        this.state.timer && clearTimeout(this.state.timer);
-    }
 
-    _timer() {
-        if (this.props.goodsData.status === 'success') {
-            if (this.props.goodsData.list.length > 0) {
-                let timeNow = Math.round(new Date().getTime() / 1000);
-                let timeEnd = this.props.goodsData.list[0].timeend;
-                let time = timeEnd - timeNow;
-                if (time == 0) {
-                    return this.props.dispatch(goods(this.state.search));
-                }
-                let d = Math.floor(time / 3600 / 24);
-                let h = Math.floor((time - (d * 3600 * 24)) / 3600);
-                let m = Math.floor((time - (d * 3600 * 24) - (h * 3600)) / 60);
-                let s = time - d * 3600 * 24 - h * 3600 - m * 60;
-                this.setState({
-                    timeDayA: Math.floor(d / 10),
-                    timeDayB: Math.floor(d % 10),
-                    timeHourA: Math.floor(h / 10),
-                    timeHourB: Math.floor(h % 10),
-                    timeMinA: Math.floor(m / 10),
-                    timeMinB: Math.floor(m % 10),
-                    timeSecA: Math.floor(s / 10),
-                    timeSecB: Math.floor(s % 10),
-                });
-            } else {
-                this.state.timer && clearTimeout(this.state.timer);
-            }
-        }
-    }
+
 
     render() {
         if (this.props.goodsData.status === 'success') {
             return (
-                <View style={{ flex: 1, backgroundColor: '#C10001' }}>
+                <View style={{ flex: 1 }}>
                     {this.renderSearch()}
                     {this.renderGoodsList()}
                 </View>
@@ -140,49 +100,57 @@ class IsTime extends Component {
         return this.renderListB()
     }
 
-    renderTime() {
-        return (
-            <View style={styles.timeView}>
-                <Text style={styles.timeText}>{this.state.timeDayA}</Text>
-                <Text style={styles.timeText}>{this.state.timeDayB}</Text>
-                <Text style={styles.timeTextA}>天</Text>
-                <Text style={styles.timeText}>{this.state.timeHourA}</Text>
-                <Text style={styles.timeText}>{this.state.timeHourB}</Text>
-                <Text style={styles.timeTextA}>时</Text>
-                <Text style={styles.timeText}>{this.state.timeMinA}</Text>
-                <Text style={styles.timeText}>{this.state.timeMinB}</Text>
-                <Text style={styles.timeTextA}>分</Text>
-                <Text style={styles.timeText}>{this.state.timeSecA}</Text>
-                <Text style={styles.timeText}>{this.state.timeSecB}</Text>
-                <Text style={styles.timeTextA}>秒</Text>
-                {/* <Text style={styles.timeTextB}>{this.state.timeMsec}</Text> */}
-            </View>
-        )
-    }
-
     renderListA() {
         let listA = this.props.goodsData.list;
         let listArr = [];
         let count = listA.length > 4 ? 4 : listA.length;
         for (let i = 0; i < count; i++) {
-            listArr.push(
-                <View key={i} style={styles.ListA}>
-                    <View style={styles.listABox}>
-                        <Image source={{ uri: listA[i].thumb }}
-                            style={styles.LAImg} />
-                        <View style={styles.LATexTBox}>
-                            <Text style={styles.LATitle} numberOfLines={2}>{listA[i].title}</Text>
-                            <Text style={{ fontSize: 10 }}>{listA[i].sales}人购买</Text>
-                            <Text style={styles.LAPrice}>&yen;{listA[i].marketprice}&nbsp;&nbsp;&nbsp;<Text style={styles.LAPriceA}>&yen;{listA[i].productprice}</Text></Text>
-                        </View>
-                        <TouchableOpacity style={{ flex: 1 }}>
-                            <Text style={styles.btnMS}>立即秒杀</Text>
+            let bgColor = {};
+            if (i == 0) { bgColor = { backgroundColor: '#FFF3DD' } }
+            if (i == 1) { bgColor = { backgroundColor: '#E6F9FD' } }
+            if (i == 2) { bgColor = { backgroundColor: '#FEE6DC' } }
+            if (i == 3) { bgColor = { backgroundColor: '#F8F2FF' } }
+            if (i <= 2) {
+                listArr.push(
+                    <View key={i} style={[{ padding: 15, width: ScreenWidth / 3 - 10, margin: 5 }, bgColor]}>
+                        <Text style={{ color: '#000', fontSize: 17, fontWeight: 'bold' }} numberOfLines={1}>{listA[i].title}</Text>
+                        <TouchableOpacity>
+                            <Text style={{ color: '#D4363B', fontSize: 10, fontWeight: 'bold', padding: 5, borderWidth: 1, borderColor: '#D4363B', textAlign: 'center', borderRadius: 10, marginTop: 15, marginBottom: 15 }}>立即进入</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Image source={{ uri: listA[i].thumb }} style={{ width: ScreenWidth / 3 - 40, height: ScreenWidth / 3 - 40 }} />
                         </TouchableOpacity>
                     </View>
-                </View>
-            )
+                )
+            } else {
+                listArr.push(
+                    <View key={i} style={[{ padding: 15, width: ScreenWidth - 10, margin: 5, flexDirection: 'row' }, bgColor]}>
+                        <TouchableOpacity>
+                            <Image source={{ uri: listA[i].thumb }} style={{ width: (ScreenWidth - 40) / 2, height: (ScreenWidth - 40) / 4 }} />
+                        </TouchableOpacity>
+                        <View style={{ width: (ScreenWidth - 40) / 2, padding: 15, alignItems: 'center' }}>
+                            <Text style={{ color: '#000', fontSize: 17, fontWeight: 'bold' }} numberOfLines={1}>{listA[i].title}</Text>
+                            <TouchableOpacity>
+                                <Text style={{ color: '#D4363B', fontSize: 10, fontWeight: 'bold', padding: 5, borderWidth: 1, borderColor: '#D4363B', textAlign: 'center', borderRadius: 10, marginTop: 15, marginBottom: 15, width: (ScreenWidth - 40) / 4 }}>立即进入</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                )
+            }
+
         }
-        return listArr;
+        return (
+            <View>
+                <Image source={require('../assets/images/is_discount_bg.jpg')} style={{ width: ScreenWidth, height: ScreenWidth + 10 }} />
+                <View style={{ position: 'absolute', top: 0, alignItems: 'center' }}>
+                    <Text style={{ color: '#F64348', fontSize: 18, fontWeight: 'bold', marginTop: 10 }}>买满就减</Text>
+                    <Text style={{ fontSize: 10 }}>你身边的好购物指南</Text>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: ScreenWidth, marginTop: 10 }}>
+                        {listArr}
+                    </View>
+                </View>
+            </View>
+        );
     }
 
     renderListB() {
@@ -211,28 +179,26 @@ class IsTime extends Component {
                     ListFooterComponent={() => listB.length < this.props.goodsData.total ? <ActivityIndicator size={40}></ActivityIndicator> : <Text style={{ textAlign: 'center' }}>DUANG~已经到底了哦</Text>
                     }
                     showsVerticalScrollIndicator={false}
-                    style={styles.listB}
                 />
             );
         } else {
             return this._headView(listB.length);
         }
     }
+
     _headView(length) {
         return (
-            <View style={{ backgroundColor: '#C10001' }}>
-                <Image source={require('../assets/images/is_time_top.jpg')} style={{ width: ScreenWidth, height: ScreenWidth * 0.5 }} />
-                <Text style={{ textAlign: 'center', padding: 25, color: '#fff', fontWeight: 'bold', }}>——————距离限时抢购活动结束还剩——————</Text>
-                {this.renderTime()}
+            <View style={styles.listB}>
+                <Image source={require('../assets/images/is_discount_top.jpg')} style={{ width: ScreenWidth, height: ScreenWidth * 0.5 }} />
                 {this.renderListA()}
-                {length>4?
+                {length > 4 ?
                     <View style={styles.listBT}>
-                    <Image source={require('../assets/images/ico_1.png')} style={styles.listBI} />
-                    <Text style={styles.listBTitle}>限时半价</Text>
-                    <Image source={require('../assets/images/ico_2.png')} style={styles.listBI} />
-                </View>:null}
-                
+                        <Image source={require('../assets/images/ico_1.png')} style={styles.listBI} />
+                        <Text style={styles.listBTitle}>限时半价</Text>
+                        <Image source={require('../assets/images/ico_2.png')} style={styles.listBI} />
+                    </View> : null}
             </View>
+
         )
     }
 }
@@ -299,76 +265,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    timeView: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    timeText: {
-        backgroundColor: '#363636',
-        borderRadius: 5,
-        color: '#fff',
-        padding: 5,
-        marginLeft: 2
-    },
-    timeTextA: {
-        padding: 5,
-        color: '#fff'
-    },
-    timeTextB: {
-        backgroundColor: '#FC9503',
-        borderRadius: 5,
-        color: '#fff',
-        padding: 5,
-        marginLeft: 2
-    },
-    ListA: {
-        paddingLeft: 10,
-        paddingTop: 5,
-        paddingRight: 10,
-        paddingBottom: 5,
-        marginTop: 20,
-    },
-    listABox: {
-        flexDirection: 'row',
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        padding: 10
-    },
-    LAImg: {
-        flex: 1,
-        width: 100,
-        height: 100
-    },
-    LATexTBox: {
-        flex: 2.5,
-        paddingLeft: 25
-    },
-    LATitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#000'
-    },
-    LAPrice: {
-        paddingTop: 10,
-        fontSize: 18,
-        color: '#ED6690'
-    },
-    LAPriceA: {
-        textDecorationLine: 'line-through',
-        fontSize: 12,
-        color: '#ccc'
-    },
-    btnMS: {
-        textAlign: 'center',
-        backgroundColor: '#C10001',
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingTop: 5,
-        paddingBottom: 5,
-        borderRadius: 15,
-        color: '#fff'
-    },
     listB: {
         backgroundColor: '#EFEFEF',
         width: ScreenWidth
@@ -376,8 +272,7 @@ const styles = StyleSheet.create({
     listBT: {
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#EFEFEF'
+        alignItems: 'center'
     },
     listBI: {
         width: 50,
@@ -436,4 +331,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(IsTime);
+export default connect(mapStateToProps)(IsDiscount);

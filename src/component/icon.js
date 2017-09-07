@@ -25,7 +25,7 @@ export default class icon extends Component {
                 ['Coupons',{}],
                 ['Goods',{search: { cate:1211}}],
                 ['IsTime',{search: { istime:1}}],
-                ['Goods',{search: { cate:1211}}],
+                ['IsDiscount',{search: { isdiscount:1}}],
                 ['Goods',{search: { cate:1211}}],
                
             ]
