@@ -58,4 +58,3 @@ export function GOODCHATLIST_URL(condition={}){
     Object.assign(data,condition);
    return (BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=goods.detail.get_comment_list&app=1&id='+data.id+'&page='+data.page+'&level='+data.level+'&getcount=1&_='+data.date);
 } 
-export const GOODINFO_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=goods.detail&app=1'
