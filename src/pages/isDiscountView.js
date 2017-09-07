@@ -175,27 +175,28 @@ class IsDiscount extends Component {
                             )) : null;
                     }}
                     onEndReachedThreshold={0.2}
-                    ListHeaderComponent={() => this._headView()}
+                    ListHeaderComponent={() => this._headView(listB.length)}
                     ListFooterComponent={() => listB.length < this.props.goodsData.total ? <ActivityIndicator size={40}></ActivityIndicator> : <Text style={{ textAlign: 'center' }}>DUANG~已经到底了哦</Text>
                     }
                     showsVerticalScrollIndicator={false}
                 />
             );
         } else {
-            return false;
+            return this._headView(listB.length);
         }
     }
 
-    _headView() {
+    _headView(length) {
         return (
             <View style={styles.listB}>
                 <Image source={require('../assets/images/is_discount_top.jpg')} style={{ width: ScreenWidth, height: ScreenWidth * 0.5 }} />
                 {this.renderListA()}
-                <View style={styles.listBT}>
-                    <Image source={require('../assets/images/ico_1.png')} style={styles.listBI} />
-                    <Text style={styles.listBTitle}>限时半价</Text>
-                    <Image source={require('../assets/images/ico_2.png')} style={styles.listBI} />
-                </View>
+                {length > 4 ?
+                    <View style={styles.listBT}>
+                        <Image source={require('../assets/images/ico_1.png')} style={styles.listBI} />
+                        <Text style={styles.listBTitle}>限时半价</Text>
+                        <Image source={require('../assets/images/ico_2.png')} style={styles.listBI} />
+                    </View> : null}
             </View>
 
         )

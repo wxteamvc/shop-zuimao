@@ -207,7 +207,7 @@ class IsTime extends Component {
                             )) : null;
                     }}
                     onEndReachedThreshold={0.2}
-                    ListHeaderComponent={() => this._headView()}
+                    ListHeaderComponent={() => this._headView(listB.length)}
                     ListFooterComponent={() => listB.length < this.props.goodsData.total ? <ActivityIndicator size={40}></ActivityIndicator> : <Text style={{ textAlign: 'center' }}>DUANG~已经到底了哦</Text>
                     }
                     showsVerticalScrollIndicator={false}
@@ -215,21 +215,23 @@ class IsTime extends Component {
                 />
             );
         } else {
-            return false;
+            return this._headView(listB.length);
         }
     }
-    _headView() {
+    _headView(length) {
         return (
             <View style={{ backgroundColor: '#C10001' }}>
                 <Image source={require('../assets/images/is_time_top.jpg')} style={{ width: ScreenWidth, height: ScreenWidth * 0.5 }} />
                 <Text style={{ textAlign: 'center', padding: 25, color: '#fff', fontWeight: 'bold', }}>——————距离限时抢购活动结束还剩——————</Text>
                 {this.renderTime()}
                 {this.renderListA()}
-                <View style={styles.listBT}>
+                {length>4?
+                    <View style={styles.listBT}>
                     <Image source={require('../assets/images/ico_1.png')} style={styles.listBI} />
                     <Text style={styles.listBTitle}>限时半价</Text>
                     <Image source={require('../assets/images/ico_2.png')} style={styles.listBI} />
-                </View>
+                </View>:null}
+                
             </View>
         )
     }
