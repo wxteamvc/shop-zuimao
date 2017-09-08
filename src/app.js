@@ -18,6 +18,7 @@ import Goods from './pages/goodsView';
 import GoodsInfo from './pages/goodsInfoView';
 import IsTime from './pages/isTimeView';
 import IsDiscount from './pages/isDiscountView';
+import Search from './pages/searchView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -95,6 +96,12 @@ const App = StackNavigator({
     },
     IsDiscount:{
         screen: IsDiscount,
+        navigationOptions: ({ navigation }) => ({
+            header: null
+        }),
+    },
+    Search:{
+        screen: Search,
         navigationOptions: ({ navigation }) => ({
             header: null
         }),

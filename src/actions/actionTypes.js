@@ -36,3 +36,7 @@ export const CART_BEGIN = 'CART_BEGIN';
 export const CART_SUCCESS = 'CART_SUCCESS';
 //请求购物车信息失败
 export const CART_FAILED = 'CART_FAILED';
+//保存搜索历史
+export const SEARCH_HISTORY = 'SEARCH_HISTORY';
+//清空搜索历史
+export const CLEAR = 'CLEAR';
