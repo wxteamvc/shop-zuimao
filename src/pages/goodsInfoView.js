@@ -13,6 +13,7 @@ import {
     Image,
     FlatList,
     Modal,
+    Animated,
 } from 'react-native';
 import ScrollViewJumpTop from '../component/scrollViewJumpTop';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -50,7 +51,7 @@ export default class GoodsInfo extends Component {
             h: '00',
             m: '00',
             s: '00',
-            istimer:true,
+            fadeInOpacity: new Animated.Value(0),
         }
         this.info = {
             uSend: [
@@ -75,6 +76,38 @@ export default class GoodsInfo extends Component {
                         status: 'success',
                         data: responseJson.result.goods_detail
                     })
+                    if (this.state.data.goods.istime == 1) {
+                        let date = Math.round(new Date().getTime() / 1000);
+                        if (date < this.state.data.goods.timestart) {
+                            this.text = '距离限时购开始'
+                            this.isrush = true;
+                            this.timer = setInterval(
+                                () => {
+                                    this.rushtime(this.state.data.goods.timestart)
+                                }
+                                , 1000)
+                        } else if (date >= this.state.data.goods.timestart && date < this.state.data.goods.timeend) {
+                            this.text = '距离限时购结束'
+                            this.isrush = true;
+                            this.timer = setInterval(
+                                () => {
+                                    this.rushtime(this.state.data.goods.timeend)
+                                }
+                                , 1000)
+                        } else {
+                            this.text = '限时购已经结束'
+                            this.isrush = false;
+                        }
+                    } else if (this.state.data.goods.isdiscount == 1) {
+                        this.text = this.state.data.goods.isdiscount_title
+                        this.isrush = true;
+                        this.timer = setInterval(
+                            () => {
+                                this.rushtime(this.state.data.goods.isdiscount_time)
+                            }
+                            , 1000)
+                    }
+
                 } else {
 
                     this.setState({
@@ -112,6 +145,12 @@ export default class GoodsInfo extends Component {
         co(this.gen.bind(this)).then(function () {
             console.log('加载完成')
         })
+
+        Animated.timing(this.state.fadeInOpacity, {
+            toValue: 1, // 目标值
+            duration: 2500, // 动画时间
+            // easing: Easing.linear // 缓动函数
+        }).start();
     }
 
     render() {
@@ -125,8 +164,8 @@ export default class GoodsInfo extends Component {
                     <View style={{ flex: 1, }}>
                         <View style={styles.topNav}>
                             <TouchableOpacity style={[{ flex: 0.1, },]} onPress={() => {
-                              this.props.navigation.goBack(null)
-                                 }}>
+                                this.props.navigation.goBack(null)
+                            }}>
                                 <Icon name={'angle-left'} size={30} color={'#ccc'} style={{ marginLeft: 10 }} />
                             </TouchableOpacity>
                             <View style={styles.topNavRight}>
@@ -248,7 +287,8 @@ export default class GoodsInfo extends Component {
     renderNum() {
         if (this.state.showNum) {
             return (
-                <View style={styles.motaiContainer}>
+                <Animated.View 
+                 style={[styles.motaiContainer,{opacity: this.state.fadeInOpacity}]}>
                     <View style={styles.motaiTop}></View>
                     <View style={styles.motaiBottom}>
                         <View style={[styles.rowCenter, styles.usbTop, { height: 60 }]}>
@@ -291,7 +331,7 @@ export default class GoodsInfo extends Component {
                     <Image
                         style={styles.showNumImg}
                         source={{ uri: this.state.data.goods.thumb }} />
-                </View>
+                </Animated.View >
             )
         }
     }
@@ -310,7 +350,8 @@ export default class GoodsInfo extends Component {
     renderUnSend() {
         if (this.state.showUnSend) {
             return (
-                <View style={styles.motaiContainer}>
+                <Animated.View 
+                style={[styles.motaiContainer,{ opacity: this.state.fadeInOpacity}]}>
                     <View style={styles.motaiTop}></View>
                     <View style={styles.motaiBottom}>
                         <View style={[styles.rowCenter, styles.usbTop]}>
@@ -332,7 +373,7 @@ export default class GoodsInfo extends Component {
                             showsVerticalScrollIndicator={false}
                         />
                     </View>
-                </View>
+                </Animated.View >
             )
         }
     }
@@ -667,7 +708,7 @@ export default class GoodsInfo extends Component {
             m = m < 10 ? '0' + m : m
             s = s < 10 ? '0' + s : s
             this.setState({
-                istimer:false,
+                istimer: false,
                 d: d,
                 h: h,
                 m: m,
@@ -677,44 +718,21 @@ export default class GoodsInfo extends Component {
 
     }
 
-    rush=()=> {
-        let text = '';
-        let date = Math.round(new Date().getTime() / 1000);
-        if (date < this.state.data.goods.timestart) {
-            text = '距离限时购开始'
-            if(this.state.istimer){
-                this.timer = setInterval(
-                    () => {
-                        this.rushtime(this.state.data.goods.timestart)
-                    }
-                    , 1000)  
-            }
-           
-        } else if (date >= this.state.data.goods.timestart && date < this.state.data.goods.timeend) {
-            text = '距离限时购结束'
-            if(this.state.istimer){
-                this.timer = setInterval(
-                    () => {
-                        this.rushtime(this.state.data.goods.timeend)
-                    }
-                    , 1000)
-            }
-        } else {
-            text = '限时购已经结束'
-        }
-
+    rush = () => {
         return (
             <View style={styles.rush_head}>
-                <View style={styles.rush_head_left}><Text style={{color:'#fff'}}>{text}</Text></View>
-                <View style={styles.rush_head_right}>
-                <Text style={styles.runTime}>{this.state.d}</Text>
-                <Text style={[styles.between_runTime]}>天</Text>
-                <Text style={styles.runTime}>{this.state.h}</Text>
-                <Text style={styles.between_runTime}>:</Text>
-                <Text style={styles.runTime}>{this.state.m}</Text>
-                <Text style={styles.between_runTime}>:</Text>
-                <Text style={styles.runTime}>{this.state.s}</Text>
-                </View>
+                <View style={styles.rush_head_left}><Text style={[{ color: '#fff' },styles.rushText]}>{this.text}</Text></View>
+                {this.isrush ?
+                    <View style={styles.rush_head_right}>
+                        <Text style={[ styles.rushText]}>{this.state.d}</Text>
+                        <Text style={styles.rushText}>天</Text>
+                        <Text style={[ styles.rushText]}>{this.state.h}</Text>
+                        <Text style={styles.rushText}>时</Text>
+                        <Text style={[ styles.rushText]}>{this.state.m}</Text>
+                        <Text style={styles.rushText}>分</Text>
+                        <Text style={[ styles.rushText]}>{this.state.s}</Text>
+                    </View> : false
+                }
             </View>
         )
     }
@@ -757,7 +775,7 @@ export default class GoodsInfo extends Component {
                             <Text style={styles.goodsNowPrice}>&yen;{this.state.data.goods.marketprice}</Text>
                             <Text style={styles.goodsOldPrice}>&yen;{this.state.data.goods.productprice}</Text>
                         </View>
-                        {this.state.data.goods.istime == 1 ? this.rush(): false}
+                        {this.state.data.goods.istime == 1 || this.state.data.goods.isdiscount == 1 ? this.rush() : false}
                         <View style={[styles.rowYCenter, { paddingTop: 5, paddingLeft: 5 }]}>
                             <Text numberOfLines={1} style={{ flex: 1 }}>快递：{this.state.data.goods.issendfree ? '包邮' : this.state.data.goods.dispatchprice + '元'}</Text>
                             <Text numberOfLines={1} style={{ flex: 1 }}>库存：{this.state.data.goods.total}</Text>
@@ -1014,24 +1032,28 @@ const styles = StyleSheet.create({
     between_runTime: {
         paddingLeft: 3, paddingRight: 3, color: '#000', fontWeight: 'bold'
     },
-    rush_head:{
-        flexDirection: 'row',paddingTop:5,paddingBottom:5
+    rush_head: {
+        flexDirection: 'row', paddingTop: 5, paddingBottom: 5
     },
     rush_head_left: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor:'#EF4F4F', 
-        padding:3,
-        paddingLeft:10,
-        paddingRight:10,
-        borderRadius:5
+        backgroundColor: '#EF4F4F',
+        padding: 3,
+        paddingLeft: 10,
+        paddingRight: 10,
+        borderRadius: 5
     },
     rush_head_right: {
-        marginLeft:15,
+        marginLeft: 15,
         flexDirection: 'row',
         alignItems: 'center',
-        
+
     },
+    rushText: {
+        fontSize: 12,
+        paddingLeft:2
+    }
 
 
 })  

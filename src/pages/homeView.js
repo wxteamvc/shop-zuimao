@@ -97,7 +97,7 @@ class HomeView extends Component {
             <Ad ad={topad} />
             <IconList navigation={this.props.navigation} />
             <Notices notices={notices} />
-            {istime.length>0?<Rush istime={istime}  navigate={this.props.navigation}/>:false}
+            {istime.length>0?<Rush istime={istime}  {...this.props}/>:false}
             <Findgoods cubes={cubes} />
             <Ad ad={bannersclone} />
             <WellChosen ad={bottomad} recommands={recommands} category={category}  navigate={this.props.navigation}/>

@@ -27,16 +27,14 @@ export default class RightBtn extends Component {
             m: '00',
             s: '00',
         }
+    }
+
+    componentDidMount() {
         this.int = setInterval(
             () => {
                 this.time()
             }
             , 1000)
-
-    }
-
-    componentDidMount() {
-        this.time();
     }
 
     componentWillUnmount() {
@@ -73,7 +71,7 @@ export default class RightBtn extends Component {
     rendergoods({ item }) {
         return (
             <View style={{ marginLeft: 5, marginRight: 5 }}>
-                <TouchableOpacity onPress={()=>{this.props.navigate.navigate('GoodsInfo',{id:item.id})}}>
+                <TouchableOpacity onPress={()=>{this.props.navigation.navigate('GoodsInfo',{id:item.id})}}>
                     <Image
                         source={{ uri: DOMAIN + item.thumb }}
                         style={styles.goodImage}
