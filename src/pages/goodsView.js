@@ -10,75 +10,10 @@ import { category } from '../actions/categoryAction';
 import { connect } from 'react-redux';
 import { ScreenWidth, ScreenHeight } from '../common/global';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import IconTwo from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import FlatListJumoTop from '../component/flatListJumoTop';
 import Loading from '../component/loading';
-
-class MyListItem extends React.PureComponent {
-    render() {
-        let { item, renderType } = this.props;
-        if (renderType === "big") {
-            return (
-                <View style={styles.bigView}>
-                    <View style={styles.bigViewA}>
-                        <TouchableOpacity onPress={() => this.props.navigate.navigate('GoodsInfo',{id:item.id})}>
-                            <Image source={{ uri: item.thumb }} style={styles.bigImg} />
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ padding: 5 }}>
-                        <View>
-                            <TouchableOpacity>
-                                <Text numberOfLines={1}>{item.title}</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.goodsTitle}>
-                            <View style={{ flex: 5 }}>
-                                <Text style={{ color: 'red' }}>￥{item.marketprice}</Text>
-                            </View>
-                            <View style={{ flex: 1 }}>
-                                <View style={styles.addCat}>
-                                    <TouchableOpacity>
-                                        <Icon name="shopping-cart" size={15} color={'#fff'} />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                </View>
-            )
-        } else if (renderType == "small") {
-            return (
-                <View style={styles.smallView}>
-                    <View style={styles.smallViewA}>
-                        <TouchableOpacity>
-                            <Image source={{ uri: item.thumb }} style={styles.smallImg} />
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.smallViewB}>
-                        <View style={{ padding: 5 }}>
-                            <TouchableOpacity>
-                                <Text numberOfLines={2} style={{ padding: 5 }}>{item.title}</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.smallViewBA}>
-                            <View style={{ flex: 4 }}>
-                                <Text style={{ color: 'red' }}>￥{item.marketprice}</Text>
-                            </View>
-                            <View style={{ flex: 1 }}>
-                                <View style={styles.addCat}>
-                                    <TouchableOpacity>
-                                        <Icon name="shopping-cart" size={15} color={'#fff'} />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                </View>
-            )
-        } else {
-            return <View></View>
-        }
-    }
-}
+import AddToCart from '../component/addToCart';
 
 class Goods extends Component {
 
@@ -91,7 +26,9 @@ class Goods extends Component {
             leftSelectedBar: null,       //一级分类选中状态
             leftSelectedBarId: null,     //一级分类id
             rightSelectedBarId: null,    //二级分类id
-            showType: true,               //显示大图为true,小图为false，默认大图
+            showType: true,              //显示大图为true,小图为false，默认大图
+            showModel: false,            //显示加入购物车模态框
+            goodsInfo: null,             //加入入购物车商品信息
             search: {                    //筛选条件
                 keywords: "",
                 isrecommand: "",
@@ -116,15 +53,22 @@ class Goods extends Component {
         ))
         this.props.dispatch(goods(this.state.search));
     }
+    componentDidUpdate(){
+       
+    }
 
     render() {
-
         return (
             <View style={{ flex: 1 }}>
+                <StatusBar
+                    translucent={false}
+                    backgroundColor="#000"
+                />
                 {this.renderSearch()}
                 {this.renderOrderBy()}
                 {this.renderGoodsList()}
                 {this.renderFilter()}
+                {this.state.showModel?<AddToCart goodsInfo={this.state.goodsInfo} showModel={this.state.showModel} hide={()=>this.setState({showModel:false})}/>:null}
             </View>
         );
     }
@@ -225,12 +169,7 @@ class Goods extends Component {
             </View>
         )
     }
-    // componentWillUpdate(){
-    //     console.log('begin');
-    // }
-    // componentDidUpdate(){
-    //     console.log('end');
-    // }
+
     //商品列表
     renderGoodsList() {
         if (this.props.goodsData.status == 'success') {
@@ -266,7 +205,7 @@ class Goods extends Component {
     //大图显示
     renderDigView = ({ item }) => {
         return (
-            <MyListItem item={item} renderType={'big'} navigate={this.props.navigation} />
+            <MyListItem item={item} renderType={'big'} navigate={this.props.navigation} fun={(item)=>this.setState({goodsInfo:item,showModel:true})}/>
         )
     }
 
@@ -465,11 +404,74 @@ class Goods extends Component {
     }
 }
 
+class MyListItem extends React.PureComponent {
+    render() {
+        let { item, renderType,fun } = this.props;
+        if (renderType === "big") {
+            return (
+                <View style={styles.bigView}>
+                    <View style={styles.bigViewA}>
+                        <TouchableOpacity onPress={() => this.props.navigate.navigate('GoodsInfo',{id:item.id})}>
+                            <Image source={{ uri: item.thumb }} style={styles.bigImg} />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ padding: 5 }}>
+                        <View>
+                            <TouchableOpacity>
+                                <Text numberOfLines={1}>{item.title}</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.goodsTitle}>
+                            <View style={{ flex: 5 }}>
+                                <Text style={{ color: 'red' }}>￥{item.marketprice}</Text>
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <View style={styles.addCat}>
+                                    <TouchableOpacity onPress={()=>fun(item)}>
+                                        <Icon name="shopping-cart" size={15} color={'#fff'} />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            )
+        } else if (renderType == "small") {
+            return (
+                <View style={{ backgroundColor: '#fff' }}>
+                    <TouchableOpacity style={styles.item_container} onPress={() => { this.props.navigate.navigate('GoodsInfo', { id: item.id }) }}>
+                        <View style={styles.item_left}>
+                            <Image source={{ uri: item.thumb }} style={styles.item_img} />
+                        </View>
+                        <View style={styles.item_right}>
+                            <View >
+                                <Text numberOfLines={1} style={styles.item_title}>
+                                    {item.title}
+                                </Text>
+                                <Text style={styles.item_sale}>{item.sales}人已购买</Text>
+                            </View>
+                            <View style={styles.item_price_container}>
+                                <Text style={styles.item_price}>&yen; {item.marketprice}</Text>
+                                <Text style={styles.item_oldprice}> {item.productprice == 0 ? null : '￥' + item.productprice}</Text>
+                            </View>
+                        </View>
+                        <TouchableOpacity style={styles.buy_car} onPress={() => { alert('我是购物车') }}>
+                            <IconTwo name={'cart-outline'} color={'red'} size={20} />
+                        </TouchableOpacity>
+                    </TouchableOpacity>
+                </View>
+            )
+        } else {
+            return <View></View>
+        }
+    }
+}
+
 const styles = StyleSheet.create({
     searchView: {
         flexDirection: 'row',
         backgroundColor: '#C10001',
-        paddingTop: 30,
+        paddingTop: 10,
         paddingBottom: 10,
     },
     goBack: {
@@ -492,13 +494,13 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingRight:10
+        paddingRight: 10
     },
     filterView: {
         width: ScreenWidth,
         position: 'absolute',
         backgroundColor: '#fff',
-        top: 75,
+        top: 55,
     },
     filterBox: {
         flexDirection: 'row',
@@ -623,6 +625,39 @@ const styles = StyleSheet.create({
     smallViewBA: {
         flexDirection: 'row',
         padding: 5
+    },
+    item_container: {
+        height: 120, borderBottomWidth: 0.5, borderColor: '#ccc', flexDirection: 'row', paddingTop: 20, paddingBottom: 20, paddingRight: 20, width: ScreenWidth
+    },
+    item_left: {
+        flex: 0.25, justifyContent: 'center', alignItems: 'center',
+    },
+    item_right: {
+        flex: 0.75, paddingLeft: 15, justifyContent: 'space-between'
+    },
+    item_img: {
+        width: 80, height: 80
+    },
+    item_title: {
+        color: '#000', fontSize: 16
+    },
+    item_sale: {
+        fontSize: 12, color: '#ccc', marginTop: 5
+    },
+    item_price_container: {
+        flexDirection: 'row', alignItems: 'center',
+    },
+    item_price: {
+        color: 'red', fontSize: 18
+    },
+    item_oldprice: {
+        textDecorationLine: 'line-through', marginLeft: 10, color: '#ccc'
+    },
+    buy_car: {
+        position: 'absolute', bottom: 25, right: 20, height: 30, width: 30, borderRadius: 15, justifyContent: 'center', alignItems: 'center', borderColor: '#ccc', borderWidth: 0.7
+    },
+    footer: {
+        justifyContent: 'center', alignItems: 'center', paddingTop: 8, paddingBottom: 8, backgroundColor: '#F6F7FB'
     }
 });
 

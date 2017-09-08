@@ -68,9 +68,8 @@ class IsDiscount extends Component {
                     backgroundColor="transparent"
                 />
                 <View style={styles.search_body}>
-                    <TouchableOpacity style={styles.serach_leftbtn}>
-                        <Icon name={'frame'} size={18} color={'#fff'} />
-                        <Text style={styles.sreach_text}>扫一扫</Text>
+                    <TouchableOpacity style={styles.serach_leftbtn} onPress={() => { this.props.navigation.goBack() }}>
+                        <IconTwo name='angle-left' size={30} color={'white'} />
                     </TouchableOpacity>
                     <TouchableOpacity style={{ flex: 0.7, height: 35, }}>
                         <View style={styles.search_mid}>
@@ -114,10 +113,10 @@ class IsDiscount extends Component {
                 listArr.push(
                     <View key={i} style={[{ padding: 15, width: ScreenWidth / 3 - 10, margin: 5 }, bgColor]}>
                         <Text style={{ color: '#000', fontSize: 17, fontWeight: 'bold' }} numberOfLines={1}>{listA[i].title}</Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>this.props.navigation.navigate('GoodsInfo',{id:listA[i].id})}>
                             <Text style={{ color: '#D4363B', fontSize: 10, fontWeight: 'bold', padding: 5, borderWidth: 1, borderColor: '#D4363B', textAlign: 'center', borderRadius: 10, marginTop: 15, marginBottom: 15 }}>立即进入</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>this.props.navigation.navigate('GoodsInfo',{id:listA[i].id})}>
                             <Image source={{ uri: listA[i].thumb }} style={{ width: ScreenWidth / 3 - 40, height: ScreenWidth / 3 - 40 }} />
                         </TouchableOpacity>
                     </View>
@@ -125,12 +124,12 @@ class IsDiscount extends Component {
             } else {
                 listArr.push(
                     <View key={i} style={[{ padding: 15, width: ScreenWidth - 10, margin: 5, flexDirection: 'row' }, bgColor]}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>this.props.navigation.navigate('GoodsInfo',{id:listA[i].id})}>
                             <Image source={{ uri: listA[i].thumb }} style={{ width: (ScreenWidth - 40) / 2, height: (ScreenWidth - 40) / 4 }} />
                         </TouchableOpacity>
                         <View style={{ width: (ScreenWidth - 40) / 2, padding: 15, alignItems: 'center' }}>
                             <Text style={{ color: '#000', fontSize: 17, fontWeight: 'bold' }} numberOfLines={1}>{listA[i].title}</Text>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={()=>this.props.navigation.navigate('GoodsInfo',{id:listA[i].id})}>
                                 <Text style={{ color: '#D4363B', fontSize: 10, fontWeight: 'bold', padding: 5, borderWidth: 1, borderColor: '#D4363B', textAlign: 'center', borderRadius: 10, marginTop: 15, marginBottom: 15, width: (ScreenWidth - 40) / 4 }}>立即进入</Text>
                             </TouchableOpacity>
                         </View>
@@ -156,13 +155,14 @@ class IsDiscount extends Component {
     renderListB() {
         let listB = this.props.goodsData.list;
         if (listB.length > 4) {
+            listB.splice(0,4);
             return (
                 <FlatListJumoTop
                     horizontal={false}
                     numColumns={2}
                     keyExtractor={(item, index) => index}
                     data={listB}
-                    renderItem={({ item }) => <MyListItem item={item} navigate={this.props.navigation} />}
+                    renderItem={({ item }) => <MyListItem item={item} navigation={this.props.navigation} />}
                     columnWrapperStyle={{ flexWrap: 'wrap' }}
                     refreshing={true}
                     onEndReached={() => {
@@ -205,11 +205,13 @@ class IsDiscount extends Component {
 
 class MyListItem extends React.PureComponent {
     render() {
-        let { item } = this.props;
+        let { item,navigation } = this.props;
         return (
             <View style={styles.LBBox}>
                 <View style={styles.LBBoxView}>
-                    <Image source={{ uri: item.thumb }} style={styles.LBImg} />
+                    <TouchableOpacity onPress={()=>navigation.navigate('GoodsInfo',{id:item.id})}>
+                        <Image source={{ uri: item.thumb }} style={styles.LBImg} />
+                    </TouchableOpacity>
                     <Text style={styles.LBGTitle} numberOfLines={1}>{item.title}</Text>
                     <View style={styles.LBGContent}>
                         <Text style={styles.LBGPTitle}>零售价：</Text>

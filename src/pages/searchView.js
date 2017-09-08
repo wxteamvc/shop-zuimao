@@ -35,6 +35,7 @@ class Serach extends Component {
         }
         goods.sort(() =>0.5-Math.random())
         this.recommands =goods.slice(0,10)
+        alert(this.recommands.length)
     }
     // _hot() {
     //     let recommands = this.props.data.data.recommands;
