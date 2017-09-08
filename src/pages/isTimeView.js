@@ -108,9 +108,8 @@ class IsTime extends Component {
                     backgroundColor="transparent"
                 />
                 <View style={styles.search_body}>
-                    <TouchableOpacity style={styles.serach_leftbtn}>
-                        <Icon name={'frame'} size={18} color={'#fff'} />
-                        <Text style={styles.sreach_text}>扫一扫</Text>
+                    <TouchableOpacity style={styles.serach_leftbtn} onPress={() => { this.props.navigation.goBack() }}>
+                        <IconTwo name='angle-left' size={30} color={'white'} />
                     </TouchableOpacity>
                     <TouchableOpacity style={{ flex: 0.7, height: 35, }}>
                         <View style={styles.search_mid}>
@@ -168,14 +167,16 @@ class IsTime extends Component {
             listArr.push(
                 <View key={i} style={styles.ListA}>
                     <View style={styles.listABox}>
-                        <Image source={{ uri: listA[i].thumb }}
-                            style={styles.LAImg} />
+                        <TouchableOpacity style={{flex:1}} onPress={()=>this.props.navigation.navigate('GoodsInfo',{id:listA[i].id})}>
+                            <Image source={{ uri: listA[i].thumb }}
+                                style={styles.LAImg} />
+                        </TouchableOpacity>    
                         <View style={styles.LATexTBox}>
                             <Text style={styles.LATitle} numberOfLines={2}>{listA[i].title}</Text>
                             <Text style={{ fontSize: 10 }}>{listA[i].sales}人购买</Text>
                             <Text style={styles.LAPrice}>&yen;{listA[i].marketprice}&nbsp;&nbsp;&nbsp;<Text style={styles.LAPriceA}>&yen;{listA[i].productprice}</Text></Text>
                         </View>
-                        <TouchableOpacity style={{ flex: 1 }}>
+                        <TouchableOpacity style={{ flex: 1 }} onPress={()=>this.props.navigation.navigate('GoodsInfo',{id:listA[i].id})}>
                             <Text style={styles.btnMS}>立即秒杀</Text>
                         </TouchableOpacity>
                     </View>
@@ -188,13 +189,14 @@ class IsTime extends Component {
     renderListB() {
         let listB = this.props.goodsData.list;
         if (listB.length > 4) {
+            listB.splice(0,4);
             return (
                 <FlatListJumoTop
                     horizontal={false}
                     numColumns={2}
                     keyExtractor={(item, index) => index}
                     data={listB}
-                    renderItem={({ item }) => <MyListItem item={item} navigate={this.props.navigation} />}
+                    renderItem={({ item }) => <MyListItem item={item} navigation={this.props.navigation} />}
                     columnWrapperStyle={{ flexWrap: 'wrap' }}
                     refreshing={true}
                     onEndReached={() => {
@@ -228,7 +230,7 @@ class IsTime extends Component {
                 {length>4?
                     <View style={styles.listBT}>
                     <Image source={require('../assets/images/ico_1.png')} style={styles.listBI} />
-                    <Text style={styles.listBTitle}>限时半价</Text>
+                    <Text style={styles.listBTitle}>第二件半价 省过瘾</Text>
                     <Image source={require('../assets/images/ico_2.png')} style={styles.listBI} />
                 </View>:null}
                 
@@ -239,11 +241,13 @@ class IsTime extends Component {
 
 class MyListItem extends React.PureComponent {
     render() {
-        let { item } = this.props;
+        let { item,navigation } = this.props;
         return (
             <View style={styles.LBBox}>
                 <View style={styles.LBBoxView}>
-                    <Image source={{ uri: item.thumb }} style={styles.LBImg} />
+                    <TouchableOpacity onPress={()=>navigation.navigate('GoodsInfo',{id:item.id})}>
+                        <Image source={{ uri: item.thumb }} style={styles.LBImg} />
+                    </TouchableOpacity>
                     <Text style={styles.LBGTitle} numberOfLines={1}>{item.title}</Text>
                     <View style={styles.LBGContent}>
                         <Text style={styles.LBGPTitle}>零售价：</Text>

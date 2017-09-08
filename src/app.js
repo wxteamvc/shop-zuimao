@@ -18,6 +18,7 @@ import Goods from './pages/goodsView';
 import GoodsInfo from './pages/goodsInfoView';
 import IsTime from './pages/isTimeView';
 import IsDiscount from './pages/isDiscountView';
+import Address from './pages/addressView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -97,6 +98,14 @@ const App = StackNavigator({
         screen: IsDiscount,
         navigationOptions: ({ navigation }) => ({
             header: null
+        }),
+    },
+    Address:{
+        screen: Address,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '收货地址管理',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
         }),
     }
 });
