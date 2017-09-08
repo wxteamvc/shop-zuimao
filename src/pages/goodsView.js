@@ -20,7 +20,7 @@ class MyListItem extends React.PureComponent {
             return (
                 <View style={styles.bigView}>
                     <View style={styles.bigViewA}>
-                        <TouchableOpacity onPress={() => this.props.navigate.navigate('GoodsInfo')}>
+                        <TouchableOpacity onPress={() => this.props.navigate.navigate('GoodsInfo',{id:item.id})}>
                             <Image source={{ uri: item.thumb }} style={styles.bigImg} />
                         </TouchableOpacity>
                     </View>

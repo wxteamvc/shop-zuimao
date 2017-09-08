@@ -18,6 +18,7 @@ export default class Banner extends Component {
         }
 
     }
+
     componentDidMount(){
        this.timeOut = setTimeout(()=>{
             this.setState({
