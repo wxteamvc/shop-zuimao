@@ -22,7 +22,7 @@ export default class YouLike extends Component {
     renderYouLike({ item }) {
 
         return (
-            <TouchableOpacity style={styles.item_container} onPress={()=>{alert('我是商品')}}>
+            <TouchableOpacity style={styles.item_container} onPress={()=>{this.props.navigate.navigate('GoodsInfo',{id:item.id})}}>
                 <View style={styles.item_left}>
                     <Image source={{ uri: DOMAIN + item.thumb }} style={styles.item_img} />
                 </View>

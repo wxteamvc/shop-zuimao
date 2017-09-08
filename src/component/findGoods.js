@@ -64,7 +64,7 @@ export default class Findgoods extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        width: ScreenWidth, height: 300, marginTop: 15
+        width: ScreenWidth, height: 300, marginTop: 0
     },
     bg_img: {
         width: ScreenWidth, height: 300,paddingBottom:20
