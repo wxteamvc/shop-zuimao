@@ -13,7 +13,6 @@ import {
     Image,
     FlatList,
     Modal,
-    Animated,
     Easing,
 } from 'react-native';
 import ScrollViewJumpTop from '../component/scrollViewJumpTop';
@@ -46,13 +45,14 @@ export default class GoodsInfo extends Component {
             chatCount: {},
             chat: [],
             modalVisible: false,
+            modalUnsend: false,
+            modalNum: false,
             modalValue: [],
             modalText: '',
             d: '00',
             h: '00',
             m: '00',
             s: '00',
-            fadeInOpacity: new Animated.Value(0),
         }
     }
 
@@ -73,7 +73,7 @@ export default class GoodsInfo extends Component {
                     })
                     this.unSendText = '';
                     for (let i = 0; i < this.state.data.citys.length; i++) {
-                        this.unSendText += this.state.data.citys[i]+" "+" "
+                        this.unSendText += this.state.data.citys[i] + " " + " "
                     }
                     if (this.state.data.goods.istime == 1) {
                         let date = Math.round(new Date().getTime() / 1000);
@@ -99,12 +99,18 @@ export default class GoodsInfo extends Component {
                         }
                     } else if (this.state.data.goods.isdiscount == 1) {
                         this.text = this.state.data.goods.isdiscount_title
-                        this.isrush = true;
-                        this.timer = setInterval(
-                            () => {
-                                this.rushtime(this.state.data.goods.isdiscount_time)
-                            }
-                            , 1000)
+                        let date = Math.round(new Date().getTime() / 1000);
+                        if(date<this.state.data.goods.isdiscount_time){
+                            this.isrush = true;
+                            this.timer = setInterval(
+                                () => {
+                                    this.rushtime(this.state.data.goods.isdiscount_time)
+                                }
+                                , 1000)
+                        }else{
+                            this.isrush = false;
+                        }
+                        
                     }
 
                 } else {
@@ -147,13 +153,7 @@ export default class GoodsInfo extends Component {
 
 
     }
-    useAnimated() {
-        Animated.timing(this.state.fadeInOpacity, {
-            toValue: ScreenHeight - StatusBarHeight, // 目标值
-            duration: 300, // 动画时间
-            easing: Easing.linear // 缓动函数
-        }).start();
-    }
+
 
     render() {
         if (this.state.status == 'success') {
@@ -201,7 +201,7 @@ export default class GoodsInfo extends Component {
                         </View>
                         {this.show()}
                         <View style={[styles.bottombox, styles.rowCenter]}>
-                            <View style={[{ flex: 0.4,height:45 }, styles.rowCenter]}>
+                            <View style={[{ flex: 0.4, height: 45 }, styles.rowCenter]}>
                                 <TouchableOpacity style={[{ flex: 1 }, styles.center]}>
                                     <Icon name={'heart-o'} size={20} color={'#ccc'} />
                                     <Text style={{ fontSize: 10 }}>关注</Text>
@@ -210,9 +210,9 @@ export default class GoodsInfo extends Component {
                                     <Icon name={'shopping-bag'} size={20} color={'#ccc'} />
                                     <Text style={{ fontSize: 10 }}>店铺</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity 
-                                onPress={()=>{this.props.navigation.navigate('Cart')}}
-                                style={[{ flex: 1 }, styles.center]}>
+                                <TouchableOpacity
+                                    onPress={() => { this.props.navigation.navigate('Cart') }}
+                                    style={[{ flex: 1 }, styles.center]}>
                                     <Icon name={'shopping-cart'} size={20} color={'#ccc'} />
                                     <Text style={{ fontSize: 10 }}>购物车</Text>
                                 </TouchableOpacity>
@@ -228,7 +228,6 @@ export default class GoodsInfo extends Component {
                     {this.renderUnSend()}
                     {this.renderNum()}
                     <Modal
-                        ref={(Modal) => { this.modal = Modal }}
                         visible={this.state.modalVisible}
                         transparent={true}
                         onRequestClose={() => {
@@ -289,11 +288,19 @@ export default class GoodsInfo extends Component {
     }
     //渲染选择数量面板
     renderNum() {
-        if (this.state.showNum) {
             return (
-                <Animated.View
-                    style={[styles.motaiContainer, { height: this.state.fadeInOpacity }]}>
-                    <View style={[styles.motaiTop, { flex: 0.7 }]}></View>
+                <Modal
+                  visible={this.state.modalNum}
+                    animationType={'slide'}
+                    transparent={true}
+                    onRequestClose={() => {
+                        this.setstate({modalNum:false})
+                    }}>
+                    <TouchableOpacity 
+                    activeOpacity={0.7}
+                    onPress={()=>{this.setState({modalNum:false})}}
+                    style={[styles.motaiTop, { flex: 0.7 }]}>
+                    </TouchableOpacity>
                     <View style={[styles.motaiBottom, { flex: 0.3 }]}>
                         <View style={[styles.rowCenter, styles.usbTop, { height: 60 }]}>
                             <View style={[{ flex: 0.9 }]}>
@@ -301,8 +308,9 @@ export default class GoodsInfo extends Component {
                             </View>
                             <View style={[{ flex: 0.1, }, styles.center]}>
                                 <TouchableOpacity
+                                style={[styles.center,{padding:10}]}
                                     onPress={() => {
-                                        this.setState({ goodsNum: 1, showNum: false, fadeInOpacity: new Animated.Value(0) })
+                                        this.setState({ goodsNum: 1, modalNum: false})
                                     }}>
                                     <Icon name={'close'} size={16} color={'#ccc'} />
                                 </TouchableOpacity>
@@ -326,7 +334,7 @@ export default class GoodsInfo extends Component {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <TouchableOpacity onPress={() => { this.setState({ showNum: false }) }}>
+                        <TouchableOpacity onPress={() => { this.setState({ modalNum: false }) }}>
                             <View style={[styles.showNumBottom, styles.center]}>
                                 <Text style={{ color: '#fff' }}>确定</Text>
                             </View>
@@ -335,9 +343,8 @@ export default class GoodsInfo extends Component {
                     <Image
                         style={styles.showNumImg}
                         source={{ uri: this.state.data.goods.thumb }} />
-                </Animated.View >
+                </Modal>
             )
-        }
     }
 
 
@@ -352,11 +359,20 @@ export default class GoodsInfo extends Component {
     }
 
     renderUnSend() {
-        if (this.state.showUnSend) {
             return (
-                <Animated.View
-                    style={[styles.motaiContainer, { height: this.state.fadeInOpacity }]}>
-                    <View style={styles.motaiTop}></View>
+                <Modal
+                    visible={this.state.modalUnsend}
+                    animationType={'slide'}
+                    transparent={true}
+                    onRequestClose={() => {
+                        this.setstate({modalUnsend:false})
+                    }}
+                   >
+                   <TouchableOpacity 
+                    activeOpacity={0.7}
+                    onPress={()=>{this.setState({modalUnsend:false})}}
+                    style={[styles.motaiTop]}>
+                    </TouchableOpacity>
                     <View style={styles.motaiBottom}>
                         <View style={[styles.rowCenter, styles.usbTop]}>
                             <View style={styles.unSendTopLeft}>
@@ -364,10 +380,10 @@ export default class GoodsInfo extends Component {
                             </View>
                             <View style={styles.unSendTopRight} >
                                 <TouchableOpacity
+                                style={[styles.center,{padding:10}]}
                                     onPress={() => {
                                         this.setState({
-                                            showUnSend: false,
-                                            fadeInOpacity: new Animated.Value(0)
+                                            modalUnsend: false,
                                         })
                                     }}>
                                     <Icon name={'close'} size={16} color={'#ccc'} />
@@ -382,9 +398,8 @@ export default class GoodsInfo extends Component {
                             showsVerticalScrollIndicator={false}
                         />
                     </View>
-                </Animated.View >
+                </Modal>
             )
-        }
     }
 
     getChatList(condition = {}, isAdd = 0) {
@@ -810,27 +825,26 @@ export default class GoodsInfo extends Component {
                             </Text>
                         </View>
                     </View>
-                    {this.state.data.citys.length>0?
+                    {this.state.data.citys.length > 0 ?
                         <View style={styles.goodsUnSend}>
-                        <TouchableOpacity
-                            onPress={() => {
-                                this.setState({ showUnSend: true })
-                                this.useAnimated()
-                            }}
-                            style={[styles.rowCenter, { padding: 10, paddingTop: 15, paddingBottom: 15 }]}>
-                            <View style={{ flex: 0.95 }}>
-                                <Text numberOfLines={1} style={{ fontSize: 12 }}>
-                                    不配送区域：
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.setState({ modalUnsend: true })
+                                }}
+                                style={[styles.rowCenter, { padding: 10, paddingTop: 15, paddingBottom: 15 }]}>
+                                <View style={{ flex: 0.95 }}>
+                                    <Text numberOfLines={1} style={{ fontSize: 12 }}>
+                                        不配送区域：
                                     <Text style={{ fontSize: 14 }} numberOfLines={1}>
-                                        {this.unSendText}
+                                            {this.unSendText}
+                                        </Text>
                                     </Text>
-                                </Text>
-                            </View>
-                            <View style={[{ flex: 0.05 }, styles.center]}>
-                                <Icon name={'angle-right'} size={25} />
-                            </View>
-                        </TouchableOpacity>
-                    </View>:false
+                                </View>
+                                <View style={[{ flex: 0.05 }, styles.center]}>
+                                    <Icon name={'angle-right'} size={25} />
+                                </View>
+                            </TouchableOpacity>
+                        </View> : false
                     }
                     <View style={styles.goodsRights}>
                         {this.state.data.goods.cash == 2 ?
@@ -868,8 +882,7 @@ export default class GoodsInfo extends Component {
                         style={styles.goodsNum}
                         activeOpacity={1}
                         onPress={() => {
-                            this.setState({ showNum: true })
-                            this.useAnimated()
+                            this.setState({ modalNum: true })
                         }}>
                         <Text style={{ fontSize: 16 }}>数量<Text>{this.state.goodsNum != 1 ? ':已选择' + this.state.goodsNum + '件' : null}</Text></Text>
                         <Icon name={'angle-right'} size={25} />
@@ -961,8 +974,8 @@ const styles = StyleSheet.create({
     topNavRight: {
         flex: 0.8, flexDirection: 'row', alignItems: 'center'
     },
-    bottombox:{
-        height: 45,borderColor:'#ccc',borderTopWidth:0.7    
+    bottombox: {
+        height: 45, borderColor: '#ccc', borderTopWidth: 0.7
     },
     bottomCar: {
         flex: 0.3, backgroundColor: '#FE9402', height: 45
@@ -1013,8 +1026,8 @@ const styles = StyleSheet.create({
     chatList: {
         flex: 1, padding: 5, paddingLeft: 10, paddingRight: 10, borderBottomWidth: 0.7, borderColor: '#ccc', backgroundColor: '#fff'
     },
-    chatListUserPhoto:{
-        height: 30, width: 30, borderRadius: 15, marginRight: 10 
+    chatListUserPhoto: {
+        height: 30, width: 30, borderRadius: 15, marginRight: 10
     },
     chatListTop: {
         flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10
@@ -1096,7 +1109,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         paddingLeft: 2
     },
-    ImageViewerHead:{
+    ImageViewerHead: {
         backgroundColor: '#fff', opacity: 0.7, height: 30, flexDirection: 'row',
     }
 
