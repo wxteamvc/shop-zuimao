@@ -62,7 +62,7 @@ export default class Banner extends Component {
         )
     }else{
         return(
-            <View style={{height:200}}></View>
+            <View style={{height:160}}></View>
         )
     }
  }

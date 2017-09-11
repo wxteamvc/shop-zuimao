@@ -24,7 +24,7 @@ export default class MidAd extends Component {
                         <Image
                             source={{ uri: DOMAIN + this.props.ad[i].thumb }}
                             style={styles.ad}
-                            resizeMode={'stretch'} />
+                            resizeMode={'cover'} />
                     </TouchableWithoutFeedback>
                 )
 
