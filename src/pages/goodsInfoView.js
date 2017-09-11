@@ -13,7 +13,6 @@ import {
     Image,
     FlatList,
     Modal,
-    Animated,
     Easing,
 } from 'react-native';
 import ScrollViewJumpTop from '../component/scrollViewJumpTop';
@@ -54,7 +53,6 @@ export default class GoodsInfo extends Component {
             h: '00',
             m: '00',
             s: '00',
-            fadeInOpacity: new Animated.Value(0),
         }
     }
 
@@ -155,13 +153,7 @@ export default class GoodsInfo extends Component {
 
 
     }
-    useAnimated() {
-        Animated.timing(this.state.fadeInOpacity, {
-            toValue: ScreenHeight - StatusBarHeight, // 目标值
-            duration: 300, // 动画时间
-            easing: Easing.linear // 缓动函数
-        }).start();
-    }
+
 
     render() {
         if (this.state.status == 'success') {
@@ -296,11 +288,19 @@ export default class GoodsInfo extends Component {
     }
     //渲染选择数量面板
     renderNum() {
-        if (this.state.showNum) {
             return (
-                <Animated.View
-                    style={[styles.motaiContainer, { height: this.state.fadeInOpacity }]}>
-                    <View style={[styles.motaiTop, { flex: 0.7 }]}></View>
+                <Modal
+                  visible={this.state.modalNum}
+                    animationType={'slide'}
+                    transparent={true}
+                    onRequestClose={() => {
+                        this.setstate({modalNum:false})
+                    }}>
+                    <TouchableOpacity 
+                    activeOpacity={0.7}
+                    onPress={()=>{this.setState({modalNum:false})}}
+                    style={[styles.motaiTop, { flex: 0.7 }]}>
+                    </TouchableOpacity>
                     <View style={[styles.motaiBottom, { flex: 0.3 }]}>
                         <View style={[styles.rowCenter, styles.usbTop, { height: 60 }]}>
                             <View style={[{ flex: 0.9 }]}>
@@ -308,8 +308,9 @@ export default class GoodsInfo extends Component {
                             </View>
                             <View style={[{ flex: 0.1, }, styles.center]}>
                                 <TouchableOpacity
+                                style={[styles.center,{padding:10}]}
                                     onPress={() => {
-                                        this.setState({ goodsNum: 1, showNum: false, fadeInOpacity: new Animated.Value(0) })
+                                        this.setState({ goodsNum: 1, modalNum: false})
                                     }}>
                                     <Icon name={'close'} size={16} color={'#ccc'} />
                                 </TouchableOpacity>
@@ -333,7 +334,7 @@ export default class GoodsInfo extends Component {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <TouchableOpacity onPress={() => { this.setState({ showNum: false }) }}>
+                        <TouchableOpacity onPress={() => { this.setState({ modalNum: false }) }}>
                             <View style={[styles.showNumBottom, styles.center]}>
                                 <Text style={{ color: '#fff' }}>确定</Text>
                             </View>
@@ -342,9 +343,8 @@ export default class GoodsInfo extends Component {
                     <Image
                         style={styles.showNumImg}
                         source={{ uri: this.state.data.goods.thumb }} />
-                </Animated.View >
+                </Modal>
             )
-        }
     }
 
 
@@ -365,10 +365,14 @@ export default class GoodsInfo extends Component {
                     animationType={'slide'}
                     transparent={true}
                     onRequestClose={() => {
-                        this.setModalVisible(false)
+                        this.setstate({modalUnsend:false})
                     }}
                    >
-                    <View style={styles.motaiTop}></View>
+                   <TouchableOpacity 
+                    activeOpacity={0.7}
+                    onPress={()=>{this.setState({modalUnsend:false})}}
+                    style={[styles.motaiTop]}>
+                    </TouchableOpacity>
                     <View style={styles.motaiBottom}>
                         <View style={[styles.rowCenter, styles.usbTop]}>
                             <View style={styles.unSendTopLeft}>
@@ -376,10 +380,10 @@ export default class GoodsInfo extends Component {
                             </View>
                             <View style={styles.unSendTopRight} >
                                 <TouchableOpacity
+                                style={[styles.center,{padding:10}]}
                                     onPress={() => {
                                         this.setState({
-                                            modalUnsend: flase,
-                                            fadeInOpacity: new Animated.Value(0)
+                                            modalUnsend: false,
                                         })
                                     }}>
                                     <Icon name={'close'} size={16} color={'#ccc'} />
@@ -826,7 +830,6 @@ export default class GoodsInfo extends Component {
                             <TouchableOpacity
                                 onPress={() => {
                                     this.setState({ modalUnsend: true })
-                                    this.useAnimated()
                                 }}
                                 style={[styles.rowCenter, { padding: 10, paddingTop: 15, paddingBottom: 15 }]}>
                                 <View style={{ flex: 0.95 }}>
@@ -879,8 +882,7 @@ export default class GoodsInfo extends Component {
                         style={styles.goodsNum}
                         activeOpacity={1}
                         onPress={() => {
-                            this.setState({ showNum: true })
-                            this.useAnimated()
+                            this.setState({ modalNum: true })
                         }}>
                         <Text style={{ fontSize: 16 }}>数量<Text>{this.state.goodsNum != 1 ? ':已选择' + this.state.goodsNum + '件' : null}</Text></Text>
                         <Icon name={'angle-right'} size={25} />
