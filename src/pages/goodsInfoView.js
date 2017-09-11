@@ -14,6 +14,7 @@ import {
     FlatList,
     Modal,
     Animated,
+    Easing,
 } from 'react-native';
 import ScrollViewJumpTop from '../component/scrollViewJumpTop';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -53,12 +54,6 @@ export default class GoodsInfo extends Component {
             s: '00',
             fadeInOpacity: new Animated.Value(0),
         }
-        this.info = {
-            uSend: [
-                '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市', '乌鲁木齐市', '克拉玛依市'
-            ],
-
-        }
     }
 
     componentWillUnmount() {
@@ -76,6 +71,10 @@ export default class GoodsInfo extends Component {
                         status: 'success',
                         data: responseJson.result.goods_detail
                     })
+                    this.unSendText = '';
+                    for (let i = 0; i < this.state.data.citys.length; i++) {
+                        this.unSendText += this.state.data.citys[i]+" "+" "
+                    }
                     if (this.state.data.goods.istime == 1) {
                         let date = Math.round(new Date().getTime() / 1000);
                         if (date < this.state.data.goods.timestart) {
@@ -146,10 +145,13 @@ export default class GoodsInfo extends Component {
             console.log('加载完成')
         })
 
+
+    }
+    useAnimated() {
         Animated.timing(this.state.fadeInOpacity, {
-            toValue: 1, // 目标值
-            duration: 2500, // 动画时间
-            // easing: Easing.linear // 缓动函数
+            toValue: ScreenHeight - StatusBarHeight, // 目标值
+            duration: 300, // 动画时间
+            easing: Easing.linear // 缓动函数
         }).start();
     }
 
@@ -198,8 +200,8 @@ export default class GoodsInfo extends Component {
                             </View>
                         </View>
                         {this.show()}
-                        <View style={[{ height: 50, }, styles.rowCenter]}>
-                            <View style={[{ flex: 0.4 }, styles.rowCenter]}>
+                        <View style={[styles.bottombox, styles.rowCenter]}>
+                            <View style={[{ flex: 0.4,height:45 }, styles.rowCenter]}>
                                 <TouchableOpacity style={[{ flex: 1 }, styles.center]}>
                                     <Icon name={'heart-o'} size={20} color={'#ccc'} />
                                     <Text style={{ fontSize: 10 }}>关注</Text>
@@ -208,7 +210,9 @@ export default class GoodsInfo extends Component {
                                     <Icon name={'shopping-bag'} size={20} color={'#ccc'} />
                                     <Text style={{ fontSize: 10 }}>店铺</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={[{ flex: 1 }, styles.center]}>
+                                <TouchableOpacity 
+                                onPress={()=>{this.props.navigation.navigate('Cart')}}
+                                style={[{ flex: 1 }, styles.center]}>
                                     <Icon name={'shopping-cart'} size={20} color={'#ccc'} />
                                     <Text style={{ fontSize: 10 }}>购物车</Text>
                                 </TouchableOpacity>
@@ -252,7 +256,7 @@ export default class GoodsInfo extends Component {
 
     renderImageViwerHerder() {
         return (
-            <View style={{ backgroundColor: '#fff', opacity: 0.7, height: 30, flexDirection: 'row', }}>
+            <View style={styles.ImageViewerHead}>
                 <TouchableOpacity
                     onPress={() => { this.setModalVisible(false) }}
                     style={[{ flex: 0.1 }, styles.center]}>
@@ -287,10 +291,10 @@ export default class GoodsInfo extends Component {
     renderNum() {
         if (this.state.showNum) {
             return (
-                <Animated.View 
-                 style={[styles.motaiContainer,{opacity: this.state.fadeInOpacity}]}>
-                    <View style={styles.motaiTop}></View>
-                    <View style={styles.motaiBottom}>
+                <Animated.View
+                    style={[styles.motaiContainer, { height: this.state.fadeInOpacity }]}>
+                    <View style={[styles.motaiTop, { flex: 0.7 }]}></View>
+                    <View style={[styles.motaiBottom, { flex: 0.3 }]}>
                         <View style={[styles.rowCenter, styles.usbTop, { height: 60 }]}>
                             <View style={[{ flex: 0.9 }]}>
                                 <Text style={styles.showNumTopText}>&yen;{this.state.data.goods.marketprice}</Text>
@@ -298,7 +302,7 @@ export default class GoodsInfo extends Component {
                             <View style={[{ flex: 0.1, }, styles.center]}>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        this.setState({ goodsNum: 1, showNum: false })
+                                        this.setState({ goodsNum: 1, showNum: false, fadeInOpacity: new Animated.Value(0) })
                                     }}>
                                     <Icon name={'close'} size={16} color={'#ccc'} />
                                 </TouchableOpacity>
@@ -350,8 +354,8 @@ export default class GoodsInfo extends Component {
     renderUnSend() {
         if (this.state.showUnSend) {
             return (
-                <Animated.View 
-                style={[styles.motaiContainer,{ opacity: this.state.fadeInOpacity}]}>
+                <Animated.View
+                    style={[styles.motaiContainer, { height: this.state.fadeInOpacity }]}>
                     <View style={styles.motaiTop}></View>
                     <View style={styles.motaiBottom}>
                         <View style={[styles.rowCenter, styles.usbTop]}>
@@ -360,13 +364,18 @@ export default class GoodsInfo extends Component {
                             </View>
                             <View style={styles.unSendTopRight} >
                                 <TouchableOpacity
-                                    onPress={() => { this.setState({ showUnSend: false }) }}>
+                                    onPress={() => {
+                                        this.setState({
+                                            showUnSend: false,
+                                            fadeInOpacity: new Animated.Value(0)
+                                        })
+                                    }}>
                                     <Icon name={'close'} size={16} color={'#ccc'} />
                                 </TouchableOpacity>
                             </View>
                         </View>
                         <FlatList
-                            data={this.info.uSend}
+                            data={this.state.data.citys}
                             keyExtractor={(item, index) => index}
                             renderItem={this.renderUnSendArea.bind(this)}
                             numColumns={3}
@@ -571,7 +580,7 @@ export default class GoodsInfo extends Component {
                 <View style={styles.chatListTop}>
                     <View style={styles.rowCenter}>
                         <Image
-                            source={url} style={{ height: 30, width: 30, borderRadius: 15, marginRight: 10 }} />
+                            source={url} style={styles.chatListUserPhoto} />
                         <Text style={{ color: '#000' }}>{item.nickname}</Text>
                     </View>
                     <Text style={{ color: '#ccc' }}>{item.createtime}</Text>
@@ -583,12 +592,27 @@ export default class GoodsInfo extends Component {
                     <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', marginTop: 10, marginBottom: 10 }}>
                         {img}
                     </View> : false}
+                {item.append_content ?
+                    <View style={{ padding: 10 }}>
+                        <Text style={{ color: 'red', marginBottom: 5 }}>[ 用户追加评论 ]：</Text>
+                        <Text>{item.append_content}</Text>
+                    </View>
+                    : false}
                 {item.reply_content ?
                     <View style={{ paddingTop: 10, paddingBottom: 10 }}>
-                        <View style={{ backgroundColor: '#ccc', padding: 10, marginTop: 10, marginBottom: 10 }}>
+                        <View style={{ backgroundColor: '#EFEFEF', padding: 10, }}>
                             <Text>[ 醉猫回复 ]：{item.reply_content}</Text>
                         </View>
-                        <View style={{ width: 0, height: 0, borderWidth: 8, borderColor: 'transparent', borderBottomColor: '#ccc', position: 'absolute', top: 5, left: 18 }}></View>
+                        <View style={{ width: 0, height: 0, borderWidth: 8, borderColor: 'transparent', borderBottomColor: '#EFEFEF', position: 'absolute', top: -5, left: 18 }}></View>
+                    </View>
+                    : false}
+
+                {item.append_reply_content ?
+                    <View style={{ paddingTop: 10, paddingBottom: 10 }}>
+                        <View style={{ backgroundColor: '#EFEFEF', padding: 10, }}>
+                            <Text>[ 醉猫回复 ]：{item.append_reply_content}</Text>
+                        </View>
+                        <View style={{ width: 0, height: 0, borderWidth: 8, borderColor: 'transparent', borderBottomColor: '#EFEFEF', position: 'absolute', top: -5, left: 18 }}></View>
                     </View>
                     : false}
             </View>
@@ -721,16 +745,16 @@ export default class GoodsInfo extends Component {
     rush = () => {
         return (
             <View style={styles.rush_head}>
-                <View style={styles.rush_head_left}><Text style={[{ color: '#fff' },styles.rushText]}>{this.text}</Text></View>
+                <View style={styles.rush_head_left}><Text style={[{ color: '#fff' }, styles.rushText]}>{this.text}</Text></View>
                 {this.isrush ?
                     <View style={styles.rush_head_right}>
-                        <Text style={[ styles.rushText]}>{this.state.d}</Text>
+                        <Text style={[styles.rushText]}>{this.state.d}</Text>
                         <Text style={styles.rushText}>天</Text>
-                        <Text style={[ styles.rushText]}>{this.state.h}</Text>
+                        <Text style={[styles.rushText]}>{this.state.h}</Text>
                         <Text style={styles.rushText}>时</Text>
-                        <Text style={[ styles.rushText]}>{this.state.m}</Text>
+                        <Text style={[styles.rushText]}>{this.state.m}</Text>
                         <Text style={styles.rushText}>分</Text>
-                        <Text style={[ styles.rushText]}>{this.state.s}</Text>
+                        <Text style={[styles.rushText]}>{this.state.s}</Text>
                     </View> : false
                 }
             </View>
@@ -786,20 +810,28 @@ export default class GoodsInfo extends Component {
                             </Text>
                         </View>
                     </View>
-                    <View style={styles.goodsUnSend}>
+                    {this.state.data.citys.length>0?
+                        <View style={styles.goodsUnSend}>
                         <TouchableOpacity
-                            onPress={() => { this.setState({ showUnSend: true }) }}
+                            onPress={() => {
+                                this.setState({ showUnSend: true })
+                                this.useAnimated()
+                            }}
                             style={[styles.rowCenter, { padding: 10, paddingTop: 15, paddingBottom: 15 }]}>
                             <View style={{ flex: 0.95 }}>
                                 <Text numberOfLines={1} style={{ fontSize: 12 }}>
-                                    不配送区域：<Text style={{ fontSize: 14 }}>乌鲁木齐市 克拉玛依市 吐鲁番地区 哈密...</Text>
+                                    不配送区域：
+                                    <Text style={{ fontSize: 14 }} numberOfLines={1}>
+                                        {this.unSendText}
+                                    </Text>
                                 </Text>
                             </View>
                             <View style={[{ flex: 0.05 }, styles.center]}>
                                 <Icon name={'angle-right'} size={25} />
                             </View>
                         </TouchableOpacity>
-                    </View>
+                    </View>:false
+                    }
                     <View style={styles.goodsRights}>
                         {this.state.data.goods.cash == 2 ?
                             <View style={styles.rightsList}>
@@ -834,7 +866,11 @@ export default class GoodsInfo extends Component {
                     </View>
                     <TouchableOpacity
                         style={styles.goodsNum}
-                        activeOpacity={1} onPress={() => { this.setState({ showNum: true }) }}>
+                        activeOpacity={1}
+                        onPress={() => {
+                            this.setState({ showNum: true })
+                            this.useAnimated()
+                        }}>
                         <Text style={{ fontSize: 16 }}>数量<Text>{this.state.goodsNum != 1 ? ':已选择' + this.state.goodsNum + '件' : null}</Text></Text>
                         <Icon name={'angle-right'} size={25} />
                     </TouchableOpacity>
@@ -842,13 +878,13 @@ export default class GoodsInfo extends Component {
                     <View style={styles.goodsBottom}>
                         <View style={[{ marginTop: 50 }, styles.rowCenter]}>
                             <View style={[styles.goodsBottomTop, styles.center]}>
-                                <Text style={styles.goodsBottomText1}>72</Text><Text style={styles.goodsBottomText2}>全部</Text>
+                                <Text style={styles.goodsBottomText1}>{this.state.data.statics.all}</Text><Text style={styles.goodsBottomText2}>全部</Text>
                             </View>
                             <View style={[styles.goodsBottomTop, styles.center]}>
-                                <Text style={styles.goodsBottomText1}>32</Text><Text style={styles.goodsBottomText2}>新品</Text>
+                                <Text style={styles.goodsBottomText1}>{this.state.data.statics.new}</Text><Text style={styles.goodsBottomText2}>新品</Text>
                             </View>
                             <View style={[{ flex: 1, }, styles.center]}>
-                                <Text style={styles.goodsBottomText1}>26</Text><Text style={styles.goodsBottomText2}>促销</Text>
+                                <Text style={styles.goodsBottomText1}>{this.state.data.statics.discount}</Text><Text style={styles.goodsBottomText2}>促销</Text>
                             </View>
                         </View>
                         <View style={[{ marginTop: 30, marginBottom: 15 }, styles.rowCenter]}>
@@ -925,23 +961,26 @@ const styles = StyleSheet.create({
     topNavRight: {
         flex: 0.8, flexDirection: 'row', alignItems: 'center'
     },
+    bottombox:{
+        height: 45,borderColor:'#ccc',borderTopWidth:0.7    
+    },
     bottomCar: {
-        flex: 0.3, backgroundColor: '#FE9402', height: 50
+        flex: 0.3, backgroundColor: '#FE9402', height: 45
     },
     bottomText: {
         fontSize: 14, color: '#fff'
     },
     bottomBuy: {
-        flex: 0.3, backgroundColor: '#FD5555', height: 50
+        flex: 0.3, backgroundColor: '#FD5555', height: 45
     },
     motaiContainer: {
-        width: ScreenWidth, height: ScreenHeight - StatusBarHeight, position: 'absolute',
+        width: ScreenWidth, height: ScreenHeight - StatusBarHeight, position: 'absolute', bottom: 0
     },
     motaiTop: {
-        flex: 0.7, backgroundColor: '#000', opacity: 0.7,
+        flex: 0.6, backgroundColor: '#000', opacity: 0.7,
     },
     motaiBottom: {
-        flex: 0.3, backgroundColor: '#fff'
+        flex: 0.4, backgroundColor: '#fff'
     },
     usbTop: {
         padding: 10, borderColor: '#ccc', borderBottomWidth: 0.7, marginBottom: 15
@@ -973,6 +1012,9 @@ const styles = StyleSheet.create({
     },
     chatList: {
         flex: 1, padding: 5, paddingLeft: 10, paddingRight: 10, borderBottomWidth: 0.7, borderColor: '#ccc', backgroundColor: '#fff'
+    },
+    chatListUserPhoto:{
+        height: 30, width: 30, borderRadius: 15, marginRight: 10 
     },
     chatListTop: {
         flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10
@@ -1052,7 +1094,10 @@ const styles = StyleSheet.create({
     },
     rushText: {
         fontSize: 12,
-        paddingLeft:2
+        paddingLeft: 2
+    },
+    ImageViewerHead:{
+        backgroundColor: '#fff', opacity: 0.7, height: 30, flexDirection: 'row',
     }
 
 

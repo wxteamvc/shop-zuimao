@@ -4,6 +4,8 @@ import {categoryReducer} from './categoryReducer';
 import {loginReducer,memberInfoReducer} from './memberReducer';
 import {goodsReducer} from './goodsReducer';
 import {cartReducer} from './cartReducer';
+import {HistoryReducer} from './historyReducer';
+
 
 const rootReducer = combineReducers({
     initReducer,
@@ -11,7 +13,8 @@ const rootReducer = combineReducers({
     loginReducer,
     memberInfoReducer,
     goodsReducer,
-    cartReducer
+    cartReducer,
+    HistoryReducer,
 })
 
 export default rootReducer;

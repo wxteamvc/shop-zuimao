@@ -18,6 +18,7 @@ import Goods from './pages/goodsView';
 import GoodsInfo from './pages/goodsInfoView';
 import IsTime from './pages/isTimeView';
 import IsDiscount from './pages/isDiscountView';
+import Search from './pages/searchView';
 import Address from './pages/addressView';
 
 const App = StackNavigator({
@@ -100,6 +101,12 @@ const App = StackNavigator({
             header: null
         }),
     },
+    Search:{
+        screen: Search,
+        navigationOptions: ({ navigation }) => ({
+            header: null
+        })
+        },
     Address:{
         screen: Address,
         navigationOptions: ({ navigation }) => ({

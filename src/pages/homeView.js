@@ -55,7 +55,7 @@ class HomeView extends Component {
 
   render() {
     if (this.props.homeData.status == 'success') {
-      let { advs, cubes, banners, recommands, category, notices, istime ,youlike} = this.props.homeData.data.result
+      let { advs, cubes, banners, recommands, category, notices, istime, youlike } = this.props.homeData.data.result
       let bannersclone = banners.slice(0);
       let topad = bannersclone.slice(0, 1);
       bannersclone.splice(0, 1);
@@ -73,7 +73,10 @@ class HomeView extends Component {
               <Icon name={'frame'} size={18} color={'#fff'} />
               <Text style={styles.sreach_text}>扫一扫</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ flex: 0.7, height: 35, }}>
+            <TouchableOpacity 
+            onPress={()=>{
+              this.props.navigation.navigate('Search')}}
+            style={{ flex: 0.7, height: 35, }}>
               <View style={styles.search_mid}>
               </View>
               <View style={styles.seearch_mid_content}>
@@ -84,7 +87,7 @@ class HomeView extends Component {
                 />
                 <Text style={{ color: '#fff' }}>
                   输入您当前要搜索的商品
-        </Text>
+                 </Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.serach_rightbtn}>
@@ -97,11 +100,11 @@ class HomeView extends Component {
             <Ad ad={topad} />
             <IconList navigation={this.props.navigation} />
             <Notices notices={notices} />
-            {istime.length>0?<Rush istime={istime}  {...this.props}/>:false}
+            {istime.length > 0 ? <Rush istime={istime}  {...this.props} /> : false}
             <Findgoods cubes={cubes} />
             <Ad ad={bannersclone} />
-            <WellChosen ad={bottomad} recommands={recommands} category={category}  navigate={this.props.navigation}/>
-            <YouLike  youlike={youlike} navigate={this.props.navigation}/>
+            <WellChosen ad={bottomad} recommands={recommands} category={category} navigate={this.props.navigation} />
+            <YouLike youlike={youlike} navigate={this.props.navigation} />
           </ScrollViewJumpTop>
         </View>
 
