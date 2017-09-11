@@ -248,7 +248,6 @@ class Goods extends Component {
                         <View style={{ padding: 5 }}>
                             <Text style={styles.filterCateText}>选择分类</Text>
                         </View>
-                        {this.props.categoryData.status == 'success' ?
                             <View style={styles.filterCateView}>
                                 <View style={styles.cateFirst}>
                                     {this.renderFirstCatList()}
@@ -256,7 +255,7 @@ class Goods extends Component {
                                 <View style={{ flex: 1 }}>
                                     {this.renderSecondCatList()}
                                 </View>
-                            </View> : <Loading />}
+                            </View>
                     </View>
                     <View style={styles.filterBottom}>
                         <View style={{ flex: 1 }}>
