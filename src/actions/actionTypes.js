@@ -12,9 +12,9 @@ export const CATEGORY_SUCCESS = 'CATEGORY_SUCCESS';
 export const CATEGORY_FAILED = 'CATEGORY_FAILED';
 //登陆开始动作
 export const LOGIN_BEGIN = 'LOGIN_BEGIN';
-//登陆开始动作
+//登陆成功动作
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-//登陆开始动作
+//登陆失败动作
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 //请求会员中心开始
 export const MEMBER_INFO_BEGIN = 'MEMBER_INFO_BEGIN';
@@ -40,3 +40,9 @@ export const CART_FAILED = 'CART_FAILED';
 export const SEARCH_HISTORY = 'SEARCH_HISTORY';
 //清空搜索历史
 export const CLEAR = 'CLEAR';
+//请求收货地址页面开始
+export const ADDRESS_BEGIN = 'ADDRESS_BEGIN';
+//请求收货地址页面成功
+export const ADDRESS_SUCCESS = 'ADDRESS_SUCCESS';
+//请求收货地址页面失败
+export const ADDRESS_FAILED = 'ADDRESS_FAILED';
