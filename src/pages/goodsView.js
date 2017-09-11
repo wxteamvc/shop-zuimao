@@ -68,7 +68,7 @@ class Goods extends Component {
                 {this.renderOrderBy()}
                 {this.renderGoodsList()}
                 {this.renderFilter()}
-                {this.state.showModel?<AddToCart goodsInfo={this.state.goodsInfo} showModel={this.state.showModel} hide={()=>this.setState({showModel:false})}/>:null}
+                {this.state.showModel?<AddToCart goodsInfo={this.state.goodsInfo} showModel={this.state.showModel} hide={()=>this.setState({showModel:false})} dispatch={this.props.dispatch} loginData={this.props.loginData}/>:null}
             </View>
         );
     }
@@ -664,6 +664,7 @@ function mapStateToProps(state) {
     return {
         goodsData: state.goodsReducer,
         categoryData: state.categoryReducer,
+        loginData:state.loginReducer,
     }
 }
 
