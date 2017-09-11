@@ -32,13 +32,17 @@ import Loading from '../component/loading';
 import WellChosen from '../component/WellChosenGoods'
 import Notices from '../component/notice';
 import YouLike from '../component/youlike';
+import AddToCart from '../component/addToCart';
 
 
 class HomeView extends Component {
 
   constructor(...props) {
     super(...props);
-
+    this.state={
+      showModel: false,            //显示加入购物车模态框
+      goodsInfo: null,             //加入入购物车商品信息
+    }
   }
 
   componentDidMount() {
@@ -104,8 +108,9 @@ class HomeView extends Component {
             <Findgoods cubes={cubes} />
             <Ad ad={bannersclone} />
             <WellChosen ad={bottomad} recommands={recommands}  {...this.props} category={category} />
-            <YouLike youlike={youlike} navigate={this.props.navigation} />
+            <YouLike youlike={youlike} navigate={this.props.navigation} fun={(item)=>this.setState({goodsInfo:item,showModel:true})}/>
           </ScrollViewJumpTop>
+          {this.state.showModel?<AddToCart goodsInfo={this.state.goodsInfo} showModel={this.state.showModel} hide={()=>this.setState({showModel:false})} dispatch={this.props.dispatch} loginData={this.props.loginData}statusBarTranslucent ={true}/>:null}
         </View>
 
       );
@@ -171,6 +176,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     homeData: state.initReducer,
+    loginData:state.loginReducer
   }
 }
 
