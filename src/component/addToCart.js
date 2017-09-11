@@ -5,11 +5,12 @@
     hide()：回调函数，用于隐藏父级状态showModel;
     dispatch:动作
     loginData：登录信息
+    statusBarTranslucent:状态栏是否是沉浸式
 */
 "use strict";
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
-import { ScreenWidth, ScreenHeight, StatusBarHeight,ADD_CART_URL } from '../common/global';
+import { ScreenWidth, ScreenHeight, StatusBarHeight,ADD_CART_URL,StatusBar } from '../common/global';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import { cart } from '../actions/cartAction';
 import Toast from 'react-native-root-toast';
@@ -46,11 +47,12 @@ export default class AddToCart extends Component {
         this.state.timer && clearTimeout(this.state.timer);
     }
     render() {
-        let { goodsInfo, showModel, hide } = this.props;
+        let { goodsInfo, showModel, hide ,statusBarTranslucent } = this.props;
+        let modH=statusBarTranslucent===true?ScreenHeight-StatusBarHeight:ScreenHeight;
         if (this.props.showModel) {
             return (
-                <View style={{ position: 'absolute', height: ScreenHeight }}>
-                    <View style={{ backgroundColor: 'rgba(0,0,0,0.7)', width: ScreenWidth, height: ScreenHeight, position: 'absolute', top: 0 }} ><Text style={{flex:1}} onPress={()=>{hide();this._clearTimer()}}></Text></View>
+                <View style={{ position: 'absolute', height: modH }}>
+                    <View style={{ backgroundColor: 'rgba(0,0,0,0.7)', width: ScreenWidth, height: modH, position: 'absolute', top: 0 }} ><Text style={{flex:1}} onPress={()=>{hide();this._clearTimer()}}></Text></View>
                     <View style={{ backgroundColor: '#fff', width: ScreenWidth, position: 'absolute', bottom: this.state.bottom + StatusBarHeight }}>
                         <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#ddd', padding: 25 }}>
                             <Text style={{ flex: 1 }}></Text>
