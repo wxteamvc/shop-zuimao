@@ -23,7 +23,7 @@ export default class YouLike extends Component {
         return (
             <TouchableOpacity style={styles.item_container} onPress={() => { this.props.navigate.navigate('GoodsInfo', { id: item.id }) }}>
                 <View style={styles.item_left}>
-                    <Image source={{ uri: DOMAIN + item.thumb }} style={styles.item_img} />
+                    <Image source={{ uri: item.thumb }} style={styles.item_img} />
                 </View>
                 <View style={styles.item_right}>
                     <View >
@@ -37,7 +37,7 @@ export default class YouLike extends Component {
                         <Text style={styles.item_oldprice}> {item.productprice == 0 ? null : '￥' + item.productprice}</Text>
                     </View>
                 </View>
-                <TouchableOpacity style={styles.buy_car} onPress={() => { item.thumb = DOMAIN + item.thumb; fun(item) }}>
+                <TouchableOpacity style={styles.buy_car} onPress={() => { fun(item) }}>
                     <Icon name={'cart-outline'} color={'red'} size={20} />
                 </TouchableOpacity>
             </TouchableOpacity>
