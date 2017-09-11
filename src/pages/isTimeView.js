@@ -176,7 +176,7 @@ class IsTime extends Component {
                             <Text style={{ fontSize: 10 }}>{listA[i].sales}人购买</Text>
                             <Text style={styles.LAPrice}>&yen;{listA[i].marketprice}&nbsp;&nbsp;&nbsp;<Text style={styles.LAPriceA}>&yen;{listA[i].productprice}</Text></Text>
                         </View>
-                        <TouchableOpacity style={{ flex: 1 }} onPress={()=>this.props.navigation.navigate('GoodsInfo',{id:listA[i].id})}>
+                        <TouchableOpacity style={{ flex: 1.5 }} onPress={()=>this.props.navigation.navigate('GoodsInfo',{id:listA[i].id})}>
                             <Text style={styles.btnMS}>立即秒杀</Text>
                         </TouchableOpacity>
                     </View>
@@ -371,7 +371,8 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         paddingBottom: 5,
         borderRadius: 15,
-        color: '#fff'
+        color: '#fff',
+        fontSize:12,
     },
     listB: {
         backgroundColor: '#EFEFEF',
