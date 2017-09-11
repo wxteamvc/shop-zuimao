@@ -21,8 +21,8 @@ export default class ScrollViewJumpTop extends Component {
         this.state = {
             isShow: false, //是否显示跳转到顶部按钮
         }
-        this.range = this.props.range ? this.props.range : 150; 
-        this.right = this.props.right ? this.props.right : 20; 
+        this.range = this.props.range ? this.props.range : 150;
+        this.right = this.props.right ? this.props.right : 20;
         this.bottom = this.props.bottom ? this.props.bottom : 30;
         this.backgroundColor = this.props.color ? this.props.color : '#000';
 
@@ -42,10 +42,11 @@ export default class ScrollViewJumpTop extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView
+                    {...this.props}
                     onScroll={(e) => { this.showJumpTop(e) }}
                     ref={(ScrollView) => { this.ScrollView = ScrollView }}
                     showsHorizontalScrollIndicator={false}
-                    showsVerticalScrollIndicator ={false}
+                    showsVerticalScrollIndicator={false}
                 >
                     {this.props.children}
                 </ScrollView>

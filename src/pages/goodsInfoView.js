@@ -16,10 +16,11 @@ import {
     Easing,
 } from 'react-native';
 import ScrollViewJumpTop from '../component/scrollViewJumpTop';
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import IconEvil from 'react-native-vector-icons/dist/EvilIcons';
 import Swiper from 'react-native-swiper';
-import { DOMAIN, ScreenWidth, ScreenHeight, StatusBarHeight, GOODINFO_URL, GOODCHATCOUNT_URL, GOODCHATLIST_URL } from '../common/global';
+import { DOMAIN, ScreenWidth, ScreenHeight, StatusBarHeight, GOODINFO_URL, GOODCHATCOUNT_URL, GOODCHATLIST_URL,FOUCS_URL } from '../common/global';
 import Util from '../common/util';
 import Loading from '../component/loading';
 import co from 'co';
@@ -27,7 +28,7 @@ import FlatListJumpTop from '../component/flatListJumoTop';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 
-export default class GoodsInfo extends Component {
+ class GoodsInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -41,7 +42,13 @@ export default class GoodsInfo extends Component {
             goodsNum: 1,
             showUnSend: false,
             showNum: false,
-            data: {},
+            data: {
+                citys:[],
+                godds:{},
+                params:[],
+                statics:{},
+                thumbs:{},
+            },
             chatCount: {},
             chat: [],
             modalVisible: false,
@@ -53,6 +60,7 @@ export default class GoodsInfo extends Component {
             h: '00',
             m: '00',
             s: '00',
+            isFavorite:false,
         }
     }
 
@@ -67,9 +75,11 @@ export default class GoodsInfo extends Component {
             .then((resq) => resq.json())
             .then((responseJson) => {
                 if (responseJson.status == 1) {
+                    console.log(responseJson)
                     this.setState({
                         status: 'success',
-                        data: responseJson.result.goods_detail
+                        data: responseJson.result.goods_detail,
+                        isFavorite:responseJson.result.goods_detail.isFavorite,
                     })
                     this.unSendText = '';
                     for (let i = 0; i < this.state.data.citys.length; i++) {
@@ -153,7 +163,42 @@ export default class GoodsInfo extends Component {
 
 
     }
-
+   
+    focus(){
+        if (global.isConnected) {
+            let { loginData } = this.props;
+            let data={id:this.props.navigation.state.params.id,isfavorite:this.state.isFavorite?0:1}
+            let token='';
+            for( let key in loginData.data.result.token){
+                 token = '&'+key+'='+loginData.data.result.token[key]
+            }
+            let url = FOUCS_URL+token
+            Util.post(url,data,
+                (resq) => {
+                    if (resq.status == 1) {    
+                        this.setState({
+                            isFavorite:resq.result.isfavorite
+                        })
+                    } else {
+                        this.setState({
+                            status: 'faild',
+                            errmessage: resq.message,
+                        })
+                    }
+                },
+                (error) => {
+                    this.setState({
+                        status: 'faild',
+                        errmessage: error.message,
+                    })
+                })
+        } else {
+            this.setState({
+                status: 'faild',
+                errmessage: '当前没有网络！'
+            })
+        }
+    }
 
     render() {
         if (this.state.status == 'success') {
@@ -202,9 +247,11 @@ export default class GoodsInfo extends Component {
                         {this.show()}
                         <View style={[styles.bottombox, styles.rowCenter]}>
                             <View style={[{ flex: 0.4, height: 45 }, styles.rowCenter]}>
-                                <TouchableOpacity style={[{ flex: 1 }, styles.center]}>
-                                    <Icon name={'heart-o'} size={20} color={'#ccc'} />
-                                    <Text style={{ fontSize: 10 }}>关注</Text>
+                                <TouchableOpacity 
+                                 onPress={()=>{this.focus()}}  
+                                style={[{ flex: 1 }, styles.center]}>
+                                    <Icon name={this.state.isFavorite?'heart':'heart-o'} size={20} color={this.state.isFavorite?'red':'#ccc'} />
+                                    <Text style={{ fontSize: 10 }}>{this.state.isFavorite?'已关注':'关注'}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={[{ flex: 1 }, styles.center]}>
                                     <Icon name={'shopping-bag'} size={20} color={'#ccc'} />
@@ -901,7 +948,9 @@ export default class GoodsInfo extends Component {
                             </View>
                         </View>
                         <View style={[{ marginTop: 30, marginBottom: 15 }, styles.rowCenter]}>
-                            <TouchableOpacity style={[styles.btn, { marginRight: 40, }]}>
+                            <TouchableOpacity 
+                            onPress={()=>{this.props.navigation.navigate('Goods', { search: {} })}}
+                            style={[styles.btn, { marginRight: 40, }]}>
                                 <Text style={{ color: 'red' }}>
                                     全部商品
                                     </Text>
@@ -1115,3 +1164,12 @@ const styles = StyleSheet.create({
 
 
 })  
+
+
+function mapStateToProps(state) {
+    return {
+        loginData: state.loginReducer,
+    }
+}
+    
+export default connect(mapStateToProps)(GoodsInfo);

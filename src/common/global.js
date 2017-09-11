@@ -60,3 +60,5 @@ export function GOODCHATLIST_URL(condition={}){
 } 
 //加入购物车请求地址
 export const ADD_CART_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.cart.add';
+//商品关注地址
+export const FOUCS_URL = BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=member.favorite.toggle&mid=3773'
