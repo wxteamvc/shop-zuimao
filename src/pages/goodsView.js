@@ -53,8 +53,8 @@ class Goods extends Component {
         ))
         this.props.dispatch(goods(this.state.search));
     }
-    componentDidUpdate(){
-       
+    componentDidUpdate() {
+
     }
 
     render() {
@@ -68,7 +68,7 @@ class Goods extends Component {
                 {this.renderOrderBy()}
                 {this.renderGoodsList()}
                 {this.renderFilter()}
-                {this.state.showModel?<AddToCart goodsInfo={this.state.goodsInfo} showModel={this.state.showModel} hide={()=>this.setState({showModel:false})} dispatch={this.props.dispatch} loginData={this.props.loginData}/>:null}
+                {this.state.showModel ? <AddToCart goodsInfo={this.state.goodsInfo} showModel={this.state.showModel} hide={() => this.setState({ showModel: false })} navigation={this.props.navigation}/> : null}
             </View>
         );
     }
@@ -205,14 +205,14 @@ class Goods extends Component {
     //大图显示
     renderDigView = ({ item }) => {
         return (
-            <MyListItem item={item} renderType={'big'} navigate={this.props.navigation} fun={(item)=>this.setState({goodsInfo:item,showModel:true})}/>
+            <MyListItem item={item} renderType={'big'} navigate={this.props.navigation} fun={(item) => this.setState({ goodsInfo: item, showModel: true })} />
         )
     }
 
     //小图显示
     renderSmallView = ({ item }) => {
         return (
-            <MyListItem item={item} renderType={'small'} navigate={this.props.navigation} />
+            <MyListItem item={item} renderType={'small'} navigate={this.props.navigation} fun={(item) => this.setState({ goodsInfo: item, showModel: true })} />
         )
     }
 
@@ -248,14 +248,14 @@ class Goods extends Component {
                         <View style={{ padding: 5 }}>
                             <Text style={styles.filterCateText}>选择分类</Text>
                         </View>
-                            <View style={styles.filterCateView}>
-                                <View style={styles.cateFirst}>
-                                    {this.renderFirstCatList()}
-                                </View>
-                                <View style={{ flex: 1 }}>
-                                    {this.renderSecondCatList()}
-                                </View>
+                        <View style={styles.filterCateView}>
+                            <View style={styles.cateFirst}>
+                                {this.renderFirstCatList()}
                             </View>
+                            <View style={{ flex: 1 }}>
+                                {this.renderSecondCatList()}
+                            </View>
+                        </View>
                     </View>
                     <View style={styles.filterBottom}>
                         <View style={{ flex: 1 }}>
@@ -405,12 +405,12 @@ class Goods extends Component {
 
 class MyListItem extends React.PureComponent {
     render() {
-        let { item, renderType,fun } = this.props;
+        let { item, renderType, fun } = this.props;
         if (renderType === "big") {
             return (
                 <View style={styles.bigView}>
                     <View style={styles.bigViewA}>
-                        <TouchableOpacity onPress={() => this.props.navigate.navigate('GoodsInfo',{id:item.id})}>
+                        <TouchableOpacity onPress={() => this.props.navigate.navigate('GoodsInfo', { id: item.id })}>
                             <Image source={{ uri: item.thumb }} style={styles.bigImg} />
                         </TouchableOpacity>
                     </View>
@@ -426,7 +426,7 @@ class MyListItem extends React.PureComponent {
                             </View>
                             <View style={{ flex: 1 }}>
                                 <View style={styles.addCat}>
-                                    <TouchableOpacity onPress={()=>fun(item)}>
+                                    <TouchableOpacity onPress={() => fun(item)}>
                                         <Icon name="shopping-cart" size={15} color={'#fff'} />
                                     </TouchableOpacity>
                                 </View>
@@ -454,7 +454,7 @@ class MyListItem extends React.PureComponent {
                                 <Text style={styles.item_oldprice}> {item.productprice == 0 ? null : '￥' + item.productprice}</Text>
                             </View>
                         </View>
-                        <TouchableOpacity style={styles.buy_car} onPress={() => { alert('我是购物车') }}>
+                        <TouchableOpacity style={styles.buy_car} onPress={() => fun(item) }>
                             <IconTwo name={'cart-outline'} color={'red'} size={20} />
                         </TouchableOpacity>
                     </TouchableOpacity>
@@ -664,7 +664,6 @@ function mapStateToProps(state) {
     return {
         goodsData: state.goodsReducer,
         categoryData: state.categoryReducer,
-        loginData:state.loginReducer,
     }
 }
 

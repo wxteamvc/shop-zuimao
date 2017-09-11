@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { cart } from '../actions/cartAction';
 import { ScreenWidth, ScreenHeight, CART_SELECT_URL, CART_UPDATE_URL,CART_REMOVE_URL } from '../common/global';
 import Toast from 'react-native-root-toast';
+import { NavigationActions } from 'react-navigation';
 
 class Cart extends Component {
 
@@ -24,7 +25,7 @@ class Cart extends Component {
     let { loginData, memberData } = this.props;
     //请求购物车
     if (loginData.status === "success" && memberData.status === false) {
-      this.props.dispatch(cart(loginData.data.result.token))
+      this.props.dispatch(cart(loginData.data.result.token,this.props.navigation))
     }
   }
 
@@ -262,10 +263,10 @@ class Cart extends Component {
       .then(responseJson => {
         if (responseJson.status == 1) {
           if(this.state.isedit){this.setState({isedit:false})}
-          this.props.dispatch(cart(this.props.loginData.data.result.token))
+          this.props.dispatch(cart(this.props.loginData.data.result.token,this.props.navigation))
         } else {
           Toast.show('服务器请求失败');
-          this.props.dispatch(cart(this.props.loginData.data.result.token))
+          this.props.dispatch(cart(this.props.loginData.data.result.token,this.props.navigation))
         }
       })
       .catch((error) => {

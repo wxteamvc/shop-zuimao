@@ -38,7 +38,13 @@ const HomeTab = TabNavigator({
     Cart: {
         screen: Cart,
         navigationOptions:({navigation}) => ({
-            tabBarLabel:'购物车',  
+            tabBarLabel:()=>{
+                if(navigation.state.hasOwnProperty("params")){
+                    return `购物车 ${navigation.state.params.num}`;
+                }else{
+                    return "购物车"
+                }  
+            },  
             tabBarIcon:({focused,tintColor}) => ( 
                 <Text style={{fontFamily:'iconfont',color:tintColor,fontSize:30}}>&#xe62c;</Text>    
             )    

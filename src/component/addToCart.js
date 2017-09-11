@@ -3,8 +3,6 @@
     goodsInfo:商品信息
     showModel：是否显示模态框，此状态需要写在此组件的父级组件状态内，值默认为false
     hide()：回调函数，用于隐藏父级状态showModel;
-    dispatch:动作
-    loginData：登录信息
     statusBarTranslucent:状态栏是否是沉浸式
 */
 "use strict";
@@ -14,8 +12,9 @@ import { ScreenWidth, ScreenHeight, StatusBarHeight,ADD_CART_URL,StatusBar } fro
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import { cart } from '../actions/cartAction';
 import Toast from 'react-native-root-toast';
+import { connect } from 'react-redux';
 
-export default class AddToCart extends Component {
+export class AddToCart extends Component {
 
     constructor(...props) {
         super(...props);
@@ -119,11 +118,12 @@ export default class AddToCart extends Component {
           .then(responseJson => {
             if (responseJson.status == 1) {
                 Toast.show('加入购物车成功');
-                this.props.dispatch(cart(this.props.loginData.data.result.token));
-                hide();this._clearTimer();
+                this.props.dispatch(cart(this.props.loginData.data.result.token,this.props.navigation));
+                this._clearTimer();
+                hide();
             } else {
               Toast.show('加入购物车失败');
-              this.props.dispatch(cart(this.props.loginData.data.result.token))
+              this.props.dispatch(cart(this.props.loginData.data.result.token,this.props.navigation))
             }
           })
           .catch((error) => {
@@ -150,4 +150,13 @@ const styles = StyleSheet.create({
     price: {
         color: 'red',
     }
-})  
+})
+
+function mapStateToProps(state) {
+    return {
+      loginData: state.loginReducer,
+      cartData: state.cartReducer
+    }
+  }
+  
+  export default connect(mapStateToProps)(AddToCart);
