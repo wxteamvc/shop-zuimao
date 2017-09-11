@@ -36,7 +36,7 @@ export default class WellChosen extends Component {
     rendergoods({ item }) {
         return (
             <View style={styles.goodContainer}>
-                <TouchableOpacity onPress={()=>{this.props.navigate.navigate('GoodsInfo',{id:item.id})}}>
+                <TouchableOpacity onPress={()=>{this.props.navigation.navigate('GoodsInfo',{id:item.id})}}>
                     <Image
                         source={{ uri: DOMAIN + item.thumb }}
                         style={styles.goodImage}
@@ -65,9 +65,12 @@ export default class WellChosen extends Component {
             var times = this.props.category.length - num;
         }
         for (let k = 0; k < times; k++) {
-            url = this.props.category[num].thumb ? { uri: DOMAIN + this.props.category[num].thumb } : require('../assets/images/nopic.jpg')
+            url = this.props.category[num].thumb ? { uri: DOMAIN + this.props.category[num].thumb } : require('../assets/images/nopic.jpg');
+            let index = num;
             list2.push(
-                <TouchableOpacity key={k} style={styles.logoListBtn}>
+                <TouchableOpacity
+                onPress={()=>{this.props.navigation.navigate('Goods',{search:{cate:this.props.category[index].id}})}}
+                 key={k} style={styles.logoListBtn}>
                     <Image source={url} style={{ width: 60, height: 60 }} />
                 </TouchableOpacity>
             );
@@ -133,7 +136,7 @@ export default class WellChosen extends Component {
                             activeDotStyle={{ height: 4 }}
                             paginationStyle={{ position: 'absolute', bottom: 15 }}
                             showsButtons={false}
-                            autoplay={true}
+                           // autoplay={true}
                             showsVerticalScrollIndicator={true}
                             autoplayTimeout={3}
                         >

@@ -11,7 +11,7 @@ import {
     TextInput,
     ToastAndroid,
 } from 'react-native';
-import { DOMAIN, ScreenWidth, ScreenHeight } from '../common/global';
+import { DOMAIN, ScreenWidth, ScreenHeight ,StatusBarHeight} from '../common/global';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import IconOc from 'react-native-vector-icons/dist/Octicons';
 import { connect } from 'react-redux'
@@ -34,26 +34,25 @@ class Serach extends Component {
             goods.push.apply(goods,children[key])
         }
         goods.sort(() =>0.5-Math.random())
-        this.recommands =goods.slice(0,10)
-        alert(this.recommands.length)
+        this.setState({
+            recommend:goods.slice(0,10)
+        })
     }
-    // _hot() {
-    //     let recommands = this.props.data.data.recommands;
-    //     if (recommands.length >= 4) {
-    //         var num = 4;
-    //     } else {
-    //         var num = recommands.length
-    //     }
-    //     var hotlist = [];
-    //     for (var i = 0; i < num; i++) {
-    //         hotlist.push(
-    //             <View key={i} style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    //                 <Image source={{ uri: DOMAIN + recommands[i].thumb }} style={{ width: 80, height: 80, borderRadius: 10 }} />
-    //             </View>
-    //         )
-    //     }
-    //     return (hotlist)
-    // }
+    renderHot() {
+        var hotlist = [];
+        for (let i = 0; i <this.state.recommend.length; i++) {
+            hotlist.push(
+                <TouchableOpacity
+                onPress={()=>{this.props.navigation.navigate('Goods',{search:{cate:this.state.recommend[i].id}})}}
+                key={i} 
+                style={{alignItems: 'center', justifyContent: 'center',padding:5,paddingLeft:10,paddingRight:10,backgroundColor:"#EFEFEF" ,marginRight:15,marginTop:10,borderRadius:5}}
+                >    
+                  <Text>{this.state.recommend[i].name}</Text>
+                </TouchableOpacity>
+            )
+        }
+        return (hotlist)
+    }
 
     getText(text) {
         this.setState({
@@ -76,8 +75,9 @@ class Serach extends Component {
         for (let i = 0; i < this.props.history.keyWords.length; i++) {
             content.push(
                 <TouchableOpacity key={i} onPress={() => this.props.navigation.navigate('Goods', { search: { keywords: this.props.history.keyWords[i] } })}>
-                    <View style={{ borderBottomWidth: 1, borderColor: '#ccc', paddingBottom: 10, paddingTop: 10 }}>
-                        <Text style={{ marginLeft: 10 }}>{this.props.history.keyWords[i]}</Text>
+                    <View style={{ borderBottomWidth: 1, borderColor: '#ccc', paddingBottom: 10, paddingTop: 10,flexDirection: 'row', alignItems: 'center',paddingLeft:15 }}>
+                        <Icon name={'clock-o'} size={18}  style={{marginRight:15}}/>
+                        <Text>{this.props.history.keyWords[i]}</Text>
                     </View>
                 </TouchableOpacity>
             )
@@ -117,7 +117,7 @@ class Serach extends Component {
                     translucent={false}
                     backgroundColor="#000"
                 />
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#C10001', height: 40 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#C10001', height: 70-StatusBarHeight }}>
                     <TouchableOpacity style={{ flex: 0.15, alignItems: 'center', justifyContent: 'center' }}
                         onPress={() => this.props.navigation.goBack()}
                     >
@@ -143,9 +143,9 @@ class Serach extends Component {
                 <ScrollView>
                     <View>
                         <Text style={{ marginTop: 20, marginLeft: 20 }}>热门推荐</Text>
-                        {/* <View style={{ flexDirection: 'row', marginTop: 30, }}>
-                            {this._hot()}
-                        </View> */}
+                        <View style={{ flexDirection: 'row', flexWrap:'wrap',paddingLeft:15,paddingRight:15 }}>
+                            {this.renderHot()}
+                        </View>
                         {this.renderHistory()}
                     </View>
                 </ScrollView>

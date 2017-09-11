@@ -20,7 +20,7 @@ import { init } from '../actions/initAction'
 import Toast from 'react-native-root-toast';
 import ScrollViewJumpTop from '../component/scrollViewJumpTop';
 import FlatListJumpTop from '../component/flatListJumoTop';
-import { COUPONS_URL, ScreenWidth, DOMAIN } from '../common/global';
+import { COUPONS_URL, ScreenWidth, DOMAIN,StatusBarHeight} from '../common/global';
 import Icon from 'react-native-vector-icons/dist/SimpleLineIcons';
 import IconTwo from 'react-native-vector-icons/dist/FontAwesome';
 import Banner from '../component/banner';
@@ -55,13 +55,13 @@ class HomeView extends Component {
 
   render() {
     if (this.props.homeData.status == 'success') {
+      
       let { advs, cubes, banners, recommands, category, notices, istime, youlike } = this.props.homeData.data.result
       let bannersclone = banners.slice(0);
       let topad = bannersclone.slice(0, 1);
       bannersclone.splice(0, 1);
-      let bottomad = bannersclone.slice(-1, 1);
-      bannersclone.splice(-1, 1);
-
+      let bottomad = bannersclone.slice(-1);
+      bannersclone.splice(-1);
       return (
         <View style={styles.container}>
           <StatusBar
@@ -103,7 +103,7 @@ class HomeView extends Component {
             {istime.length > 0 ? <Rush istime={istime}  {...this.props} /> : false}
             <Findgoods cubes={cubes} />
             <Ad ad={bannersclone} />
-            <WellChosen ad={bottomad} recommands={recommands} category={category} navigate={this.props.navigation} />
+            <WellChosen ad={bottomad} recommands={recommands}  {...this.props} category={category} />
             <YouLike youlike={youlike} navigate={this.props.navigation} />
           </ScrollViewJumpTop>
         </View>
