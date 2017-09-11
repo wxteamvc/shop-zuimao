@@ -136,7 +136,7 @@ export default class WellChosen extends Component {
                             activeDotStyle={{ height: 4 }}
                             paginationStyle={{ position: 'absolute', bottom: 15 }}
                             showsButtons={false}
-                           // autoplay={true}
+                            autoplay={true}
                             showsVerticalScrollIndicator={true}
                             autoplayTimeout={3}
                         >
