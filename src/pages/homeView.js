@@ -196,10 +196,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     homeData: state.initReducer,
-<<<<<<< HEAD
     loginData: state.loginReducer
-=======
->>>>>>> f22906682a45af4b35fbe37e2bc9a07f6c3c53b9
   }
 }
 

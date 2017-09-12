@@ -34,8 +34,7 @@ export default class Banner extends Component {
     banner = () => {
         var val = [];
         for (let i = 0; i < this.props.banner.length; i++) {
-            val.push( 
-                  
+            val.push(   
                 <TouchableWithoutFeedback key={i}  onPress={()=>{alert('我要跳啦')}}>
                     <Image source={{uri:DOMAIN + this.props.banner[i].thumb}} style={{ flex:1 }} resizeMode={'stretch'}></Image>
                 </TouchableWithoutFeedback>
