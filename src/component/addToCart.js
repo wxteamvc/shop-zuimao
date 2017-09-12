@@ -95,14 +95,18 @@ export class AddToCart extends Component {
     }
 
     _addToCart(){
-        let token = this.props.loginData.data.result.token;
-        let key, value;
-        for (i in token) {
-            key = i;
-            value = token[key]
+        if(this.props.loginData.status==='success'){
+            let token = this.props.loginData.data.result.token;
+            let key, value;
+            for (i in token) {
+                key = i;
+                value = token[key]
+            }
+            let params='&id='+this.props.goodsInfo.id+'&optionid=0&total='+this.state.num+'&diyformdata=false&'+key+'='+value;
+            this._fetch(ADD_CART_URL,params);
+        }else{
+            Toast.show('请先登陆');
         }
-        let params='&id='+this.props.goodsInfo.id+'&optionid=0&total='+this.state.num+'&diyformdata=false&'+key+'='+value;
-        this._fetch(ADD_CART_URL,params);
     }
 
     _fetch(url,params){
@@ -118,12 +122,12 @@ export class AddToCart extends Component {
           .then(responseJson => {
             if (responseJson.status == 1) {
                 Toast.show('加入购物车成功');
-                this.props.dispatch(cart(this.props.loginData.data.result.token,this.props.navigation));
+                this.props.dispatch(cart(this.props.loginData.data.result.token));
                 this._clearTimer();
                 hide();
             } else {
               Toast.show('加入购物车失败');
-              this.props.dispatch(cart(this.props.loginData.data.result.token,this.props.navigation))
+              this.props.dispatch(cart(this.props.loginData.data.result.token))
             }
           })
           .catch((error) => {

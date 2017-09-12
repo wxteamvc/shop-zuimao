@@ -64,3 +64,5 @@ export const ADD_CART_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=mem
 export const FOUCS_URL = BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=member.favorite.toggle&mid=3773'
 //收货地址管理
 export const ADDRESS_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.address&app=1';
+//收获地址设置默认
+export const ADDRESSDEFAULT_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.address.setdefault';
