@@ -16,11 +16,12 @@ import {
     Easing,
 } from 'react-native';
 import ScrollViewJumpTop from '../component/scrollViewJumpTop';
+import Toast from 'react-native-root-toast';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import IconEvil from 'react-native-vector-icons/dist/EvilIcons';
 import Swiper from 'react-native-swiper';
-import { DOMAIN, ScreenWidth, ScreenHeight, StatusBarHeight, GOODINFO_URL, GOODCHATCOUNT_URL, GOODCHATLIST_URL,FOUCS_URL } from '../common/global';
+import { DOMAIN, ScreenWidth, ScreenHeight, StatusBarHeight, GOODINFO_URL, GOODCHATCOUNT_URL, GOODCHATLIST_URL, FOUCS_URL, ADD_CART_URL } from '../common/global';
 import Util from '../common/util';
 import Loading from '../component/loading';
 import co from 'co';
@@ -28,7 +29,7 @@ import FlatListJumpTop from '../component/flatListJumoTop';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 
- class GoodsInfo extends Component {
+class GoodsInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -40,14 +41,12 @@ import ImageViewer from 'react-native-image-zoom-viewer';
             chatPage: 1,
             level: '',
             goodsNum: 1,
-            showUnSend: false,
-            showNum: false,
             data: {
-                citys:[],
-                godds:{},
-                params:[],
-                statics:{},
-                thumbs:{},
+                citys: [],
+                godds: {},
+                params: [],
+                statics: {},
+                thumbs: {},
             },
             chatCount: {},
             chat: [],
@@ -60,7 +59,8 @@ import ImageViewer from 'react-native-image-zoom-viewer';
             h: '00',
             m: '00',
             s: '00',
-            isFavorite:false,
+            isFavorite: false,
+            cartCount:null,
         }
     }
 
@@ -75,11 +75,11 @@ import ImageViewer from 'react-native-image-zoom-viewer';
             .then((resq) => resq.json())
             .then((responseJson) => {
                 if (responseJson.status == 1) {
-                    console.log(responseJson)
                     this.setState({
                         status: 'success',
                         data: responseJson.result.goods_detail,
-                        isFavorite:responseJson.result.goods_detail.isFavorite,
+                        isFavorite: responseJson.result.goods_detail.isFavorite,
+                        cartCount:responseJson.result.goods_detail.cartCount , 
                     })
                     this.unSendText = '';
                     for (let i = 0; i < this.state.data.citys.length; i++) {
@@ -108,19 +108,20 @@ import ImageViewer from 'react-native-image-zoom-viewer';
                             this.isrush = false;
                         }
                     } else if (this.state.data.goods.isdiscount == 1) {
-                        this.text = this.state.data.goods.isdiscount_title
                         let date = Math.round(new Date().getTime() / 1000);
-                        if(date<this.state.data.goods.isdiscount_time){
+                        if (date < this.state.data.goods.isdiscount_time) {
+                            this.text = this.state.data.goods.isdiscount_title
                             this.isrush = true;
                             this.timer = setInterval(
                                 () => {
                                     this.rushtime(this.state.data.goods.isdiscount_time)
                                 }
                                 , 1000)
-                        }else{
+                        } else {
+                            this.text = '';
                             this.isrush = false;
                         }
-                        
+
                     }
 
                 } else {
@@ -149,13 +150,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
                     })
                 }
             })
-
-        let data = {
-            id: this.props.navigation.state.params.id,
-            date: Math.round(new Date().getTime() / 1000)
-        }
     }
-
     componentDidMount() {
         co(this.gen.bind(this)).then(function () {
             console.log('加载完成')
@@ -163,40 +158,65 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 
 
     }
-   
-    focus(){
-        if (global.isConnected) {
-            let { loginData } = this.props;
-            let data={id:this.props.navigation.state.params.id,isfavorite:this.state.isFavorite?0:1}
-            let token='';
-            for( let key in loginData.data.result.token){
-                 token = '&'+key+'='+loginData.data.result.token[key]
+
+    focus() {
+        let { loginData } = this.props;
+        if (loginData.status == 'success') {
+            let data = { id: this.props.navigation.state.params.id, isfavorite: this.state.isFavorite ? 0 : 1 }
+            let token = '';
+            for (let key in loginData.data.result.token) {
+                token = '&' + key + '=' + loginData.data.result.token[key]
             }
-            let url = FOUCS_URL+token
-            Util.post(url,data,
+            let url = FOUCS_URL + token
+            Util.post(url, data,
                 (resq) => {
-                    if (resq.status == 1) {    
+                    if (resq.status == 1) {
                         this.setState({
-                            isFavorite:resq.result.isfavorite
+                            isFavorite: resq.result.isfavorite
                         })
                     } else {
-                        this.setState({
-                            status: 'faild',
-                            errmessage: resq.message,
-                        })
+                        Toast.show(resq.message, { duration: Toast.durations.LONG, });
                     }
                 },
                 (error) => {
                     this.setState({
-                        status: 'faild',
                         errmessage: error.message,
                     })
                 })
         } else {
-            this.setState({
-                status: 'faild',
-                errmessage: '当前没有网络！'
-            })
+            Toast.show('亲 请先登录哦！', { duration: Toast.durations.LONG, });
+        }
+    }
+
+
+
+    addCart() {
+        let { loginData } = this.props;
+        if (loginData.status == 'success') {
+            let data = { id: this.props.navigation.state.params.id, optionid:0,total:this.state.goodsNum,diyformdata:false}
+            let token = '';
+            for (let key in loginData.data.result.token) {
+                token = '&' + key + '=' + loginData.data.result.token[key]
+            }
+            let url = ADD_CART_URL + token
+            Util.post(url, data,
+                (resq) => {
+                    if (resq.status == 1) {
+                        this.setState({
+                            cartCount: resq.result.cartcount
+                        })
+                        Toast.show('添加购物车成功', { duration: Toast.durations.LONG, });
+                    } else {
+                        Toast.show(resq.message, { duration: Toast.durations.LONG, });
+                    }
+                },
+                (error) => {
+                    this.setState({
+                        errmessage: error.message,
+                    })
+                })
+        } else {
+            Toast.show('亲 请先登录哦！', { duration: Toast.durations.LONG, });
         }
     }
 
@@ -247,11 +267,11 @@ import ImageViewer from 'react-native-image-zoom-viewer';
                         {this.show()}
                         <View style={[styles.bottombox, styles.rowCenter]}>
                             <View style={[{ flex: 0.4, height: 45 }, styles.rowCenter]}>
-                                <TouchableOpacity 
-                                 onPress={()=>{this.focus()}}  
-                                style={[{ flex: 1 }, styles.center]}>
-                                    <Icon name={this.state.isFavorite?'heart':'heart-o'} size={20} color={this.state.isFavorite?'red':'#ccc'} />
-                                    <Text style={{ fontSize: 10 }}>{this.state.isFavorite?'已关注':'关注'}</Text>
+                                <TouchableOpacity
+                                    onPress={() => { this.focus() }}
+                                    style={[{ flex: 1 }, styles.center]}>
+                                    <Icon name={this.state.isFavorite ? 'heart' : 'heart-o'} size={20} color={this.state.isFavorite ? 'red' : '#ccc'} />
+                                    <Text style={{ fontSize: 10 }}>{this.state.isFavorite ? '已关注' : '关注'}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={[{ flex: 1 }, styles.center]}>
                                     <Icon name={'shopping-bag'} size={20} color={'#ccc'} />
@@ -262,12 +282,18 @@ import ImageViewer from 'react-native-image-zoom-viewer';
                                     style={[{ flex: 1 }, styles.center]}>
                                     <Icon name={'shopping-cart'} size={20} color={'#ccc'} />
                                     <Text style={{ fontSize: 10 }}>购物车</Text>
+                                   <View><Text>{this.state.cartCount}</Text></View>
                                 </TouchableOpacity>
                             </View>
-                            <TouchableOpacity style={[styles.bottomCar, styles.center]}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                  this.addCart()
+                                }}
+                                style={[styles.bottomCar, styles.center]}>
                                 <Text style={styles.bottomText}>加入购物车</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.bottomBuy, styles.center]}>
+                            <TouchableOpacity
+                                style={[styles.bottomBuy, styles.center]}>
                                 <Text style={styles.bottomText}>立即购买</Text>
                             </TouchableOpacity>
                         </View>
@@ -335,63 +361,63 @@ import ImageViewer from 'react-native-image-zoom-viewer';
     }
     //渲染选择数量面板
     renderNum() {
-            return (
-                <Modal
-                  visible={this.state.modalNum}
-                    animationType={'slide'}
-                    transparent={true}
-                    onRequestClose={() => {
-                        this.setstate({modalNum:false})
-                    }}>
-                    <TouchableOpacity 
+        return (
+            <Modal
+                visible={this.state.modalNum}
+                animationType={'slide'}
+                transparent={true}
+                onRequestClose={() => {
+                    this.setstate({ modalNum: false })
+                }}>
+                <TouchableOpacity
                     activeOpacity={0.7}
-                    onPress={()=>{this.setState({modalNum:false})}}
+                    onPress={() => { this.setState({ modalNum: false }) }}
                     style={[styles.motaiTop, { flex: 0.7 }]}>
-                    </TouchableOpacity>
-                    <View style={[styles.motaiBottom, { flex: 0.3 }]}>
-                        <View style={[styles.rowCenter, styles.usbTop, { height: 60 }]}>
-                            <View style={[{ flex: 0.9 }]}>
-                                <Text style={styles.showNumTopText}>&yen;{this.state.data.goods.marketprice}</Text>
-                            </View>
-                            <View style={[{ flex: 0.1, }, styles.center]}>
-                                <TouchableOpacity
-                                style={[styles.center,{padding:10}]}
-                                    onPress={() => {
-                                        this.setState({ goodsNum: 1, modalNum: false})
-                                    }}>
-                                    <Icon name={'close'} size={16} color={'#ccc'} />
-                                </TouchableOpacity>
-                            </View>
+                </TouchableOpacity>
+                <View style={[styles.motaiBottom, { flex: 0.3 }]}>
+                    <View style={[styles.rowCenter, styles.usbTop, { height: 60 }]}>
+                        <View style={[{ flex: 0.9 }]}>
+                            <Text style={styles.showNumTopText}>&yen;{this.state.data.goods.marketprice}</Text>
                         </View>
-                        <View style={[styles.rowCenter, styles.showNummid]}>
-                            <Text>数量</Text>
-                            <View style={[styles.rowCenter, { borderColor: '#ccc', borderWidth: 0.7 }]}>
-                                <TouchableOpacity
-                                    onPress={() => { this.state.goodsNum > 1 ? this.setState({ goodsNum: --this.state.goodsNum }) : '' }}
-                                    style={styles.showNumMidText}>
-                                    <Text>-</Text>
-                                </TouchableOpacity>
-                                <View style={{ paddingLeft: 15, paddingRight: 15 }}>
-                                    <Text>{this.state.goodsNum}</Text>
-                                </View>
-                                <TouchableOpacity
-                                    onPress={() => { this.setState({ goodsNum: ++this.state.goodsNum }) }}
-                                    style={[styles.showNumMidText, { borderLeftWidth: 0.7, borderRightWidth: 0 }]}>
-                                    <Text>+</Text>
-                                </TouchableOpacity>
-                            </View>
+                        <View style={[{ flex: 0.1, }, styles.center]}>
+                            <TouchableOpacity
+                                style={[styles.center, { padding: 10 }]}
+                                onPress={() => {
+                                    this.setState({ goodsNum: 1, modalNum: false })
+                                }}>
+                                <Icon name={'close'} size={16} color={'#ccc'} />
+                            </TouchableOpacity>
                         </View>
-                        <TouchableOpacity onPress={() => { this.setState({ modalNum: false }) }}>
-                            <View style={[styles.showNumBottom, styles.center]}>
-                                <Text style={{ color: '#fff' }}>确定</Text>
-                            </View>
-                        </TouchableOpacity>
                     </View>
-                    <Image
-                        style={styles.showNumImg}
-                        source={{ uri: this.state.data.goods.thumb }} />
-                </Modal>
-            )
+                    <View style={[styles.rowCenter, styles.showNummid]}>
+                        <Text>数量</Text>
+                        <View style={[styles.rowCenter, { borderColor: '#ccc', borderWidth: 0.7 }]}>
+                            <TouchableOpacity
+                                onPress={() => { this.state.goodsNum > 1 ? this.setState({ goodsNum: --this.state.goodsNum }) : '' }}
+                                style={styles.showNumMidText}>
+                                <Text>-</Text>
+                            </TouchableOpacity>
+                            <View style={{ paddingLeft: 15, paddingRight: 15 }}>
+                                <Text>{this.state.goodsNum}</Text>
+                            </View>
+                            <TouchableOpacity
+                                onPress={() => { this.setState({ goodsNum: ++this.state.goodsNum }) }}
+                                style={[styles.showNumMidText, { borderLeftWidth: 0.7, borderRightWidth: 0 }]}>
+                                <Text>+</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <TouchableOpacity onPress={() => { this.setState({ modalNum: false }) }}>
+                        <View style={[styles.showNumBottom, styles.center]}>
+                            <Text style={{ color: '#fff' }}>确定</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <Image
+                    style={styles.showNumImg}
+                    source={{ uri: this.state.data.goods.thumb }} />
+            </Modal>
+        )
     }
 
 
@@ -406,47 +432,47 @@ import ImageViewer from 'react-native-image-zoom-viewer';
     }
 
     renderUnSend() {
-            return (
-                <Modal
-                    visible={this.state.modalUnsend}
-                    animationType={'slide'}
-                    transparent={true}
-                    onRequestClose={() => {
-                        this.setstate({modalUnsend:false})
-                    }}
-                   >
-                   <TouchableOpacity 
+        return (
+            <Modal
+                visible={this.state.modalUnsend}
+                animationType={'slide'}
+                transparent={true}
+                onRequestClose={() => {
+                    this.setstate({ modalUnsend: false })
+                }}
+            >
+                <TouchableOpacity
                     activeOpacity={0.7}
-                    onPress={()=>{this.setState({modalUnsend:false})}}
+                    onPress={() => { this.setState({ modalUnsend: false }) }}
                     style={[styles.motaiTop]}>
-                    </TouchableOpacity>
-                    <View style={styles.motaiBottom}>
-                        <View style={[styles.rowCenter, styles.usbTop]}>
-                            <View style={styles.unSendTopLeft}>
-                                <Text>不配送区域</Text>
-                            </View>
-                            <View style={styles.unSendTopRight} >
-                                <TouchableOpacity
-                                style={[styles.center,{padding:10}]}
-                                    onPress={() => {
-                                        this.setState({
-                                            modalUnsend: false,
-                                        })
-                                    }}>
-                                    <Icon name={'close'} size={16} color={'#ccc'} />
-                                </TouchableOpacity>
-                            </View>
+                </TouchableOpacity>
+                <View style={styles.motaiBottom}>
+                    <View style={[styles.rowCenter, styles.usbTop]}>
+                        <View style={styles.unSendTopLeft}>
+                            <Text>不配送区域</Text>
                         </View>
-                        <FlatList
-                            data={this.state.data.citys}
-                            keyExtractor={(item, index) => index}
-                            renderItem={this.renderUnSendArea.bind(this)}
-                            numColumns={3}
-                            showsVerticalScrollIndicator={false}
-                        />
+                        <View style={styles.unSendTopRight} >
+                            <TouchableOpacity
+                                style={[styles.center, { padding: 10 }]}
+                                onPress={() => {
+                                    this.setState({
+                                        modalUnsend: false,
+                                    })
+                                }}>
+                                <Icon name={'close'} size={16} color={'#ccc'} />
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </Modal>
-            )
+                    <FlatList
+                        data={this.state.data.citys}
+                        keyExtractor={(item, index) => index}
+                        renderItem={this.renderUnSendArea.bind(this)}
+                        numColumns={3}
+                        showsVerticalScrollIndicator={false}
+                    />
+                </View>
+            </Modal>
+        )
     }
 
     getChatList(condition = {}, isAdd = 0) {
@@ -807,7 +833,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
     rush = () => {
         return (
             <View style={styles.rush_head}>
-                <View style={styles.rush_head_left}><Text style={[{ color: '#fff' }, styles.rushText]}>{this.text}</Text></View>
+                {this.text ? <View style={styles.rush_head_left}><Text style={[{ color: '#fff' }, styles.rushText]}>{this.text}</Text></View> : false}
                 {this.isrush ?
                     <View style={styles.rush_head_right}>
                         <Text style={[styles.rushText]}>{this.state.d}</Text>
@@ -948,9 +974,9 @@ import ImageViewer from 'react-native-image-zoom-viewer';
                             </View>
                         </View>
                         <View style={[{ marginTop: 30, marginBottom: 15 }, styles.rowCenter]}>
-                            <TouchableOpacity 
-                            onPress={()=>{this.props.navigation.navigate('Goods', { search: {} })}}
-                            style={[styles.btn, { marginRight: 40, }]}>
+                            <TouchableOpacity
+                                onPress={() => { this.props.navigation.navigate('Goods', { search: {} }) }}
+                                style={[styles.btn, { marginRight: 40, }]}>
                                 <Text style={{ color: 'red' }}>
                                     全部商品
                                     </Text>
@@ -1163,7 +1189,7 @@ const styles = StyleSheet.create({
     }
 
 
-})  
+})
 
 
 function mapStateToProps(state) {
@@ -1171,5 +1197,5 @@ function mapStateToProps(state) {
         loginData: state.loginReducer,
     }
 }
-    
+
 export default connect(mapStateToProps)(GoodsInfo);

@@ -21,7 +21,9 @@ export default class YouLike extends Component {
     renderYouLike({ item }) {
         let { fun } = this.props;
         return (
-            <TouchableOpacity style={styles.item_container} onPress={() => { this.props.navigate.navigate('GoodsInfo', { id: item.id }) }}>
+            <TouchableOpacity 
+            activeOpacity={1}
+            style={styles.item_container} onPress={() => { this.props.navigate.navigate('GoodsInfo', { id: item.id }) }}>
                 <View style={styles.item_left}>
                     <Image source={{ uri: item.thumb }} style={styles.item_img} />
                 </View>

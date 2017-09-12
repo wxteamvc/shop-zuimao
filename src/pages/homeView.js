@@ -195,6 +195,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     homeData: state.initReducer,
+  }
 }
 
 export default connect(mapStateToProps)(HomeView);
