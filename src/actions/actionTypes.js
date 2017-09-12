@@ -46,9 +46,3 @@ export const ADDRESS_BEGIN = 'ADDRESS_BEGIN';
 export const ADDRESS_SUCCESS = 'ADDRESS_SUCCESS';
 //请求收货地址页面失败
 export const ADDRESS_FAILED = 'ADDRESS_FAILED';
-//请求默认收货地址页面开始
-export const ADDRESSDEFAULT_BEGIN = 'ADDRESSDEFAULT_BEGIN';
-//请求默认收货地址页面成功
-export const ADDRESSDEFAULT_SUCCESS = 'ADDRESSDEFAULT_SUCCESS';
-//请求默认收货地址页面失败
-export const ADDRESSDEFAULT_FAILED = 'ADDRESSDEFAULT_FAILED';
