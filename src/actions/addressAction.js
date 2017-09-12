@@ -1,5 +1,5 @@
 import * as Types from "./actionTypes";
-import { ADDRESS_URL } from '../common/global';
+import { ADDRESS_URL,ADDRESSDEFAULT_URL } from '../common/global';
 import Util from '../common/util';
 import Toast from 'react-native-root-toast';
 
@@ -31,6 +31,7 @@ export function address(params={}) {
         )
     }
 }
+
 
 function start(type,data={}){
     return {

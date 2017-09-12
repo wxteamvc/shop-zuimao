@@ -25,7 +25,7 @@ class Cart extends Component {
     let { loginData, memberData } = this.props;
     //请求购物车
     if (loginData.status === "success" && memberData.status === false) {
-      this.props.dispatch(cart(loginData.data.result.token,this.props.navigation))
+      this.props.dispatch(cart(loginData.data.result.token))
     }
   }
 
@@ -263,10 +263,10 @@ class Cart extends Component {
       .then(responseJson => {
         if (responseJson.status == 1) {
           if(this.state.isedit){this.setState({isedit:false})}
-          this.props.dispatch(cart(this.props.loginData.data.result.token,this.props.navigation))
+          this.props.dispatch(cart(this.props.loginData.data.result.token))
         } else {
           Toast.show('服务器请求失败');
-          this.props.dispatch(cart(this.props.loginData.data.result.token,this.props.navigation))
+          this.props.dispatch(cart(this.props.loginData.data.result.token))
         }
       })
       .catch((error) => {
