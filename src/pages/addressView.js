@@ -47,14 +47,14 @@ class Address extends Component {
   }
 
   renderAddress(){
-    let addressList=this.props.addressData;
+    let addressList=this.props.addressData.data.result.address;
     let addressArr=[];
     for(let i = 0;i<addressList.length;i++){
       addressArr.push(
-        <View style={s.list}>
+        <View key={i} style={s.list}>
           <View style={s.address}>
-            <Text>{this.addressList[i].realname}&nbsp;{this.addressList[i].mobile}</Text>
-            <Text>{this.addressList[i].province+this.addressList[i].city+this.addressList[i].area+this.addressList[i].address}</Text>
+            <Text style={s.fonta}>{addressList[i].realname}&nbsp;{addressList[i].mobile}</Text>
+            <Text>{addressList[i].province+addressList[i].city+addressList[i].area+addressList[i].address}</Text>
           </View>
         </View>
       );
@@ -65,7 +65,7 @@ class Address extends Component {
 
 const s = StyleSheet.create({
   list:{
-    padding:10,
+    padding:15,
     backgroundColor:'#fff',
     marginTop:10,
     borderTopWidth:1,
@@ -73,7 +73,13 @@ const s = StyleSheet.create({
     borderColor:'#ddd'
   },
   address:{
-
+    borderBottomWidth:1,
+    borderColor:'#ddd'
+  },
+  fonta:{
+    fontSize:15,
+    color:'#000',
+    paddingBottom:5
   }
 });
 

@@ -125,8 +125,7 @@ class HomeView extends Component {
             <WellChosen ad={bottomad} recommands={recommands}  {...this.props} category={category} />
             <YouLike youlike={youlike} navigate={this.props.navigation} fun={(item) => this.setState({ goodsInfo: item, showModel: true })} />
           </ScrollViewJumpTop>
-          {this.state.showModel ? <AddToCart goodsInfo={this.state.goodsInfo} showModel={this.state.showModel} hide={() => this.setState({ showModel: false })} dispatch={this.props.dispatch} loginData={this.props.loginData} statusBarTranslucent={true} /> : null}
-          {this.state.showModel?<AddToCart goodsInfo={this.state.goodsInfo} showModel={this.state.showModel} hide={()=>this.setState({showModel:false})} statusBarTranslucent ={true} navigation={this.props.navigation}/>:null}
+          {this.state.showModel ? <AddToCart goodsInfo={this.state.goodsInfo} showModel={this.state.showModel} hide={() => this.setState({ showModel: false })} statusBarTranslucent={true} /> : null}
         </View>
 
       );
@@ -196,8 +195,6 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     homeData: state.initReducer,
-    loginData: state.loginReducer
-  }
 }
 
 export default connect(mapStateToProps)(HomeView);
