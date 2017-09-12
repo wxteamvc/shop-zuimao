@@ -66,3 +66,7 @@ export const FOUCS_URL = BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=member.
 export const ADDRESS_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.address&app=1';
 //收获地址设置默认
 export const ADDRESSDEFAULT_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.address.setdefault';
+//收获地址删除
+export const ADDRESSDELETE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.address.delete';
+//收获地址编辑
+export const ADDRESSEDIT_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.address.post';

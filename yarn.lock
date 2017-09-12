@@ -3374,6 +3374,10 @@ react-native-image-zoom-viewer@^2.0.10:
     nt-transmit-transparently "^1.0.7"
     react-native-image-pan-zoom "^2.0.5"
 
+react-native-picker@^4.1.2:
+  version "4.1.2"
+  resolved "http://registry.npm.taobao.org/react-native-picker/download/react-native-picker-4.1.2.tgz#ead116a53a420cd3eafc33b705f69fb5e63a73d4"
+
 react-native-root-siblings@^1.2.1:
   version "1.2.1"
   resolved "http://registry.npm.taobao.org/react-native-root-siblings/download/react-native-root-siblings-1.2.1.tgz#6f8d0e711dbf9aef4e57e73aea751372b5aefcff"
