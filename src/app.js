@@ -20,6 +20,7 @@ import IsTime from './pages/isTimeView';
 import IsDiscount from './pages/isDiscountView';
 import Search from './pages/searchView';
 import Address from './pages/addressView';
+import OrderCreateView from './pages/orderCreateView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -111,6 +112,14 @@ const App = StackNavigator({
         screen: Address,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '收货地址管理',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
+        }),
+    },
+    OrderCreateView:{
+        screen: OrderCreateView,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '确认订单',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
         }),

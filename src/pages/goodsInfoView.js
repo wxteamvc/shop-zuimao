@@ -16,6 +16,7 @@ import {
     Easing,
 } from 'react-native';
 import ScrollViewJumpTop from '../component/scrollViewJumpTop';
+import { cart } from '../actions/cartAction';
 import Toast from 'react-native-root-toast';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -27,7 +28,6 @@ import Loading from '../component/loading';
 import co from 'co';
 import FlatListJumpTop from '../component/flatListJumoTop';
 import ImageViewer from 'react-native-image-zoom-viewer';
-
 
 class GoodsInfo extends Component {
     constructor(props) {
@@ -60,7 +60,7 @@ class GoodsInfo extends Component {
             m: '00',
             s: '00',
             isFavorite: false,
-            cartCount:null,
+            cartCount:0,
         }
     }
 
@@ -184,7 +184,7 @@ class GoodsInfo extends Component {
                     })
                 })
         } else {
-            Toast.show('亲 请先登录哦！', { duration: Toast.durations.LONG, });
+            Toast.show('亲 请先登录哦！', { duration: Toast.durations.SHORT , });
         }
     }
 
@@ -205,9 +205,11 @@ class GoodsInfo extends Component {
                         this.setState({
                             cartCount: resq.result.cartcount
                         })
-                        Toast.show('添加购物车成功', { duration: Toast.durations.LONG, });
+                        this.props.dispatch(cart(this.props.loginData.data.result.token));
+                        Toast.show('添加购物车成功', { duration: Toast.durations.SHORT , });
                     } else {
-                        Toast.show(resq.message, { duration: Toast.durations.LONG, });
+                        Toast.show(resq.message, { duration: Toast.durations.SHORT , });
+                        this.props.dispatch(cart(this.props.loginData.data.result.token));
                     }
                 },
                 (error) => {
@@ -216,7 +218,7 @@ class GoodsInfo extends Component {
                     })
                 })
         } else {
-            Toast.show('亲 请先登录哦！', { duration: Toast.durations.LONG, });
+            Toast.show('亲 请先登录哦！', { duration: Toast.durations.SHORT , });
         }
     }
 
@@ -266,7 +268,7 @@ class GoodsInfo extends Component {
                         </View>
                         {this.show()}
                         <View style={[styles.bottombox, styles.rowCenter]}>
-                            <View style={[{ flex: 0.4, height: 45 }, styles.rowCenter]}>
+                            <View style={[{ flex: 0.4, height: 50 }, styles.rowCenter]}>
                                 <TouchableOpacity
                                     onPress={() => { this.focus() }}
                                     style={[{ flex: 1 }, styles.center]}>
@@ -282,7 +284,10 @@ class GoodsInfo extends Component {
                                     style={[{ flex: 1 }, styles.center]}>
                                     <Icon name={'shopping-cart'} size={20} color={'#ccc'} />
                                     <Text style={{ fontSize: 10 }}>购物车</Text>
-                                   <View><Text>{this.state.cartCount}</Text></View>
+                                   {this.state.cartCount>0?<View
+                                   style={[styles.center,styles.bottomCarIcon]}
+                                   ><Text style={styles.bottomCarIconText}>{this.state.cartCount}</Text>
+                                   </View>:false}
                                 </TouchableOpacity>
                             </View>
                             <TouchableOpacity
@@ -293,6 +298,11 @@ class GoodsInfo extends Component {
                                 <Text style={styles.bottomText}>加入购物车</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
+                            onPress={
+                              this.props.loginData.status=='success'?
+                              ()=>{this.props.navigation.navigate('OrderCreateView',{data:this.state.data,goodsNum:this.state.goodsNum})}:
+                              Toast.show('亲 请先登录哦！', { duration: Toast.durations.SHORT , })
+                            }
                                 style={[styles.bottomBuy, styles.center]}>
                                 <Text style={styles.bottomText}>立即购买</Text>
                             </TouchableOpacity>
@@ -1050,16 +1060,22 @@ const styles = StyleSheet.create({
         flex: 0.8, flexDirection: 'row', alignItems: 'center'
     },
     bottombox: {
-        height: 45, borderColor: '#ccc', borderTopWidth: 0.7
+        height:50, borderColor: '#fff', borderTopWidth: 0.7
     },
     bottomCar: {
-        flex: 0.3, backgroundColor: '#FE9402', height: 45
+        flex: 0.3, backgroundColor: '#FE9402', height: 50
+    },
+    bottomCarIcon:{
+        paddingLeft:4,paddingRight:4,borderRadius:10,position:'absolute',top:0,left:30,borderColor:'red',borderWidth:0.7
+    },
+    bottomCarIconText:{
+        color:'red',fontSize:10
     },
     bottomText: {
         fontSize: 14, color: '#fff'
     },
     bottomBuy: {
-        flex: 0.3, backgroundColor: '#FD5555', height: 45
+        flex: 0.3, backgroundColor: '#FD5555', height: 50
     },
     motaiContainer: {
         width: ScreenWidth, height: ScreenHeight - StatusBarHeight, position: 'absolute', bottom: 0
