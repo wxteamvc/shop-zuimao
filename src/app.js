@@ -20,6 +20,8 @@ import IsTime from './pages/isTimeView';
 import IsDiscount from './pages/isDiscountView';
 import Search from './pages/searchView';
 import Address from './pages/addressView';
+import AddressEdit from './pages/addressEditView';
+import AddressAdd from './pages/addressAddView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -111,6 +113,22 @@ const App = StackNavigator({
         screen: Address,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '收货地址管理',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
+        }),
+    },
+    AddressEdit:{
+        screen: AddressEdit,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '编辑收货地址',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
+        }),
+    },
+    AddressAdd:{
+        screen: AddressAdd,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '新增收货地址',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
         }),
