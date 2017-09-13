@@ -4,11 +4,11 @@ import Dimensions from 'Dimensions';
 export const ScreenWidth = Dimensions.get('window').width;
 export const ScreenHeight = Dimensions.get('window').height;
 //缩放比例
-export const fontSizeScaler = (PixelRatio.get() / PixelRatio.getFontScale())/PixelRatio.get();
+export const fontSizeScaler = (PixelRatio.get() / PixelRatio.getFontScale()) / PixelRatio.get();
 //状态栏高度
 export const StatusBarHeight = StatusBar.currentHeight;
 //图片域名
-export const DOMAIN='http://www.zuimaowang.cn/attachment/';
+export const DOMAIN = 'http://www.zuimaowang.cn/attachment/';
 //网站基本地址
 export const BASIC_URL = 'http://www.zuimaowang.cn/app/index.php';
 //网站首页地址
@@ -20,7 +20,7 @@ export const SIGNINDEX_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=si
 //签到请求地址
 export const SIGN_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=sign.dosign';
 //签到更换月份地址
-export const SIGN_MONTHCHANGE_URL = BASIC_URL+'?i=1&c=entry&m=ice_shop&do=mobile&r=sign.getCalendar&app=1&date='
+export const SIGN_MONTHCHANGE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=sign.getCalendar&app=1&date='
 //签到记录地址
 export const SIGNRECORD_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=sign.getrecords';
 //登陆请求地址
@@ -34,7 +34,7 @@ export const VERIFY_CODE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=
 //注册请求地址
 export const REGISTER_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=account.register'
 //商品列表
-export const GOODS_URL =  BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=goods.get_list';
+export const GOODS_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=goods.get_list';
 //购物车请求地址
 export const CART_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.cart&app=1';
 //购物车商品勾选请求地址
@@ -48,20 +48,20 @@ export const GOODINFO_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=goo
 //评论统计请求地址
 export const GOODCHATCOUNT_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=goods.detail.get_comments&app=1';
 //评论列表请求地址
-export function GOODCHATLIST_URL(condition={}){
-    let data={
-        id:'',
-        page:'',
-        level:'',
-        date:'',
+export function GOODCHATLIST_URL(condition = {}) {
+    let data = {
+        id: '',
+        page: '',
+        level: '',
+        date: '',
     };
-    Object.assign(data,condition);
-   return (BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=goods.detail.get_comment_list&app=1&id='+data.id+'&page='+data.page+'&level='+data.level+'&getcount=1&_='+data.date);
-} 
+    Object.assign(data, condition);
+    return (BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=goods.detail.get_comment_list&app=1&id=' + data.id + '&page=' + data.page + '&level=' + data.level + '&getcount=1&_=' + data.date);
+}
 //加入购物车请求地址
 export const ADD_CART_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.cart.add';
 //商品关注地址
-export const FOUCS_URL = BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=member.favorite.toggle&mid=3773'
+export const FOUCS_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.favorite.toggle&mid=3773'
 //收货地址管理
 export const ADDRESS_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.address&app=1';
 //收获地址设置默认
@@ -71,6 +71,49 @@ export const ADDRESSDELETE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&
 //收获地址编辑
 export const ADDRESSEDIT_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.address.post';
 //创建订单地址
-export const ORDERCREATE_URL = BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=order.create.caculate&mid=3773'
+export const ORDERCREATE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.create.caculate&mid=3773'
 //收获地址新增或更新
 export const ADDRESSUPDATE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.address.submit';
+//分类跳转
+export function JUMP(link, navigate) {
+    let url = 'http://www.zuimaowang.cn/app' + link.substring(1)
+    let r = getItem(url, 'r')
+    let screen = '';
+    let data = {};
+    switch (r) {
+        case 'article':
+            screen = 'ShowNotice';
+            data = { url: url };
+            break;
+        case 'shop.category':
+            screen = 'Category';
+            data = {};
+            break;
+        case 'goods':
+            screen = 'Goods';
+            data = { search: { cate: getItem(url, 'cate') } };
+            break;
+        case 'goods.detail':
+            screen = 'GoodsInfo';
+            data = { id: getItem(url, 'id') };
+            break;
+        case 'sale.coupon':
+            screen = 'Coupons';
+            data = {};
+            break;
+        default:
+            screen = '';
+            data = {};
+            break;
+    }
+    navigate.navigate(screen, data);
+}
+function getItem(url, item) {
+    let reg = new RegExp("[^\?&]?" + encodeURI(item) + "=[^&]+");
+    let arr = url.match(reg);
+    if (arr != null) {
+        return (decodeURI(arr[0].substring(arr[0].search("=") + 1)));
+    } else {
+        return (false);
+    }
+}

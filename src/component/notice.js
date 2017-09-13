@@ -1,4 +1,6 @@
-//首页热点栏目组件
+/**
+ * 首页热点栏目组件
+ */
 "use strict";
 import React, { Component } from 'react';
 import {
@@ -10,7 +12,7 @@ import {
     FlatList,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
-import { ScreenWidth, DOMAIN } from '../common/global';
+import { ScreenWidth, DOMAIN ,JUMP} from '../common/global';
 
 export default class Notice extends Component {
     constructor(props) {
@@ -19,40 +21,25 @@ export default class Notice extends Component {
             isShow: false,
         }
     }
-    componentDidMount(){
-        this.timeOut = setTimeout(()=>{
-             this.setState({
-              isShow:true,
-          })
-         },0); 
-      }
- 
-      componentWillUnmount() {
-         this.timeOut && clearTimeout(this.timeOut)
-      }
+    componentDidMount() {
+        this.timeOut = setTimeout(() => {
+            this.setState({
+                isShow: true,
+            })
+        }, 0);
+    }
 
+    componentWillUnmount() {
+        this.timeOut && clearTimeout(this.timeOut)
+    }
 
     renderNotices() {
         let news = [];
         for (let i = 0; i < this.props.notices.length; i++) {
-            let url = this.props.notices[i].link
-            let reg = new RegExp("[^\?&]?" + encodeURI('r') + "=[^&]+");
-            let arr = url.match(reg);
-            let r = '';
-            if (arr != null) {
-               let r = decodeURI(arr[0].substring(arr[0].search("=") + 1));
-            }
-            switch(r){
-                case 'article':
-                let action = this.props.navigation.navigate('')
-                break;
-                default:
-                let action =false
-            }  
             news.push(
                 <View key={i} style={{ flex: 1, justifyContent: 'center', }}>
-                    <TouchableOpacity 
-                    onPress={action}
+                    <TouchableOpacity
+                        onPress={() => { JUMP(this.props.notices[i].link,this.props.navigation) }}
                     >
                         <Text numberOfLines={1} >{this.props.notices[i].title}</Text>
                     </TouchableOpacity>
@@ -61,7 +48,6 @@ export default class Notice extends Component {
         }
         return (news)
     }
-
     getURLPara(name) {
         var reg = new RegExp("[^\?&]?" + encodeURI(name) + "=[^&]+");
         var arr = this.search.match(reg);
@@ -72,7 +58,6 @@ export default class Notice extends Component {
     }
 
     render() {
-        console.log(this.props.notices)
         return (
             <View style={styles.notice}>
                 <Image

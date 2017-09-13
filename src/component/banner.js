@@ -9,7 +9,7 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
-import { DOMAIN,ScreenWidth } from '../common/global';
+import { DOMAIN,ScreenWidth,JUMP } from '../common/global';
 export default class Banner extends Component {
     constructor(props) {
         super(props);
@@ -35,7 +35,7 @@ export default class Banner extends Component {
         var val = [];
         for (let i = 0; i < this.props.banner.length; i++) {
             val.push(   
-                <TouchableWithoutFeedback key={i}  onPress={()=>{alert('我要跳啦')}}>
+                <TouchableWithoutFeedback key={i}  onPress={()=>{JUMP(this.props.banner[i].link,this.props.navigation)}}>
                     <Image source={{uri:DOMAIN + this.props.banner[i].thumb}} style={{ flex:1 }} resizeMode={'stretch'}></Image>
                 </TouchableWithoutFeedback>
             )

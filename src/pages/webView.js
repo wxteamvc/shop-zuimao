@@ -8,6 +8,8 @@
 import React, { Component } from 'react';
 import {
     WebView,
+    StatusBar,
+    View
 } from 'react-native';
 
 export default class ShowNotice extends Component {
@@ -18,10 +20,16 @@ export default class ShowNotice extends Component {
 
     render() {
         return (
-            <WebView 
-            source={{uri: this.props.navigation.state.params.url}}
-            style={{flex:1}}>
-            </WebView>
+            <View style={{flex:1}}>
+                <StatusBar
+                    translucent={false}
+                    backgroundColor="#000"
+                />
+                <WebView
+                    source={{ uri: this.props.navigation.state.params.url }}
+                    style={{ flex: 1 }}>
+                </WebView>
+            </View>
         )
 
     }

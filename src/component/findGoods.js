@@ -8,8 +8,7 @@ import {
     TouchableWithoutFeedback,
     Image,
 } from 'react-native';
-import { COUPONS_URL, ScreenWidth, DOMAIN } from '../common/global';
-
+import { COUPONS_URL, ScreenWidth, DOMAIN,JUMP } from '../common/global';
 export default class Findgoods extends Component {
 
     constructor(...props) {
@@ -23,7 +22,9 @@ export default class Findgoods extends Component {
         if (data.length === 0 || max === 0) return;
         return (
             <View style={{ flex: 1, flexDirection: flag ? 'row' : 'column',}}>
-                <TouchableWithoutFeedback style={{ flex: 1 }}>
+                <TouchableWithoutFeedback 
+                onPress={()=>{JUMP(data[0].url,this.props.navigation)}}
+                style={{ flex: 1 }}>
                     <Image
                         resizeMode={'stretch'}
                         source={{ uri: DOMAIN + data[0].img }}
