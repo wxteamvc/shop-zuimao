@@ -72,3 +72,5 @@ export const ADDRESSDELETE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&
 export const ADDRESSEDIT_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.address.post';
 //创建订单地址
 export const ORDERCREATE_URL = BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=order.create.caculate&mid=3773'
+//收获地址新增或更新
+export const ADDRESSUPDATE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.address.submit';

@@ -17,6 +17,9 @@ class Address extends Component {
 
   constructor(...props) {
     super(...props);
+    this.state = {
+      editData: null
+    }
   }
 
   componentDidMount() {
@@ -39,7 +42,7 @@ class Address extends Component {
     } else {
       return (
         <View style={{ flex: 1 }}>
-          <Text>123</Text>
+          {Toast.show('请先登陆')}
         </View>
       );
     }
@@ -47,43 +50,48 @@ class Address extends Component {
   }
 
   renderAddress() {
-    let addressList = this.props.addressData.data.result.address;
-    let addressArr = [];
-    for (let i = 0; i < addressList.length; i++) {
-      addressArr.push(
-        <View key={i} style={s.list}>
-          <View style={s.address}>
-            <View style={{ flex: 2 }}>
-              <Text style={s.fonta}>{addressList[i].province + addressList[i].city + addressList[i].area + addressList[i].address}</Text>
-              <Text style={s.fontb}>{addressList[i].realname}&nbsp;{addressList[i].mobile}</Text>
+    if (this.props.addressData.status === 'success') {
+      let addressList = this.props.addressData.data.result.address;
+      let addressArr = [];
+      for (let i = 0; i < addressList.length; i++) {
+        addressArr.push(
+          <View key={i} style={s.list}>
+            <View style={s.address}>
+              <View style={{ flex: 2 }}>
+                <Text style={s.fonta}>{addressList[i].province + addressList[i].city + addressList[i].area + addressList[i].address}</Text>
+                <Text style={s.fontb}>{addressList[i].realname}&nbsp;{addressList[i].mobile}</Text>
+              </View>
+              <TouchableOpacity onPress={() => this._edit(addressList[i].id)} style={s.icon}>
+                <Icon name="edit" size={20} style={{ flex: 1 }} />
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => this._edit(addressList[i].id)} style={s.icon}>
-              <Icon name="edit" size={20} style={{ flex: 1 }} />
-            </TouchableOpacity>
+            <View style={s.option}>
+              <TouchableOpacity onPress={() => this._default(addressList[i].id)} style={{ flex: 1 }}>
+                {addressList[i].isdefault == 1 ? <Icon name="check-square-o" size={25} color={'#EF4F4F'} /> : <Icon name="square-o" size={25} />}
+              </TouchableOpacity>
+              <Text style={{ flex: 6 }}>设置默认</Text>
+              <TouchableOpacity onPress={() => this._delete(addressList[i].id)} style={s.icon}>
+                <Icon name="trash-o" size={20} style={{ flex: 1 }} />
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={s.option}>
-            <TouchableOpacity onPress={() => this._default(addressList[i].id)} style={{ flex: 1 }}>
-              {addressList[i].isdefault == 1 ? <Icon name="check-square-o" size={25} color={'#EF4F4F'} /> : <Icon name="square-o" size={25} />}
-            </TouchableOpacity>
-            <Text style={{ flex: 6 }}>设置默认</Text>
-            <TouchableOpacity onPress={() => this._delete(addressList[i].id)} style={s.icon}>
-              <Icon name="trash-o" size={20} style={{ flex: 1 }} />
-            </TouchableOpacity>
-          </View>
-        </View>
-      );
+        );
+      }
+      return (
+        <ScrollView>
+          {addressArr}
+          <TouchableOpacity onPress={() => this._add()}>
+            <View style={s.addressAdd}>
+              <Text style={{ flex: 9 }}>新增收货地址</Text>
+              <Icon name="plus-square-o" size={20} style={{ flex: 1 }} />
+            </View>
+          </TouchableOpacity>
+        </ScrollView>
+      )
+    } else {
+      return false;
     }
-    return (
-      <ScrollView>
-        {addressArr}
-        <TouchableOpacity onPress={()=>this._add()}>
-          <View style={s.addressAdd}>
-            <Text style={{ flex: 9 }}>新增收货地址</Text>
-            <Icon name="plus-square-o" size={20} style={{ flex: 1 }} />
-          </View>
-        </TouchableOpacity>
-      </ScrollView>
-    )
+
   }
 
   _default(aid) {
@@ -92,7 +100,8 @@ class Address extends Component {
   }
 
   _edit(aid) {
-    this.props.navigation.navigate('AddressEdit')
+    let token = this.props.loginData.data.result.token;
+    this._fetch(ADDRESSEDIT_URL, Object.assign(token, { app: 1, id: aid }), token);
   }
 
   _delete(aid) {
@@ -107,7 +116,7 @@ class Address extends Component {
     ])
   }
 
-  _add(){
+  _add() {
     this.props.navigation.navigate('AddressAdd')
   }
 
@@ -115,10 +124,18 @@ class Address extends Component {
     Util.post(url, params,
       (responseJson) => {
         if (responseJson.status == 1) {
+          if (url === ADDRESSEDIT_URL) {
+            this.setState({
+              editData: responseJson.result.address,
+            });
+            this.props.navigation.navigate('AddressEdit', { address: this.state.editData })
+          }
           this.props.dispatch(address(token));
         } else {
-          Toast.show(responseJson.result.message);
-          this.props.dispatch(address(token));
+          if (url !== ADDRESSEDIT_URL) {
+            Toast.show(responseJson.result.message);
+            this.props.dispatch(address(token));
+          }
         }
       },
       (error) => {
