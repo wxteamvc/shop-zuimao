@@ -118,7 +118,7 @@ class HomeView extends Component {
             <Banner banner={advs} />
             <Ad ad={topad} />
             <IconList navigation={this.props.navigation} />
-            <Notices notices={notices} />
+            <Notices notices={notices} {...this.props} />
             {istime.length > 0 ? <Rush istime={istime}  {...this.props} /> : false}
             <Findgoods cubes={cubes} />
             <Ad ad={bannersclone} />

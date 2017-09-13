@@ -60,7 +60,7 @@ class GoodsInfo extends Component {
             m: '00',
             s: '00',
             isFavorite: false,
-            cartCount:0,
+            cartCount: 0,
         }
     }
 
@@ -79,7 +79,7 @@ class GoodsInfo extends Component {
                         status: 'success',
                         data: responseJson.result.goods_detail,
                         isFavorite: responseJson.result.goods_detail.isFavorite,
-                        cartCount:responseJson.result.goods_detail.cartCount , 
+                        cartCount: responseJson.result.goods_detail.cartCount,
                     })
                     this.unSendText = '';
                     for (let i = 0; i < this.state.data.citys.length; i++) {
@@ -184,7 +184,7 @@ class GoodsInfo extends Component {
                     })
                 })
         } else {
-            Toast.show('亲 请先登录哦！', { duration: Toast.durations.SHORT , });
+            Toast.show('亲 请先登录哦！', { duration: Toast.durations.SHORT, });
         }
     }
 
@@ -193,7 +193,7 @@ class GoodsInfo extends Component {
     addCart() {
         let { loginData } = this.props;
         if (loginData.status == 'success') {
-            let data = { id: this.props.navigation.state.params.id, optionid:0,total:this.state.goodsNum,diyformdata:false}
+            let data = { id: this.props.navigation.state.params.id, optionid: 0, total: this.state.goodsNum, diyformdata: false }
             let token = '';
             for (let key in loginData.data.result.token) {
                 token = '&' + key + '=' + loginData.data.result.token[key]
@@ -206,9 +206,9 @@ class GoodsInfo extends Component {
                             cartCount: resq.result.cartcount
                         })
                         this.props.dispatch(cart(this.props.loginData.data.result.token));
-                        Toast.show('添加购物车成功', { duration: Toast.durations.SHORT , });
+                        Toast.show('添加购物车成功', { duration: Toast.durations.SHORT, });
                     } else {
-                        Toast.show(resq.message, { duration: Toast.durations.SHORT , });
+                        Toast.show(resq.message, { duration: Toast.durations.SHORT, });
                         this.props.dispatch(cart(this.props.loginData.data.result.token));
                     }
                 },
@@ -218,7 +218,7 @@ class GoodsInfo extends Component {
                     })
                 })
         } else {
-            Toast.show('亲 请先登录哦！', { duration: Toast.durations.SHORT , });
+            Toast.show('亲 请先登录哦！', { duration: Toast.durations.SHORT, });
         }
     }
 
@@ -284,25 +284,25 @@ class GoodsInfo extends Component {
                                     style={[{ flex: 1 }, styles.center]}>
                                     <Icon name={'shopping-cart'} size={20} color={'#ccc'} />
                                     <Text style={{ fontSize: 10 }}>购物车</Text>
-                                   {this.state.cartCount>0?<View
-                                   style={[styles.center,styles.bottomCarIcon]}
-                                   ><Text style={styles.bottomCarIconText}>{this.state.cartCount}</Text>
-                                   </View>:false}
+                                    {this.state.cartCount > 0 ? <View
+                                        style={[styles.center, styles.bottomCarIcon]}
+                                    ><Text style={styles.bottomCarIconText}>{this.state.cartCount}</Text>
+                                    </View> : false}
                                 </TouchableOpacity>
                             </View>
                             <TouchableOpacity
                                 onPress={() => {
-                                  this.addCart()
+                                    this.addCart()
                                 }}
                                 style={[styles.bottomCar, styles.center]}>
                                 <Text style={styles.bottomText}>加入购物车</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                            onPress={
-                              this.props.loginData.status=='success'?
-                              ()=>{this.props.navigation.navigate('OrderCreateView',{data:this.state.data.goods,goodsNum:this.state.goodsNum})}:
-                              Toast.show('亲 请先登录哦！', { duration: Toast.durations.SHORT , })
-                            }
+                                onPress={
+                                    this.props.loginData.status == 'success' ?
+                                        () => { this.props.navigation.navigate('OrderCreateView', { data: this.state.data.goods, goodsNum: this.state.goodsNum }) } :
+                                        Toast.show('亲 请先登录哦！', { duration: Toast.durations.SHORT, })
+                                }
                                 style={[styles.bottomBuy, styles.center]}>
                                 <Text style={styles.bottomText}>立即购买</Text>
                             </TouchableOpacity>
@@ -690,12 +690,6 @@ class GoodsInfo extends Component {
                     <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', marginTop: 10, marginBottom: 10 }}>
                         {img}
                     </View> : false}
-                {item.append_content ?
-                    <View style={{ padding: 10 }}>
-                        <Text style={{ color: 'red', marginBottom: 5 }}>[ 用户追加评论 ]：</Text>
-                        <Text>{item.append_content}</Text>
-                    </View>
-                    : false}
                 {item.reply_content ?
                     <View style={{ paddingTop: 10, paddingBottom: 10 }}>
                         <View style={{ backgroundColor: '#EFEFEF', padding: 10, }}>
@@ -704,7 +698,12 @@ class GoodsInfo extends Component {
                         <View style={{ width: 0, height: 0, borderWidth: 8, borderColor: 'transparent', borderBottomColor: '#EFEFEF', position: 'absolute', top: -5, left: 18 }}></View>
                     </View>
                     : false}
-
+                {item.append_content ?
+                    <View style={{ padding: 10 }}>
+                        <Text style={{ color: 'red', marginBottom: 5 }}>[ 用户追加评论 ]：</Text>
+                        <Text>{item.append_content}</Text>
+                    </View>
+                    : false}
                 {item.append_reply_content ?
                     <View style={{ paddingTop: 10, paddingBottom: 10 }}>
                         <View style={{ backgroundColor: '#EFEFEF', padding: 10, }}>
@@ -1060,16 +1059,16 @@ const styles = StyleSheet.create({
         flex: 0.8, flexDirection: 'row', alignItems: 'center'
     },
     bottombox: {
-        height:50, borderColor: '#fff', borderTopWidth: 0.7
+        height: 50, borderColor: '#fff', borderTopWidth: 0.7
     },
     bottomCar: {
         flex: 0.3, backgroundColor: '#FE9402', height: 50
     },
-    bottomCarIcon:{
-        paddingLeft:4,paddingRight:4,borderRadius:10,position:'absolute',top:0,left:30,borderColor:'red',borderWidth:0.7
+    bottomCarIcon: {
+        paddingLeft: 4, paddingRight: 4, borderRadius: 10, position: 'absolute', top: 0, left: 30, borderColor: 'red', borderWidth: 0.7
     },
-    bottomCarIconText:{
-        color:'red',fontSize:10
+    bottomCarIconText: {
+        color: 'red', fontSize: 10
     },
     bottomText: {
         fontSize: 14, color: '#fff'

@@ -18,7 +18,6 @@ export default class Notice extends Component {
         this.state = {
             isShow: false,
         }
-
     }
     componentDidMount(){
         this.timeOut = setTimeout(()=>{
@@ -36,9 +35,25 @@ export default class Notice extends Component {
     renderNotices() {
         let news = [];
         for (let i = 0; i < this.props.notices.length; i++) {
+            let url = this.props.notices[i].link
+            let reg = new RegExp("[^\?&]?" + encodeURI('r') + "=[^&]+");
+            let arr = url.match(reg);
+            let r = '';
+            if (arr != null) {
+               let r = decodeURI(arr[0].substring(arr[0].search("=") + 1));
+            }
+            switch(r){
+                case 'article':
+                let action = this.props.navigation.navigate('')
+                break;
+                default:
+                let action =false
+            }  
             news.push(
                 <View key={i} style={{ flex: 1, justifyContent: 'center', }}>
-                    <TouchableOpacity>
+                    <TouchableOpacity 
+                    onPress={action}
+                    >
                         <Text numberOfLines={1} >{this.props.notices[i].title}</Text>
                     </TouchableOpacity>
                 </View>
@@ -47,8 +62,17 @@ export default class Notice extends Component {
         return (news)
     }
 
+    getURLPara(name) {
+        var reg = new RegExp("[^\?&]?" + encodeURI(name) + "=[^&]+");
+        var arr = this.search.match(reg);
+        if (arr != null) {
+            return decodeURI(arr[0].substring(arr[0].search("=") + 1));
+        }
+        return "";
+    }
 
     render() {
+        console.log(this.props.notices)
         return (
             <View style={styles.notice}>
                 <Image

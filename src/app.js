@@ -23,6 +23,7 @@ import Address from './pages/addressView';
 import OrderCreateView from './pages/orderCreateView';
 import AddressEdit from './pages/addressEditView';
 import AddressAdd from './pages/addressAddView';
+import ShowNotice from './pages/webView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -134,6 +135,14 @@ const App = StackNavigator({
             headerTitle: '新增收货地址',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
+        }),
+    },
+    ShowNotice:{
+        screen: ShowNotice,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '公告',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight:<View style={{flex:0.1}}></View>,
         }),
     }
 });

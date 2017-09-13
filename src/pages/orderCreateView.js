@@ -1,6 +1,6 @@
 /**
  * Sample React Native App
- * https://github.com/facebook/react-native
+ * 创建订单
  * @flow
  */
 "use strict";
