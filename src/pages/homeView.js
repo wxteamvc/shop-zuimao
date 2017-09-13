@@ -115,12 +115,12 @@ class HomeView extends Component {
               />
             }
             range={400}>
-            <Banner banner={advs} />
+            <Banner banner={advs} {...this.props}/>
             <Ad ad={topad} />
             <IconList navigation={this.props.navigation} />
             {/* <Notices notices={notices} {...this.props} /> */}
             {istime.length > 0 ? <Rush istime={istime}  {...this.props} /> : false}
-            <Findgoods cubes={cubes} />
+            <Findgoods cubes={cubes}  {...this.props}/>
             <Ad ad={bannersclone} />
             <WellChosen ad={bottomad} recommands={recommands}  {...this.props} category={category} />
             <YouLike youlike={youlike} navigate={this.props.navigation} fun={(item) => this.setState({ goodsInfo: item, showModel: true })} />
