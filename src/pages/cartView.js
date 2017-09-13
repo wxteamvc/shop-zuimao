@@ -7,7 +7,7 @@ import { AppRegistry, StyleSheet, Text, View, TouchableOpacity, Image, ScrollVie
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { cart } from '../actions/cartAction';
-import { ScreenWidth, ScreenHeight, CART_SELECT_URL, CART_UPDATE_URL,CART_REMOVE_URL } from '../common/global';
+import { ScreenWidth, ScreenHeight, CART_SELECT_URL, CART_UPDATE_URL, CART_REMOVE_URL } from '../common/global';
 import Toast from 'react-native-root-toast';
 import { NavigationActions } from 'react-navigation';
 
@@ -15,9 +15,9 @@ class Cart extends Component {
 
   constructor(...props) {
     super(...props)
-    this.state={
-      isedit:false,
-      ids:[],
+    this.state = {
+      isedit: false,
+      ids: [],
     }
   }
 
@@ -59,15 +59,15 @@ class Cart extends Component {
         cartListArr.push(
           <View key={i} style={styles.listView}>
             <View style={styles.listA}>
-              {this.state.isedit?
-                <TouchableOpacity onPress={()=>this.setState({
-                  ids:this._editIds(cartList[i].id),
-                  })}>
-                {this.renderCheckIcon(cartList[i].id)}
-              </TouchableOpacity>:
-              <TouchableOpacity onPress={() => {this._select(cartList[i].id, cartList[i].selected)}}>
-                {cartList[i].selected == 1 ? <Icon name="check-circle" size={25} color={'#EF4F4F'} /> : <Icon name="circle-thin" size={25} />}
-              </TouchableOpacity>
+              {this.state.isedit ?
+                <TouchableOpacity onPress={() => this.setState({
+                  ids: this._editIds(cartList[i].id),
+                })}>
+                  {this.renderCheckIcon(cartList[i].id)}
+                </TouchableOpacity> :
+                <TouchableOpacity onPress={() => { this._select(cartList[i].id, cartList[i].selected) }}>
+                  {cartList[i].selected == 1 ? <Icon name="check-circle" size={25} color={'#EF4F4F'} /> : <Icon name="circle-thin" size={25} />}
+                </TouchableOpacity>
               }
             </View>
             <View style={{ flex: 2, justifyContent: 'center' }}>
@@ -77,8 +77,8 @@ class Cart extends Component {
               <Text numberOfLines={1} style={{ marginBottom: 10 }}>{cartList[i].title}</Text>
               {this.ctitleRender(cartList[i])}
               <View style={{ flexDirection: 'row' }}>
-                <View style={{ flex: 5}}>
-                  <Text style={styles.price}>&yen;<Text style={{fontSize:18}}>{cartList[i].marketprice}</Text></Text>
+                <View style={{ flex: 5 }}>
+                  <Text style={styles.price}>&yen;<Text style={{ fontSize: 18 }}>{cartList[i].marketprice}</Text></Text>
                 </View>
                 <View style={{ flex: 1 }}>
                   <TouchableOpacity onPress={() => this._total(cartList[i].id, cartList[i].total, 'minus')}>
@@ -101,16 +101,16 @@ class Cart extends Component {
         <View style={styles.cartView}>
           {this.renderTop()}
           <ScrollView showsVerticalScrollIndicator={false} style={{ width: ScreenWidth }}>
-            <View style={{backgroundColor:'white',flexDirection:'row',borderBottomWidth:1,borderColor:'#eee',padding:10,alignItems:'center'}}>
-              <Text style={{fontFamily:'iconfont',fontSize:25,marginRight:10,flex:1}}>&#xe60c;</Text>
-              <Text style={{flex:10}}>自营店铺</Text>
-              <Icon name="angle-right" size={20} style={{flex:0.5}} />
+            <View style={{ backgroundColor: 'white', flexDirection: 'row', borderBottomWidth: 1, borderColor: '#eee', padding: 10, alignItems: 'center' }}>
+              <Text style={{ fontFamily: 'iconfont', fontSize: 25, marginRight: 10, flex: 1 }}>&#xe60c;</Text>
+              <Text style={{ flex: 10 }}>自营店铺</Text>
+              <Icon name="angle-right" size={20} style={{ flex: 0.5 }} />
             </View>
             {cartListArr}
-            <Text style={{textAlign:'center',padding:10}}>DUANG~已经到底了哦</Text>
+            <Text style={{ textAlign: 'center', padding: 10 }}>DUANG~已经到底了哦</Text>
             <View style={{ height: 100 }}></View>
           </ScrollView>
-          {this.state.isedit?this.cartBottomEditRender(cartList):
+          {this.state.isedit ? this.cartBottomEditRender(cartList) :
             <View style={styles.cartBottom}>
               <View style={styles.cartBottomA}>
                 <TouchableOpacity onPress={() => this._select('all', ischeckall)}>
@@ -124,9 +124,12 @@ class Cart extends Component {
               </View>
               <View style={{ flex: 3 }}>
                 <View style={{ flexDirection: 'row' }}>
-                  <TouchableOpacity>
-                    <Text style={styles.payBtn}>结算({total})</Text>
-                  </TouchableOpacity>
+                  {total == 0 ?
+                    <Text style={styles.payBtnGray}>结算({total})</Text> :
+                    <TouchableOpacity>
+                      <Text style={styles.payBtn}>结算({total})</Text>
+                    </TouchableOpacity>
+                  }
                 </View>
               </View>
             </View>
@@ -143,70 +146,70 @@ class Cart extends Component {
     }
   }
 
-  renderCheckIcon(id){
-    for(let key in this.state.ids){
-      if(this.state.ids[key]==id){
-        return(<Icon name="check-circle" size={25} color={'#EF4F4F'} />)
+  renderCheckIcon(id) {
+    for (let key in this.state.ids) {
+      if (this.state.ids[key] == id) {
+        return (<Icon name="check-circle" size={25} color={'#EF4F4F'} />)
       }
     }
     return (<Icon name="circle-thin" size={25} />)
   }
 
-  _editIds(id){
+  _editIds(id) {
     let ids = this.state.ids;
-    for(let key in this.state.ids){
-      if(this.state.ids[key]==id){
-         ids.splice(key, 1);
-         return ids;
+    for (let key in this.state.ids) {
+      if (this.state.ids[key] == id) {
+        ids.splice(key, 1);
+        return ids;
       }
     }
     return this.state.ids.concat(id)
   }
 
-  cartBottomEditRender(cartList){
+  cartBottomEditRender(cartList) {
     let count = cartList.length;
-    return(
+    return (
       <View style={styles.cartBottom}>
-      <View style={styles.cartBottomA}>
-        <TouchableOpacity onPress={()=>this._editCheckAll()}>
-          {count == this.state.ids.length ? <Icon name="check-circle" size={25} color={'#EF4F4F'} /> : <Icon name="circle-thin" size={25} />}
-        </TouchableOpacity>
-        <Text style={{ paddingLeft: 10 }}>全选</Text>
-      </View>
-      <View style={{ flex: 5 }}></View>
-      <View style={{ flex: 3 }}>
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity onPress={()=>this._remove()}>
-            <Text style={styles.payBtn}>删除</Text>
+        <View style={styles.cartBottomA}>
+          <TouchableOpacity onPress={() => this._editCheckAll()}>
+            {count == this.state.ids.length ? <Icon name="check-circle" size={25} color={'#EF4F4F'} /> : <Icon name="circle-thin" size={25} />}
           </TouchableOpacity>
+          <Text style={{ paddingLeft: 10 }}>全选</Text>
+        </View>
+        <View style={{ flex: 5 }}></View>
+        <View style={{ flex: 3 }}>
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity onPress={() => this._remove()}>
+              <Text style={styles.payBtn}>删除</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
     )
   }
 
-  _remove(){
-    let params = '&ids[]='+this.state.ids;
-    this._fetch(CART_REMOVE_URL,params);
+  _remove() {
+    let params = '&ids[]=' + this.state.ids;
+    this._fetch(CART_REMOVE_URL, params);
   }
 
-  _editCheckAll(){
+  _editCheckAll() {
     let cartList = this.props.cartData.data.result.list;
-    let checkedALL = cartList.length == this.state.ids.length?0:1;
-    let idArr=[];
+    let checkedALL = cartList.length == this.state.ids.length ? 0 : 1;
+    let idArr = [];
     this.setState({
-      ids:[],
+      ids: [],
     })
-    if(checkedALL==1){
-      for(let j = 0;j<cartList.length;j++){
-        idArr=idArr.concat(cartList[j].id)
+    if (checkedALL == 1) {
+      for (let j = 0; j < cartList.length; j++) {
+        idArr = idArr.concat(cartList[j].id)
       }
       this.setState({
-        ids:idArr,
+        ids: idArr,
       })
     }
   }
-  
+
   ctitleRender(data) {
     return data.isdiscount == 1 ? this.textRender('促销', '#ff00ff') : null;
   }
@@ -222,8 +225,8 @@ class Cart extends Component {
       <View style={styles.cartTop}>
         <View style={styles.cartTitle}><Text style={styles.colorWhite}>我的购物车</Text></View>
         <View style={styles.cartEdit}>
-          <TouchableOpacity onPress={()=>this.setState({isedit:!this.state.isedit})}>
-            <Text style={styles.colorWhite}>{this.state.isedit?'完成':'编辑'}</Text>
+          <TouchableOpacity onPress={() => this.setState({ isedit: !this.state.isedit })}>
+            <Text style={styles.colorWhite}>{this.state.isedit ? '完成' : '编辑'}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -233,7 +236,7 @@ class Cart extends Component {
   _select(id, select) {
     let sel = select == 1 ? 0 : 1;
     let params = '&id=' + id + '&select=' + sel;
-    this._fetch(CART_SELECT_URL,params);
+    this._fetch(CART_SELECT_URL, params);
   }
 
   _total(id, total, type) {
@@ -241,17 +244,17 @@ class Cart extends Component {
       let num = total - 1;
       if (num >= 1) {
         let params = '&id=' + id + '&total=' + num;
-        this._fetch(CART_UPDATE_URL,params);
-      }  
+        this._fetch(CART_UPDATE_URL, params);
+      }
     }
     if (type === 'plus') {
       let num = total * 1 + 1;
       let params = '&id=' + id + '&total=' + num;
-      this._fetch(CART_UPDATE_URL,params);
-    }  
+      this._fetch(CART_UPDATE_URL, params);
+    }
   }
 
-  _fetch(url,params){
+  _fetch(url, params) {
     fetch(url, {
       method: 'POST',
       headers: {
@@ -262,7 +265,7 @@ class Cart extends Component {
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.status == 1) {
-          if(this.state.isedit){this.setState({isedit:false})}
+          if (this.state.isedit) { this.setState({ isedit: false }) }
           this.props.dispatch(cart(this.props.loginData.data.result.token))
         } else {
           Toast.show('服务器请求失败');
@@ -277,7 +280,7 @@ class Cart extends Component {
 
 const styles = StyleSheet.create({
   cartView: {
-    alignItems: 'center', flex:1
+    alignItems: 'center', flex: 1
   },
   cartTop: {
     flexDirection: 'row', paddingLeft: 10, paddingRight: 10, paddingBottom: 15, backgroundColor: '#C10001', borderBottomWidth: 1, borderColor: '#aaa', marginBottom: 10, paddingTop: 30
@@ -317,6 +320,9 @@ const styles = StyleSheet.create({
   },
   price: {
     color: 'red',
+  },
+  payBtnGray: {
+    textAlign: 'center', width: 100, borderRadius: 10, color: '#fff', backgroundColor: '#aaa', padding: 10
   }
 })
 
