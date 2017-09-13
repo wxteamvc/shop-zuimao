@@ -31,7 +31,7 @@ import Findgoods from '../component/findGoods';
 import Ad from '../component/midAd';
 import Loading from '../component/loading';
 import WellChosen from '../component/WellChosenGoods'
-import Notices from '../component/notice';
+// import Notices from '../component/notice';
 import YouLike from '../component/youlike';
 import AddToCart from '../component/addToCart';
 
@@ -118,7 +118,7 @@ class HomeView extends Component {
             <Banner banner={advs} />
             <Ad ad={topad} />
             <IconList navigation={this.props.navigation} />
-            <Notices notices={notices} {...this.props} />
+            {/* <Notices notices={notices} {...this.props} /> */}
             {istime.length > 0 ? <Rush istime={istime}  {...this.props} /> : false}
             <Findgoods cubes={cubes} />
             <Ad ad={bannersclone} />

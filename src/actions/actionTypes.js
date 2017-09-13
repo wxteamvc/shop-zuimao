@@ -46,3 +46,9 @@ export const ADDRESS_BEGIN = 'ADDRESS_BEGIN';
 export const ADDRESS_SUCCESS = 'ADDRESS_SUCCESS';
 //请求收货地址页面失败
 export const ADDRESS_FAILED = 'ADDRESS_FAILED';
+//请求订单列表开始
+export const ORDERLIST_BEGIN = 'ORDERLIST_BEGIN';
+//请求订单列表成功
+export const ORDERLIST_SUCCESS = 'ORDERLIST_SUCCESS';
+//请求订单列表失败
+export const ORDERLIST_FAILED = 'ORDERLIST_FAILED';
