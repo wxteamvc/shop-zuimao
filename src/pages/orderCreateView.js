@@ -16,13 +16,15 @@ import {
     Image,
     RefreshControl
 } from 'react-native';
+import { connect } from 'react-redux';
 import ScrollViewJumpTop from '../component/scrollViewJumpTop';
 import FlatListJumpTop from '../component/flatListJumoTop';
-import { COUPONS_URL, ScreenWidth, DOMAIN, StatusBarHeight } from '../common/global';
+import { ORDERCREATE_URL, ScreenWidth, DOMAIN, StatusBarHeight } from '../common/global';
 import Loading from '../component/loading';
+import Util from '../common/util';
 
 
-export default class HomeView extends Component {
+class OrderCreate extends Component {
 
     constructor(...props) {
         super(...props);
@@ -30,6 +32,7 @@ export default class HomeView extends Component {
             status: false,
             data: {},
             goodsNum: 1,
+            errmessage:'',
         }
     }
 
@@ -38,8 +41,36 @@ export default class HomeView extends Component {
         this.setState({
             data: data,
             goodsNum: goodsNum,
-            status: 'success'
+            status:'success'
         })
+        let token='';
+        for( let key in this.props.loginData.data.result.token){
+             token = '&'+key+'='+this.props.loginData.data.result.token[key]
+        }
+        let url = ORDERCREATE_URL+token
+        // let terms={}
+        // Util.post(url,
+        //     (resq) => {
+        //         if (resq.status == 1) {
+        //             this.setState({
+        //                 status: 'success',
+        //                 data: resq.result.list,
+                        
+        //             })
+        //         } else {
+        //             this.setState({
+        //                 status: 'faild',
+        //                 errmessage: resq.message,
+                       
+        //             })
+        //         }
+        //     },
+        //     (error) => {
+        //         this.setState({
+        //             status: 'faild',
+        //             errmessage: error.message,
+        //         })
+        //     })
     }
 
 
@@ -61,17 +92,17 @@ export default class HomeView extends Component {
                             </View>
                             <View style={{ flexDirection: 'row', backgroundColor: '#EFEFEF',paddingTop:10,paddingBottom:10 }}>
                                 <View style={[{ flex: 1 / 3},styles.center]}>
-                                    <Image source={{ uri: this.state.data.goods.thumb }} style={{ height: 100, width: 100 }} />
+                                    <Image source={{ uri: this.state.data.thumb }} style={{ height: 100, width: 100 }} />
                                 </View>
                                 <View style={[styles.columnBetween, { flex: 2 / 3 }]}>
                                     <View>
                                         <Text style={{color:'#000'}}>
-                                            {this.state.data.goods.title}
+                                            {this.state.data.title}
                                         </Text>
                                     </View>
                                     <View style={styles.rowBetween}>
                                         <Text style={{ color: 'red' }}>
-                                        &yen;{this.state.data.goods.marketprice}
+                                        &yen;{this.state.data.marketprice}
                                         </Text>
                                         <Text>&times;&nbsp;{this.state.goodsNum}</Text>
                                     </View>
@@ -126,3 +157,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row', justifyContent: 'space-between',
     },
 })
+
+
+function mapStateToProps(state) {
+    return {
+        loginData: state.loginReducer,
+    }
+}
+
+export default connect(mapStateToProps)(OrderCreate);

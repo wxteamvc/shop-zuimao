@@ -36,9 +36,7 @@ const App = StackNavigator({
         navigationOptions: ({ navigation }) => ({
             headerTitle: '积分签到',
             headerTitleStyle: { alignSelf: 'center' },
-            headerRight:<View style={{flex:0.1}}></View>
-            
-
+            headerRight:<View style={{flex:0.1}}></View>,
         }),
     },
     SignRecord: {
@@ -46,10 +44,7 @@ const App = StackNavigator({
         navigationOptions: ({ navigation }) => ({
             headerTitle: '详细记录',
             headerTitleStyle: { alignSelf: 'center' },
-            headerRight:<View style={{flex:0.1}}></View>
-
-           
-
+            headerRight:<View style={{flex:0.1}}></View>,
         }),
     },
     Coupons: {
@@ -57,8 +52,7 @@ const App = StackNavigator({
         navigationOptions: ({ navigation }) => ({
             headerTitle: '领券中心',
             headerTitleStyle: { alignSelf: 'center' },
-            headerRight:<View style={{flex:0.1}}></View>
-           
+            headerRight:<View style={{flex:0.1}}></View>,
         }),
     },
     Login: {

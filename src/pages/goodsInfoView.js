@@ -300,7 +300,7 @@ class GoodsInfo extends Component {
                             <TouchableOpacity
                             onPress={
                               this.props.loginData.status=='success'?
-                              ()=>{this.props.navigation.navigate('OrderCreateView',{data:this.state.data,goodsNum:this.state.goodsNum})}:
+                              ()=>{this.props.navigation.navigate('OrderCreateView',{data:this.state.data.goods,goodsNum:this.state.goodsNum})}:
                               Toast.show('亲 请先登录哦！', { duration: Toast.durations.SHORT , })
                             }
                                 style={[styles.bottomBuy, styles.center]}>

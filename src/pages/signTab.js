@@ -8,7 +8,9 @@ import React, { Component } from 'react';
 import { TabNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import IconTwo from 'react-native-vector-icons/dist/Octicons';
-import SignIndex from './signIndexView'
+import SignIndex from './signIndexView';
+import HomeTab from './homeTab';
+import Member from './memberView';
 
 
 const SignTab = TabNavigator({
@@ -16,6 +18,15 @@ const SignTab = TabNavigator({
         screen: SignIndex,
         navigationOptions:({navigation}) => ({
             tabBarLabel:'积分签到',  
+            tabBarIcon:({focused,tintColor}) => ( 
+                <IconTwo name="gift" size={20} color={tintColor}/>
+            )    
+        }),
+    },
+    Member: {
+        screen: Member,
+        navigationOptions:({navigation}) => ({
+            tabBarLabel:'会员中心',  
             tabBarIcon:({focused,tintColor}) => ( 
                 <IconTwo name="gift" size={20} color={tintColor}/>
             )    
