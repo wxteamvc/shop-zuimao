@@ -111,7 +111,7 @@ class Member extends Component {
           <View style={styles.modTopTextL}>
             <Text style={[styles.fontS,{ marginRight: 5 }]}>我的订单</Text>
           </View>
-          <TouchableOpacity onPress={()=>islogin?null:this._unlogin()}>
+          <TouchableOpacity onPress={()=>islogin?this.props.navigation.navigate('OrderList',{search:{status:''}}):this._unlogin()}>
             <View style={styles.modTopTextR}>
               <Text style={[styles.fontS,{ marginRight: 5 }]}>查看全部订单</Text>
               <Icon name="angle-right" size={20} color={'#ccc'} style={{ marginRight: 5,marginTop:5 }} />
@@ -120,7 +120,7 @@ class Member extends Component {
         </View>
         <View style={styles.modBottom}>
           <View style={styles.modBottomList}>
-            <TouchableOpacity onPress={()=>islogin?null:this._unlogin()}>
+            <TouchableOpacity onPress={()=>islogin?this.props.navigation.navigate('OrderList',{search:{status:0}}):this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="address-card-o" size={30} color={'#aaa'} />
                 <Text style={styles.fontS}>待付款</Text>
@@ -128,7 +128,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomList}>
-            <TouchableOpacity onPress={()=>islogin?null:this._unlogin()}>
+            <TouchableOpacity onPress={()=>islogin?this.props.navigation.navigate('OrderList',{search:{status:1}}):this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="cube" size={30} color={'#aaa'} />
                 <Text style={styles.fontS}>待发货</Text>
@@ -136,7 +136,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomList}>
-            <TouchableOpacity onPress={()=>islogin?null:this._unlogin()}>
+            <TouchableOpacity onPress={()=>islogin?this.props.navigation.navigate('OrderList',{search:{status:2}}):this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="truck" size={30} color={'#aaa'} />
                 <Text style={styles.fontS}>待收货</Text>

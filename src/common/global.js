@@ -130,3 +130,11 @@ function getItem(url, item) {
         return (false);
     }
 }
+//订单列表请求地址
+export const ORDERLIST_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.get_list';
+//订单删除
+export const ORDERDELETE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.op.delete';
+//订单取消
+export const ORDERCANCEL_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.op.cancel';
+//物流信息
+export const EXPRESS_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.express';
