@@ -79,7 +79,9 @@ export default class Notice extends Component {
                     </Swiper>
                 </View>
                 <View style={{ flex: 0.15 }}>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                    onPress={()=>{this.props.navigation.navigate('Notice',{notice:this.props.notices})}}
+                    >
                         <Text style={styles.notice_right}>更多</Text>
                     </TouchableOpacity>
                 </View>
