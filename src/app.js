@@ -25,6 +25,7 @@ import AddressEdit from './pages/addressEditView';
 import AddressAdd from './pages/addressAddView';
 import ShowNotice from './pages/webView';
 import OrderList from './pages/orderListView';
+import Express from './pages/expressView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -150,6 +151,14 @@ const App = StackNavigator({
         screen: OrderList,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '我的订单',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
+        }),
+    },
+    Express:{
+        screen: Express,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '物流信息',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
         }),
