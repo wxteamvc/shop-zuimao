@@ -22,7 +22,7 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import IconEvil from 'react-native-vector-icons/dist/EvilIcons';
 import Swiper from 'react-native-swiper';
-import { DOMAIN, ScreenWidth, ScreenHeight, StatusBarHeight, GOODINFO_URL, GOODCHATCOUNT_URL, GOODCHATLIST_URL, FOUCS_URL, ADD_CART_URL } from '../common/global';
+import { DOMAIN, ScreenWidth, ScreenHeight, StatusBarHeight, GOODINFO_URL, GOODCHATCOUNT_URL, GOODCHATLIST_URL, FOUCS_URL, ADD_CART_URL,BEFOREBUY } from '../common/global';
 import Util from '../common/util';
 import Loading from '../component/loading';
 import co from 'co';
@@ -221,7 +221,7 @@ class GoodsInfo extends Component {
             Toast.show('亲 请先登录哦！', { duration: Toast.durations.SHORT, });
         }
     }
-
+    
     render() {
         if (this.state.status == 'success') {
             return (
@@ -932,31 +932,31 @@ class GoodsInfo extends Component {
                         {this.state.data.goods.cash == 2 ?
                             <View style={styles.rightsList}>
                                 <Icon name={'check-circle-o'} color={'orange'} size={20} />
-                                <Text style={{ marginLeft: 5 }}>货到付款</Text>
+                                <Text style={styles.rightsText}>货到付款</Text>
                             </View>
                             : false}
                         {this.state.data.goods.quality == 1 ?
                             <View style={styles.rightsList}>
                                 <Icon name={'check-circle-o'} color={'orange'} size={20} />
-                                <Text style={{ marginLeft: 5 }}>正品保障</Text>
+                                <Text style={styles.rightsText}>正品保障</Text>
                             </View>
                             : false}
                         {this.state.data.goods.repair == 1 ?
                             <View style={styles.rightsList}>
                                 <Icon name={'check-circle-o'} color={'orange'} size={20} />
-                                <Text style={{ marginLeft: 5 }}>保修</Text>
+                                <Text style={styles.rightsText}>保修</Text>
                             </View>
                             : false}
                         {this.state.data.goods.invoice == 1 ?
                             <View style={styles.rightsList}>
                                 <Icon name={'check-circle-o'} color={'orange'} size={20} />
-                                <Text style={{ marginLeft: 5 }}>发票</Text>
+                                <Text style={styles.rightsText}>发票</Text>
                             </View>
                             : false}
                         {this.state.data.goods.seven == 1 ?
                             <View style={styles.rightsList}>
                                 <Icon name={'check-circle-o'} color={'orange'} size={20} />
-                                <Text style={{ marginLeft: 5 }}>7天退换</Text>
+                                <Text style={styles.rightsText}>7天退换</Text>
                             </View>
                             : false}
                     </View>
@@ -1201,6 +1201,9 @@ const styles = StyleSheet.create({
     },
     ImageViewerHead: {
         backgroundColor: '#fff', opacity: 0.7, height: 30, flexDirection: 'row',
+    },
+    rightsText:{
+        marginLeft: 5,fontSize:12
     }
 
 

@@ -23,6 +23,10 @@ import Address from './pages/addressView';
 import OrderCreateView from './pages/orderCreateView';
 import AddressEdit from './pages/addressEditView';
 import AddressAdd from './pages/addressAddView';
+import WebView from './pages/webView';
+import Notice from './pages/noticeView';
+import CouponInfo from './pages/couponsInfoView';
+
 import ShowNotice from './pages/webView';
 import OrderList from './pages/orderListView';
 import Express from './pages/expressView';
@@ -139,10 +143,26 @@ const App = StackNavigator({
             headerRight: <Text></Text>
         }),
     },
-    ShowNotice:{
-        screen: ShowNotice,
+    WebView:{
+        screen: WebView,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '公告',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight:<View style={{flex:0.1}}></View>,
+        }),
+    },
+    Notice:{
+        screen: Notice,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '热点',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight:<View style={{flex:0.1}}></View>,
+        }),
+    },
+    CouponInfo:{
+        screen: CouponInfo,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '优惠券详情',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight:<View style={{flex:0.1}}></View>,
         }),

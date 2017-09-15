@@ -134,7 +134,7 @@ class Coupons extends Component {
                 break;
         }
         return (
-            <TouchableWithoutFeedback onPress={() => { alert('我要领啦') }}>
+            <TouchableWithoutFeedback onPress={() => { this.props.navigation.navigate('CouponInfo',{id:item.id}) }}>
                 <View style={styles.coupons}>
                     <Image
                         resizeMode={'stretch'}

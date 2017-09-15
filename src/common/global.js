@@ -27,6 +27,8 @@ export const SIGNRECORD_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=s
 export const LOGIN_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=account.login';
 //优惠券获取地址
 export const COUPONS_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=sale.coupon.getlist&mid=3773&page=1&cateid=&_=';
+//优惠券详情请求地址
+export const COUPONSINFO_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=sale.coupon.detail&mid=3773&app=1'
 //会员中心请求地址
 export const MEMBER_INFO_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member';
 //注册短信验证地址
@@ -74,7 +76,18 @@ export const ADDRESSEDIT_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=
 export const ORDERCREATE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.create.caculate&mid=3773'
 //收获地址新增或更新
 export const ADDRESSUPDATE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.address.submit';
-//分类跳转
+//确认购买前确认
+export const BEFOREBUY = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.cart.submit';
+
+
+
+
+
+
+
+
+
+//分类跳转方法
 export function JUMP(link, navigate) {
     let url = 'http://www.zuimaowang.cn/app' + link.substring(1)
     let r = getItem(url, 'r')
@@ -82,7 +95,7 @@ export function JUMP(link, navigate) {
     let data = {};
     switch (r) {
         case 'article':
-            screen = 'ShowNotice';
+            screen = 'WebView';
             data = { url: url };
             break;
         case 'shop.category':
