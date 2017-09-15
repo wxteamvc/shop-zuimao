@@ -11,8 +11,9 @@ import { connect } from 'react-redux';
 import { orderList } from '../actions/orderListAction';
 import FlatListJumoTop from '../component/flatListJumoTop';
 import Util from '../common/util';
-import { ScreenWidth, ScreenHeight, ORDERDELETE_URL,ORDERCANCEL_URL } from '../common/global';
+import { ScreenWidth, ScreenHeight, ORDERDELETE_URL, ORDERCANCEL_UR, ORDERFINISH_URL } from '../common/global';
 import Toast from 'react-native-root-toast';
+import { memberInfo } from '../actions/memberAction';
 
 class OrderList extends Component {
 
@@ -36,6 +37,11 @@ class OrderList extends Component {
         ))
         let token = this.props.loginData.data.result.token;
         this.props.dispatch(orderList(Object.assign(this.state.search, token)));
+    }
+
+    componentWillUnmount() {
+        let token = this.props.loginData.data.result.token;
+        this.props.dispatch(memberInfo(token));
     }
 
     render() {
@@ -63,7 +69,7 @@ class OrderList extends Component {
                 <Text style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' }} onPress={() => this.setState({ showMod: false })}></Text>
                 <View style={s.mod}>
                     <ScrollView>
-                        <TouchableOpacity onPress={() => this.setState({showMod: false})}>
+                        <TouchableOpacity onPress={() => this.setState({ showMod: false })}>
                             <Text style={s.modText}>不想取消了</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => this._modAct('我不想买了')}>
@@ -94,10 +100,10 @@ class OrderList extends Component {
                         showMod: false,
                     })
                     let token = this.props.loginData.data.result.token;
-                    this._cancel(ORDERCANCEL_URL, Object.assign({},token, { id: this.state.oid, remark: text }), token)
+                    this._cancel(ORDERCANCEL_URL, Object.assign({}, token, { id: this.state.oid, remark: text }), token)
                 }
             }
-        ])        
+        ])
     }
 
     renderTab() {
@@ -159,7 +165,7 @@ class OrderList extends Component {
                 }
             })
             let token = this.props.loginData.data.result.token;
-            this.props.dispatch(orderList(Object.assign({},this.state.search, token, { status: type })));
+            this.props.dispatch(orderList(Object.assign({}, this.state.search, token, { status: type })));
         }
 
     }
@@ -168,10 +174,10 @@ class OrderList extends Component {
         Util.post(url, params,
             (responseJson) => {
                 if (responseJson.status == 1) {
-                    this.props.dispatch(orderList(Object.assign({},this.state.search, token)));
+                    this.props.dispatch(orderList(Object.assign({}, this.state.search, token)));
                 } else {
                     Toast.show(responseJson.result.message);
-                    this.props.dispatch(orderList(Object.assign({},this.state.search, token)));
+                    this.props.dispatch(orderList(Object.assign({}, this.state.search, token)));
                 }
             },
             (error) => {
@@ -198,7 +204,7 @@ class MyListItem extends React.PureComponent {
                     <Text style={{ flex: 9 }}>{item.merchname}&nbsp;&nbsp;<Icon name="angle-right" size={20} /></Text>
                     <Text style={{ flex: 2, color: '#FFAA25' }}>{item.statusstr}</Text>
                 </View>
-                {this.renderGoods(item.goods[0].goods)}
+                {this.renderGoods(item.goods[0].goods,item.id)}
                 <View style={s.listBottom}>
                     <Text style={{ fontSize: 11 }}>共<Text style={{ color: 'red' }}>{item.goods_num}</Text>件商品&nbsp;合计：<Text style={{ color: 'red' }}>&yen;{item.price}</Text></Text>
                     {this.renderbtns(item.status, item.id)}
@@ -236,10 +242,10 @@ class MyListItem extends React.PureComponent {
             case '2':
                 return (
                     <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity onPress={()=>this._express(oid)}>
+                        <TouchableOpacity onPress={() => this._express(oid)}>
                             <Text style={s.btn}>查看物流</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => this._finish(oid)}>
                             <Text style={s.btnRed}>确认收货</Text>
                         </TouchableOpacity>
                     </View>
@@ -248,10 +254,10 @@ class MyListItem extends React.PureComponent {
             case '3':
                 return (
                     <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => this._delete(oid)}>
                             <Text style={s.btn}>删除订单</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>this._express(oid)}>
+                        <TouchableOpacity onPress={() => this._express(oid)}>
                             <Text style={s.btn}>查看物流</Text>
                         </TouchableOpacity>
                         <TouchableOpacity>
@@ -265,8 +271,20 @@ class MyListItem extends React.PureComponent {
         }
     }
 
-    _express(oid){
-        this.props.navigation.navigate('Express',{id:oid,token:this.props.token})
+    _finish(oid) {
+        Alert.alert('温馨提醒', '确定收货吗?', [
+            { text: '取消' },
+            {
+                text: '确定', onPress: () => {
+                    let token = this.props.token;
+                    this._fetch(ORDERFINISH_URL, Object.assign({}, token, { id: oid }), token)
+                }
+            }
+        ])
+    }
+
+    _express(oid) {
+        this.props.navigation.navigate('Express', { id: oid, token: this.props.token })
     }
 
     _delete(oid) {
@@ -276,13 +294,13 @@ class MyListItem extends React.PureComponent {
                 text: '确定', onPress: () => {
                     let token = this.props.token;
                     // userdeleted 为1时放到回收站，为2彻底删除
-                    this._fetch(ORDERDELETE_URL, Object.assign({},token, { id: oid, userdeleted: 1 }), token)
+                    this._fetch(ORDERDELETE_URL, Object.assign({}, token, { id: oid, userdeleted: 2 }), token)
                 }
             }
         ])
     }
 
-    renderGoods(goods) {
+    renderGoods(goods,oid) {
         let goodsArr = [];
         for (let j = 0; j < goods.length; j++) {
             goodsArr.push(
@@ -298,17 +316,25 @@ class MyListItem extends React.PureComponent {
                 </View>
             )
         }
-        return goodsArr;
+        return (
+            <TouchableOpacity onPress={()=>this._orderDetail(oid)}>
+                {goodsArr}
+            </TouchableOpacity>
+        );
+    }
+
+    _orderDetail(oid){
+        this.props.navigation.navigate('OrderDetail', { id: oid, token: this.props.token })
     }
 
     _fetch(url, params = {}, token = {}) {
         Util.post(url, params,
             (responseJson) => {
                 if (responseJson.status == 1) {
-                    this.props.dispatch(orderList(Object.assign({},this.props.search, token)));
+                    this.props.dispatch(orderList(Object.assign({}, this.props.search, token)));
                 } else {
                     Toast.show(responseJson.result.message);
-                    this.props.dispatch(orderList(Object.assign({},this.props.search, token)));
+                    this.props.dispatch(orderList(Object.assign({}, this.props.search, token)));
                 }
             },
             (error) => {

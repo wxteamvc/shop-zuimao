@@ -65,6 +65,15 @@ export function memberInfoReducer(state = memberInfoState, action) {
                 data: {},
                 message: '',
             });
+        case Types.UPDATE_MEMBERINFO:
+            let m = Object.assign({}, state.data.result.member, action.data);
+            let re = Object.assign({}, state.data.result, {member:m});
+            let da = Object.assign({}, state.data, {result:{member:m}});
+            return Object.assign({}, state, {
+                status: 'success',
+                data: {result:{member:m}},
+                message: '',
+            });
         default:
             return state;
     }

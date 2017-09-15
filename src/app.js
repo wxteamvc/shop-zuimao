@@ -26,10 +26,10 @@ import AddressAdd from './pages/addressAddView';
 import WebView from './pages/webView';
 import Notice from './pages/noticeView';
 import CouponInfo from './pages/couponsInfoView';
-
 import ShowNotice from './pages/webView';
 import OrderList from './pages/orderListView';
 import Express from './pages/expressView';
+import OrderDetail from './pages/orderDetailView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -179,6 +179,14 @@ const App = StackNavigator({
         screen: Express,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '物流信息',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
+        }),
+    },
+    OrderDetail:{
+        screen: OrderDetail,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '订单详情',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
         }),

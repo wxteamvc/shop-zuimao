@@ -8,7 +8,7 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-nati
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import IconT from 'react-native-vector-icons/dist/Foundation';
-import { memberInfo, loginOut } from '../actions/memberAction';
+import { memberInfo, loginOut,updateMemberInfo } from '../actions/memberAction';
 import { ScreenWidth } from '../common/global';
 import { fontSizeScaler as fs } from '../common/global';
 import Toast from 'react-native-root-toast';
@@ -105,9 +105,9 @@ class Member extends Component {
   //订单
   renderOrder() {
     let islogin = this.props.loginData.status === "success" && this.props.memberData.status === "success";
-    let statics;
+    let member;
     if (islogin) {
-      statics = this.props.memberData.data.result.statics;
+      member = this.props.memberData.data.result.member;
     }
     return (
       <View style={styles.modView}>
@@ -155,10 +155,10 @@ class Member extends Component {
               </View>
             </TouchableOpacity>
           </View>
-          {islogin?this.renderOrderIcon(0, statics.order_0):null}
-          {islogin?this.renderOrderIcon(1, statics.order_1):null}
-          {islogin?this.renderOrderIcon(2, statics.order_2):null}
-          {islogin?this.renderOrderIcon(3, statics.order_3):null}
+          {islogin?this.renderOrderIcon(0, member.order_0):null}
+          {islogin?this.renderOrderIcon(1, member.order_1):null}
+          {islogin?this.renderOrderIcon(2, member.order_2):null}
+          {islogin?this.renderOrderIcon(4, member.order_4):null}
           
         </View>
       </View>
