@@ -3,13 +3,13 @@ import * as Types from '../actions/actionTypes'
 const loginState = {
     status: false,
     data: {},
-    message:'',
+    message: '',
 }
 
 const memberInfoState = {
     status: false,
     data: {},
-    message:'',
+    message: '',
 }
 
 export function loginReducer(state = loginState, action) {
@@ -17,13 +17,13 @@ export function loginReducer(state = loginState, action) {
         case Types.LOGIN_BEGIN:
             return Object.assign({}, state, {
                 status: 'begin',
-                message:'',
+                message: '',
             });
         case Types.LOGIN_SUCCESS:
             return Object.assign({}, state, {
                 status: 'success',
                 data: action.data,
-                message:action.data.message,
+                message: action.data.message,
             });
         case Types.LOGIN_FAILED:
             return Object.assign({}, state, {
@@ -34,8 +34,8 @@ export function loginReducer(state = loginState, action) {
             return Object.assign({}, state, {
                 status: false,
                 data: {},
-                message:'',
-            });        
+                message: '',
+            });
         default:
             return state;
     }
@@ -46,19 +46,34 @@ export function memberInfoReducer(state = memberInfoState, action) {
         case Types.MEMBER_INFO_BEGIN:
             return Object.assign({}, state, {
                 status: 'begin',
-                message:'',
+                message: '',
             });
         case Types.MEMBER_INFO_SUCCESS:
             return Object.assign({}, state, {
                 status: 'success',
                 data: action.data,
-                message:'',
+                message: '',
             });
         case Types.MEMBER_INFO_FAILED:
             return Object.assign({}, state, {
                 status: 'failed',
                 message: action.message,
-            });    
+            });
+        case Types.LOGIN_OUT:
+            return Object.assign({}, state, {
+                status: false,
+                data: {},
+                message: '',
+            });
+        case Types.UPDATE_MEMBERINFO:
+            let m = Object.assign({}, state.data.result.member, action.data);
+            let re = Object.assign({}, state.data.result, {member:m});
+            let da = Object.assign({}, state.data, {result:{member:m}});
+            return Object.assign({}, state, {
+                status: 'success',
+                data: {result:{member:m}},
+                message: '',
+            });
         default:
             return state;
     }

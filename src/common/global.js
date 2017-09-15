@@ -161,3 +161,7 @@ export const ORDERDELETE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=
 export const ORDERCANCEL_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.op.cancel';
 //物流信息
 export const EXPRESS_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.express';
+//确认收货
+export const ORDERFINISH_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.op.finish';
+//订单详情
+export const ORDERDETAIL_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.detail';
