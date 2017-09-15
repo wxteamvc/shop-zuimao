@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import { Text, TouchableOpacity,View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import HomeTab from './pages/homeTab';
-import SignTab from './pages/signTab';
+// import SignTab from './pages/signTab';
 import SignRecord from './pages/signRecordView';
 import Coupons from './pages/couponsView';
 import RightBtn from './component/rightBtn';
@@ -26,10 +26,10 @@ import AddressAdd from './pages/addressAddView';
 import WebView from './pages/webView';
 import Notice from './pages/noticeView';
 import CouponInfo from './pages/couponsInfoView';
-
 import ShowNotice from './pages/webView';
 import OrderList from './pages/orderListView';
 import Express from './pages/expressView';
+import Sign from './pages/signView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -38,8 +38,8 @@ const App = StackNavigator({
             header: null
         },
     },
-    SignTab: {
-        screen: SignTab,
+    Sign: {
+        screen: Sign,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '积分签到',
             headerTitleStyle: { alignSelf: 'center' },

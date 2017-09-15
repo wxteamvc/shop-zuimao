@@ -78,7 +78,8 @@ export const ORDERCREATE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=
 export const ADDRESSUPDATE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.address.submit';
 //确认购买前确认
 export const BEFOREBUY = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.cart.submit';
-
+//签到排行获取
+export const SIGNRANK =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=sign.getRank';
 
 
 
@@ -89,12 +90,21 @@ export const BEFOREBUY = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member
 
 //分类跳转方法
 export function JUMP(link, navigate) {
-    let url = 'http://www.zuimaowang.cn/app' + link.substring(1)
+    let url = null;
+    if (IsURL(link)) {
+        url = link;
+    } else {
+        url = 'http://www.zuimaowang.cn/app' + link.substring(1);
+    }
     let r = getItem(url, 'r')
     let screen = '';
     let data = {};
     switch (r) {
         case 'article':
+            screen = 'WebView';
+            data = { url: url };
+            break;
+        case 'shop.notice.detail':
             screen = 'WebView';
             data = { url: url };
             break;
@@ -121,6 +131,7 @@ export function JUMP(link, navigate) {
     }
     navigate.navigate(screen, data);
 }
+
 function getItem(url, item) {
     let reg = new RegExp("[^\?&]?" + encodeURI(item) + "=[^&]+");
     let arr = url.match(reg);
@@ -130,6 +141,18 @@ function getItem(url, item) {
         return (false);
     }
 }
+
+function IsURL(str_url) {
+    var strRegex = '(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]'
+    var re = new RegExp(strRegex);
+    //re.test() 
+    if (re.test(str_url)) {
+        return (true);
+    } else {
+        return (false);
+    }
+}
+
 //订单列表请求地址
 export const ORDERLIST_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.get_list';
 //订单删除

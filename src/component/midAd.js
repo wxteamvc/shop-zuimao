@@ -8,7 +8,7 @@ import {
     TouchableWithoutFeedback,
     Image,
 } from 'react-native';
-import { COUPONS_URL, ScreenWidth, DOMAIN } from '../common/global';
+import { COUPONS_URL, ScreenWidth, DOMAIN,JUMP } from '../common/global';
 
 export default class MidAd extends Component {
 
@@ -20,11 +20,13 @@ export default class MidAd extends Component {
             let ad = []
             for (let i = 0; i < this.props.ad.length; i++) {
                 ad.push(
-                    <TouchableWithoutFeedback key={i}>
+                    <TouchableWithoutFeedback 
+                    onPress={()=>{JUMP(this.props.ad[i].link,this.props.navigation)}}
+                    key={i}>
                         <Image
                             source={{ uri: DOMAIN + this.props.ad[i].thumb }}
                             style={styles.ad}
-                            resizeMode={'cover'} />
+                            resizeMode={'stretch'} />
                     </TouchableWithoutFeedback>
                 )
 
