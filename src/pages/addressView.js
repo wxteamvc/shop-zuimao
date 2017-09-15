@@ -4,7 +4,7 @@
 "use strict";
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert,StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { address } from '../actions/addressAction';
@@ -34,6 +34,10 @@ class Address extends Component {
     if (this.props.loginData.status === "success") {
       return (
         <View style={{ flex: 1 }}>
+          <StatusBar
+            translucent={false}
+            backgroundColor="#000"
+          />
           <ScrollView>
             {this.renderAddress()}
           </ScrollView>

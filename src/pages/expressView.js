@@ -22,10 +22,10 @@ class Express extends Component {
     componentDidMount() {
         let oid = this.props.navigation.state.params.id;
         let token = this.props.navigation.state.params.token;
-        this._fetch(EXPRESS_URL, Object.assign({ id: oid, app: 1 }, token))
+        this._getExpress(EXPRESS_URL, Object.assign({ id: oid, app: 1 }, token))
     }
 
-    _fetch(url, params = {}) {
+    _getExpress(url, params = {}) {
         Util.post(url, params,
             (responseJson) => {
                 if (responseJson.status == 1) {
@@ -62,7 +62,7 @@ class Express extends Component {
                     <View style={s.top}>
                         <Image source={{ uri: data.goods[0].thumb }} style={{ flex: 1 }} />
                         <View style={{ flex: 2.8, paddingLeft: 30 }}>
-                            <Text style={{ fontSize: 18, color: '#000' }}>物流状态：<Text style={{ color: 'green' }}>{data.status}</Text></Text>
+                            <Text style={{ fontSize: 16, color: '#000' }}>物流状态：<Text style={{ color: 'green' }}>{data.status}</Text></Text>
                             <Text>快递公司：<Text>{data.order.expresscom}</Text></Text>
                             <Text>快递单号：<Text>{data.order.expresssn}</Text></Text>
                             <Text>商品数量：<Text style={{ color: 'red' }}>{data.goods.length}</Text></Text>

@@ -4,7 +4,7 @@
 "use strict";
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, TextInput } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, TextInput,StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { address } from '../actions/addressAction';
@@ -62,6 +62,10 @@ class AddressAdd extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
+        <StatusBar
+          translucent={false}
+          backgroundColor="#000"
+        />
         <View style={{ alignItems: 'center' }}>
           <View style={s.box}>
             <Text style={s.text}>收货人</Text>

@@ -94,7 +94,7 @@ class OrderList extends Component {
                         showMod: false,
                     })
                     let token = this.props.loginData.data.result.token;
-                    this._cancel(ORDERCANCEL_URL, Object.assign(token, { id: this.state.oid, remark: text }), token)
+                    this._cancel(ORDERCANCEL_URL, Object.assign({},token, { id: this.state.oid, remark: text }), token)
                 }
             }
         ])        
@@ -159,7 +159,7 @@ class OrderList extends Component {
                 }
             })
             let token = this.props.loginData.data.result.token;
-            this.props.dispatch(orderList(Object.assign(this.state.search, token, { status: type })));
+            this.props.dispatch(orderList(Object.assign({},this.state.search, token, { status: type })));
         }
 
     }
@@ -168,10 +168,10 @@ class OrderList extends Component {
         Util.post(url, params,
             (responseJson) => {
                 if (responseJson.status == 1) {
-                    this.props.dispatch(orderList(Object.assign(this.state.search, token)));
+                    this.props.dispatch(orderList(Object.assign({},this.state.search, token)));
                 } else {
                     Toast.show(responseJson.result.message);
-                    this.props.dispatch(orderList(Object.assign(this.state.search, token)));
+                    this.props.dispatch(orderList(Object.assign({},this.state.search, token)));
                 }
             },
             (error) => {
@@ -276,7 +276,7 @@ class MyListItem extends React.PureComponent {
                 text: '确定', onPress: () => {
                     let token = this.props.token;
                     // userdeleted 为1时放到回收站，为2彻底删除
-                    this._fetch(ORDERDELETE_URL, Object.assign(token, { id: oid, userdeleted: 2 }), token)
+                    this._fetch(ORDERDELETE_URL, Object.assign({},token, { id: oid, userdeleted: 1 }), token)
                 }
             }
         ])
@@ -305,10 +305,10 @@ class MyListItem extends React.PureComponent {
         Util.post(url, params,
             (responseJson) => {
                 if (responseJson.status == 1) {
-                    this.props.dispatch(orderList(Object.assign(this.props.search, token)));
+                    this.props.dispatch(orderList(Object.assign({},this.props.search, token)));
                 } else {
                     Toast.show(responseJson.result.message);
-                    this.props.dispatch(orderList(Object.assign(this.props.search, token)));
+                    this.props.dispatch(orderList(Object.assign({},this.props.search, token)));
                 }
             },
             (error) => {

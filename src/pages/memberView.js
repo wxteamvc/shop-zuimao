@@ -17,9 +17,9 @@ class Member extends Component {
 
   constructor(...props) {
     super(...props);
-    this.state={
-      confBGC:'transparent',
-      iconC:'#fff',
+    this.state = {
+      confBGC: 'transparent',
+      iconC: '#fff',
     }
   }
 
@@ -33,8 +33,8 @@ class Member extends Component {
 
   render() {
     return (
-      <View style={{flex:1}}>
-        <ScrollView showsVerticalScrollIndicator={false} onScroll={(e)=>this._conBGC(e)}>
+      <View style={{ flex: 1 }}>
+        <ScrollView showsVerticalScrollIndicator={false} onScroll={(e) => this._conBGC(e)}>
           <View style={styles.topView}>
             <View style={styles.row}>
               <View style={styles.userIconView}>
@@ -50,32 +50,32 @@ class Member extends Component {
           {this.renderOther()}
           {this.renderLoginOut()}
         </ScrollView>
-        <View style={{backgroundColor:this.state.confBGC,paddingTop: 20,position:'absolute',top:0,width:ScreenWidth}}>
+        <View style={{ backgroundColor: this.state.confBGC, paddingTop: 20, position: 'absolute', top: 0, width: ScreenWidth }}>
           <View style={styles.conf}>
-              <TouchableOpacity>
-                <Icon name='cog' color={this.state.iconC} style={styles.icon} />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Icon name='commenting-o' color={this.state.iconC} style={styles.icon} />
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity>
+              <Icon name='cog' color={this.state.iconC} style={styles.icon} />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Icon name='commenting-o' color={this.state.iconC} style={styles.icon} />
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={{backgroundColor:'#C10001',position:'absolute',top:0,width:ScreenWidth,height:30}}></View>
+        <View style={{ backgroundColor: '#C10001', position: 'absolute', top: 0, width: ScreenWidth, height: 30 }}></View>
       </View>
     );
   }
 
-  _conBGC(e){
-    if(e.nativeEvent.contentOffset.y>=100){
+  _conBGC(e) {
+    if (e.nativeEvent.contentOffset.y >= 100) {
       this.setState({
-        confBGC:'rgba(255, 255, 255,0.9)',
-        iconC:'#000',
+        confBGC: 'rgba(255, 255, 255,0.9)',
+        iconC: '#000',
       })
     }
-    else{
+    else {
       this.setState({
-        confBGC:'transparent',
-        iconC:'#fff',
+        confBGC: 'transparent',
+        iconC: '#fff',
       })
     }
   }
@@ -88,7 +88,7 @@ class Member extends Component {
       let levelname = memberData.levelname == null || memberData.levelname == '' ? '[普通会员]' : memberData.levelname;
       return (
         <View>
-          <Text style={[styles.fontWhite,{fontSize:18}]}>{name}</Text>
+          <Text style={[styles.fontWhite, { fontSize: 18 }]}>{name}</Text>
           <Text style={styles.fontWhite}>{levelname}</Text>
         </View>
 
@@ -96,7 +96,7 @@ class Member extends Component {
     } else {
       return (
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
-          <Text style={[styles.fontWhite,styles.fontS]}>登陆/注册 〉</Text>
+          <Text style={[styles.fontWhite, styles.fontS]}>登陆/注册 〉</Text>
         </TouchableOpacity>
       )
     }
@@ -105,22 +105,26 @@ class Member extends Component {
   //订单
   renderOrder() {
     let islogin = this.props.loginData.status === "success" && this.props.memberData.status === "success";
+    let statics;
+    if (islogin) {
+      statics = this.props.memberData.data.result.statics;
+    }
     return (
       <View style={styles.modView}>
         <View style={styles.modTop}>
           <View style={styles.modTopTextL}>
-            <Text style={[styles.fontS,{ marginRight: 5 }]}>我的订单</Text>
+            <Text style={[styles.fontS, { marginRight: 5 }]}>我的订单</Text>
           </View>
-          <TouchableOpacity onPress={()=>islogin?this.props.navigation.navigate('OrderList',{search:{status:''}}):this._unlogin()}>
+          <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('OrderList', { search: { status: '' } }) : this._unlogin()}>
             <View style={styles.modTopTextR}>
-              <Text style={[styles.fontS,{ marginRight: 5 }]}>查看全部订单</Text>
-              <Icon name="angle-right" size={20} color={'#ccc'} style={{ marginRight: 5,marginTop:5 }} />
+              <Text style={[styles.fontS, { marginRight: 5 }]}>查看全部订单</Text>
+              <Icon name="angle-right" size={20} color={'#ccc'} style={{ marginRight: 5, marginTop: 5 }} />
             </View>
           </TouchableOpacity>
         </View>
         <View style={styles.modBottom}>
           <View style={styles.modBottomList}>
-            <TouchableOpacity onPress={()=>islogin?this.props.navigation.navigate('OrderList',{search:{status:0}}):this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('OrderList', { search: { status: 0 } }) : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="address-card-o" size={30} color={'#aaa'} />
                 <Text style={styles.fontS}>待付款</Text>
@@ -128,7 +132,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomList}>
-            <TouchableOpacity onPress={()=>islogin?this.props.navigation.navigate('OrderList',{search:{status:1}}):this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('OrderList', { search: { status: 1 } }) : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="cube" size={30} color={'#aaa'} />
                 <Text style={styles.fontS}>待发货</Text>
@@ -136,7 +140,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomList}>
-            <TouchableOpacity onPress={()=>islogin?this.props.navigation.navigate('OrderList',{search:{status:2}}):this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('OrderList', { search: { status: 2 } }) : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="truck" size={30} color={'#aaa'} />
                 <Text style={styles.fontS}>待收货</Text>
@@ -144,19 +148,32 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomList}>
-            <TouchableOpacity onPress={()=>islogin?null:this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? null : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="plug" size={30} color={'#aaa'} />
                 <Text style={styles.fontS}>退换货</Text>
               </View>
             </TouchableOpacity>
           </View>
+          {islogin?this.renderOrderIcon(0, statics.order_0):null}
+          {islogin?this.renderOrderIcon(1, statics.order_1):null}
+          {islogin?this.renderOrderIcon(2, statics.order_2):null}
+          {islogin?this.renderOrderIcon(3, statics.order_3):null}
+          
         </View>
       </View>
     )
   }
 
-  _unlogin(){
+  renderOrderIcon(type, num) {
+    if(num!=0 && num!='' && num!=undefined){
+      return (
+        <Text style={[styles.fontIcon, { left: ScreenWidth * 0.5 / 4 + ScreenWidth / 4 * type + 10 }]}>{num}</Text>
+      )
+    }
+  }
+
+  _unlogin() {
     Toast.show('请先登录');
   }
 
@@ -177,36 +194,36 @@ class Member extends Component {
       <View style={styles.modView}>
         <View style={styles.modTop}>
           <View style={[styles.modTopTextL, styles.borderB]}>
-            <Text style={[styles.fontS,{ marginRight: 5 }]}>我的钱包</Text>
+            <Text style={[styles.fontS, { marginRight: 5 }]}>我的钱包</Text>
           </View>
-          <TouchableOpacity onPress={()=>islogin?null:this._unlogin()}>
+          <TouchableOpacity onPress={() => islogin ? null : this._unlogin()}>
             <View style={[styles.modTopTextR, styles.borderB]}>
-              <Text style={[styles.fontS,{ marginRight: 5 }]}>查看明细</Text>
-              <Icon name="angle-right" size={20} color={'#ccc'} style={{ marginRight: 5 ,marginTop:5}} />
+              <Text style={[styles.fontS, { marginRight: 5 }]}>查看明细</Text>
+              <Icon name="angle-right" size={20} color={'#ccc'} style={{ marginRight: 5, marginTop: 5 }} />
             </View>
           </TouchableOpacity>
         </View>
         <View style={styles.modBottom}>
           <View style={styles.modBottomList}>
-            <TouchableOpacity onPress={()=>islogin?null:this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? null : this._unlogin()}>
               <View style={styles.center}>
-                <Text style={{fontSize:16}}>{credit2}</Text>
+                <Text style={{ fontSize: 16 }}>{credit2}</Text>
                 <Text style={styles.fontS}>账户余额</Text>
               </View>
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomList}>
-            <TouchableOpacity onPress={()=>islogin?null:this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? null : this._unlogin()}>
               <View style={styles.center}>
-                <Text style={{fontSize:16}}>{coupon}</Text>
+                <Text style={{ fontSize: 16 }}>{coupon}</Text>
                 <Text style={styles.fontS}>优惠券</Text>
               </View>
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomList}>
-            <TouchableOpacity onPress={()=>islogin?null:this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? null : this._unlogin()}>
               <View style={styles.center}>
-                <Text style={{fontSize:16}}>{credit1}</Text>
+                <Text style={{ fontSize: 16 }}>{credit1}</Text>
                 <Text style={styles.fontS}>积分</Text>
               </View>
             </TouchableOpacity>
@@ -223,7 +240,7 @@ class Member extends Component {
       <View style={styles.modView}>
         <View style={[styles.modBottom, { flexWrap: 'wrap' }]}>
           <View style={styles.modBottomOther}>
-            <TouchableOpacity onPress={()=>islogin?null:this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? null : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="heart" size={25} color={'#FB585E'} />
                 <Text style={styles.fontS}>我的关注</Text>
@@ -231,7 +248,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomOther}>
-            <TouchableOpacity onPress={()=>islogin?this.props.navigation.navigate('Cart'):this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('Cart') : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="shopping-cart" size={25} color={'#1D9D73'} />
                 <Text style={styles.fontS}>购物车</Text>
@@ -239,7 +256,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomOther}>
-            <TouchableOpacity onPress={()=>islogin?null:this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? null : this._unlogin()}>
               <View style={styles.center}>
                 <IconT name="foot" size={25} color={'#1B8EFF'} />
                 <Text style={styles.fontS}>我的足迹</Text>
@@ -247,7 +264,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomOther}>
-            <TouchableOpacity onPress={()=>islogin?null:this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? null : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="credit-card" size={25} color={'#FFAB15'} />
                 <Text style={styles.fontS}>充值记录</Text>
@@ -255,7 +272,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomOther}>
-            <TouchableOpacity onPress={()=>islogin?this.props.navigation.navigate('SignTab'):this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('SignTab') : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="gift" size={25} color={'#9400d3'} />
                 <Text style={styles.fontS}>积分签到</Text>
@@ -263,7 +280,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomOther}>
-            <TouchableOpacity onPress={()=>islogin?this.props.navigation.navigate('Coupons'):this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('Coupons') : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="ticket" size={25} color={'#FFAB15'} />
                 <Text style={styles.fontS}>领优惠券</Text>
@@ -271,7 +288,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomOther}>
-            <TouchableOpacity onPress={()=>islogin?null:this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? null : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="bell" size={25} color={'#6b8e23'} />
                 <Text style={styles.fontS}>消息提醒</Text>
@@ -279,7 +296,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomOther}>
-            <TouchableOpacity onPress={()=>islogin?this.props.navigation.navigate('Address'):this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('Address') : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="map-marker" size={25} color={'#BF0000'} />
                 <Text style={styles.fontS}>地址管理</Text>
@@ -307,6 +324,21 @@ class Member extends Component {
 }
 
 const styles = StyleSheet.create({
+  fontIcon: {
+    paddingTop: 2,
+    paddingBottom: 2,
+    paddingLeft: 5,
+    paddingRight: 5,
+    backgroundColor: '#fff',
+    color: 'red',
+    borderRadius: 10,
+    position: 'absolute',
+    top: 5,
+    fontSize: 9,
+    borderColor: 'red',
+    borderWidth: 1,
+    textAlign: 'center'
+  },
   row: {
     flexDirection: 'row',
   },
@@ -328,12 +360,12 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   userIconView: {
-    width:70,
-    height:70,
+    width: 70,
+    height: 70,
     backgroundColor: 'white',
     borderRadius: 70,
     alignItems: 'center',
-    justifyContent:'center',
+    justifyContent: 'center',
     marginLeft: 30
   },
   loginStatus: {
@@ -380,9 +412,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
   },
-  fontS:{
-    fontSize:12,
-    marginTop:8
+  fontS: {
+    fontSize: 12,
+    marginTop: 8
   }
 });
 
