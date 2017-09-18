@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { orderList } from '../actions/orderListAction';
 import FlatListJumoTop from '../component/flatListJumoTop';
 import Util from '../common/util';
-import { ScreenWidth, ScreenHeight, ORDERDELETE_URL, ORDERCANCEL_UR, ORDERFINISH_URL } from '../common/global';
+import { ScreenWidth, ScreenHeight, ORDERDELETE_URL, ORDERCANCEL_URL, ORDERFINISH_URL } from '../common/global';
 import Toast from 'react-native-root-toast';
 import { memberInfo } from '../actions/memberAction';
 
@@ -28,6 +28,7 @@ class OrderList extends Component {
             },
             showMod: false,
             oid: null,
+            showActivityIndicator:false,
         }
     }
 
@@ -54,7 +55,22 @@ class OrderList extends Component {
                 {this.renderTab()}
                 {this.renderList()}
                 {this.renderModel()}
+                {this.renderActivityIndicator()}
             </View>
+        )
+    }
+
+    renderActivityIndicator(){
+        return (
+            <Modal
+                animationType={"fade"}
+                transparent={true}
+                visible={this.state.showActivityIndicator}
+                onRequestClose={()=>null}
+            >
+                <Text style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' }}></Text>
+                <ActivityIndicator style={s.load} color={'#fff'}/>
+            </Modal>
         )
     }
 
@@ -98,6 +114,7 @@ class OrderList extends Component {
                 text: '确定', onPress: () => {
                     this.setState({
                         showMod: false,
+                        showActivityIndicator:true,
                     })
                     let token = this.props.loginData.data.result.token;
                     this._cancel(ORDERCANCEL_URL, Object.assign({}, token, { id: this.state.oid, remark: text }), token)
@@ -133,7 +150,9 @@ class OrderList extends Component {
                             showMod: true,
                             oid: id
                         })
-                    }} />}
+                    }} 
+                    loading={()=>this.setState({showActivityIndicator:true})}
+                    loaded={()=>this.setState({showActivityIndicator:false})}/>}
                     onEndReached={() => {
                         list.length < this.props.orderListData.total ?
                             this.props.dispatch(orderList(
@@ -173,6 +192,9 @@ class OrderList extends Component {
     _cancel(url, params = {}, token = {}) {
         Util.post(url, params,
             (responseJson) => {
+                this.setState({
+                    showActivityIndicator:false,
+                })
                 if (responseJson.status == 1) {
                     this.props.dispatch(orderList(Object.assign({}, this.state.search, token)));
                 } else {
@@ -181,6 +203,9 @@ class OrderList extends Component {
                 }
             },
             (error) => {
+                this.setState({
+                    showActivityIndicator:false,
+                })
                 Toast.show('服务器请求失败！');
             },
         )
@@ -276,6 +301,7 @@ class MyListItem extends React.PureComponent {
             { text: '取消' },
             {
                 text: '确定', onPress: () => {
+                    this.props.loading();
                     let token = this.props.token;
                     this._fetch(ORDERFINISH_URL, Object.assign({}, token, { id: oid }), token)
                 }
@@ -292,9 +318,10 @@ class MyListItem extends React.PureComponent {
             { text: '取消' },
             {
                 text: '确定', onPress: () => {
+                    this.props.loading();
                     let token = this.props.token;
                     // userdeleted 为1时放到回收站，为2彻底删除
-                    this._fetch(ORDERDELETE_URL, Object.assign({}, token, { id: oid, userdeleted: 2 }), token)
+                    this._fetch(ORDERDELETE_URL, Object.assign({}, token, { id: oid, userdeleted: 1 }), token)
                 }
             }
         ])
@@ -324,12 +351,13 @@ class MyListItem extends React.PureComponent {
     }
 
     _orderDetail(oid){
-        this.props.navigation.navigate('OrderDetail', { id: oid, token: this.props.token })
+        this.props.navigation.navigate('OrderDetail', { id: oid, token: this.props.token, dispatch:this.props.dispatch,search:this.props.search})
     }
 
     _fetch(url, params = {}, token = {}) {
         Util.post(url, params,
             (responseJson) => {
+                this.props.loaded();
                 if (responseJson.status == 1) {
                     this.props.dispatch(orderList(Object.assign({}, this.props.search, token)));
                 } else {
@@ -338,6 +366,7 @@ class MyListItem extends React.PureComponent {
                 }
             },
             (error) => {
+                this.props.loaded();
                 Toast.show('服务器请求失败！');
             },
         )
@@ -345,6 +374,7 @@ class MyListItem extends React.PureComponent {
 }
 
 const s = StyleSheet.create({
+    load: {position: 'absolute', top: ScreenHeight * 0.5, left: ScreenWidth * 0.5, },
     modText: {
         textAlign: 'center',
         padding: 10

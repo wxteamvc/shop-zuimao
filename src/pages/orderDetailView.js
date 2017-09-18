@@ -5,11 +5,12 @@
 "use strict";
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, StatusBar, FlatList, TouchableOpacity } from 'react-native';
-import { ORDERDETAIL_URL } from '../common/global';
+import { StyleSheet, Text, View, ScrollView, Image, StatusBar, FlatList, TouchableOpacity, Alert, Modal,ActivityIndicator } from 'react-native';
+import { ScreenWidth, ScreenHeight,ORDERDELETE_URL, ORDERCANCEL_URL, ORDERFINISH_URL, ORDERDETAIL_URL } from '../common/global';
 import Util from '../common/util';
 import Toast from 'react-native-root-toast';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import { orderList } from '../actions/orderListAction';
 
 class OrderDetail extends Component {
 
@@ -17,6 +18,8 @@ class OrderDetail extends Component {
         super(...props);
         this.state = {
             detailData: '',
+            showMod: false,
+            showActivityIndicator:false,
         }
     }
 
@@ -56,6 +59,9 @@ class OrderDetail extends Component {
                         {this.renderAddress()}
                         {this.renderGoods()}
                     </ScrollView>
+                    {this.renderBtns(this.state.detailData.order.status)}
+                    {this.renderModel()}
+                    {this.renderActivityIndicator()}
                 </View>
             )
         } else {
@@ -64,37 +70,288 @@ class OrderDetail extends Component {
 
     }
 
+    renderActivityIndicator(){
+        return (
+            <Modal
+                animationType={"fade"}
+                transparent={true}
+                visible={this.state.showActivityIndicator}
+                onRequestClose={()=>null}
+            >
+                <Text style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' }}></Text>
+                <ActivityIndicator style={s.load} color={'#fff'}/>
+            </Modal>
+        )
+    }
+
+    renderModel() {
+        return (
+            <Modal
+                animationType={"fade"}
+                transparent={true}
+                visible={this.state.showMod}
+                onRequestClose={() => this.setState({ showMod: false })}
+            >
+                <Text style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' }} onPress={() => this.setState({ showMod: false })}></Text>
+                <View style={s.mod}>
+                    <ScrollView>
+                        <TouchableOpacity onPress={() => this.setState({ showMod: false })}>
+                            <Text style={s.modText}>不想取消了</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this._cancel('我不想买了')}>
+                            <Text style={s.modText}>我不想买了</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this._cancel('信息填写错误，重新拍')}>
+                            <Text style={s.modText}>信息填写错误，重新拍</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this._cancel('同城见面交易')}>
+                            <Text style={s.modText}>同城见面交易</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this._cancel('其他原因')}>
+                            <Text style={s.modText}>其他原因</Text>
+                        </TouchableOpacity>
+
+                    </ScrollView>
+                </View>
+            </Modal>
+        )
+    }
+
+    _cancel(text) {
+        let token = this.props.navigation.state.params.token;
+        let oid = this.props.navigation.state.params.id;
+        Alert.alert('温馨提醒', '确定取消吗?', [
+            { text: '取消' },
+            {
+                text: '确定', onPress: () => {
+                    this.setState({
+                        showMod: false,
+                        showActivityIndicator:true,
+                    })
+                    this._fetch(ORDERCANCEL_URL, Object.assign({}, token, { id: oid, remark: text }), token)
+                }
+            }
+        ])
+    }
+
+    _delete(oid) {
+        let token = this.props.navigation.state.params.token;
+        Alert.alert('温馨提醒', '确定删除吗?', [
+            { text: '取消' },
+            {
+                text: '确定', onPress: () => {
+                    this.setState({
+                        showActivityIndicator:true,
+                    })
+                    // userdeleted 为1时放到回收站，为2彻底删除
+                    this._fetch(ORDERDELETE_URL, Object.assign({}, token, { id: oid, userdeleted: 1 }), token)
+                }
+            }
+        ])
+    }
+
+    _finish(oid) {
+        let token = this.props.navigation.state.params.token;
+        Alert.alert('温馨提醒', '确定收货吗?', [
+            { text: '取消' },
+            {
+                text: '确定', onPress: () => {
+                    this.setState({
+                        showActivityIndicator:true,
+                    })
+                    this._fetch(ORDERFINISH_URL, Object.assign({}, token, { id: oid }), token)
+                }
+            }
+        ])
+    }
+
+    _fetch(url, params = {}, token = {}) {
+        let {dispatch,search} = this.props.navigation.state.params;
+        Util.post(url, params,
+            (responseJson) => {
+                this.setState({
+                    showActivityIndicator:false,
+                })
+                if (responseJson.status == 1) {
+                    dispatch(orderList(Object.assign({}, search, token)));
+                    this.props.navigation.goBack();
+                    url==ORDERCANCEL_URL?Toast.show('取消成功'):null;
+                    url==ORDERFINISH_URL?Toast.show('确认成功'):null;
+                    url==ORDERDELETE_URL?Toast.show('删除成功'):null;
+                    
+                } else {
+                    Toast.show(responseJson.result.message);
+                    dispatch(orderList(Object.assign({}, search, token)));
+                }
+            },
+            (error) => {
+                this.setState({
+                    showActivityIndicator:false,
+                })
+                Toast.show('服务器请求失败！');
+            },
+        )
+    }
+
+    renderBtns(status) {
+        let oid = this.state.detailData.order.id;
+        switch (status) {
+            case '-1':
+                return (
+                    <View style={s.btnBox}>
+                        <TouchableOpacity onPress={() => this._delete(oid)}>
+                            <Text style={s.btn}>删除订单</Text>
+                        </TouchableOpacity>
+                    </View>
+                )
+
+                break;
+            case '0':
+                return (
+                    <View style={s.btnBox}>
+                        <TouchableOpacity onPress={() => this.setState({ showMod: true })}>
+                            <Text style={s.btn}>取消订单</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Text style={s.btnRed}>支付订单</Text>
+                        </TouchableOpacity>
+                    </View>
+                )
+                break;
+            case '1':
+                return (
+                    <View style={s.btnBox}>
+                        <TouchableOpacity>
+                            <Text style={s.btn}>申请退款</Text>
+                        </TouchableOpacity>
+                    </View>
+                )
+                break;
+            case '2':
+                return (
+                    <View style={s.btnBox}>
+                        <TouchableOpacity>
+                            <Text style={s.btn}>申请售后</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this._finish(oid)}>
+                            <Text style={s.btnRed}>确认收货</Text>
+                        </TouchableOpacity>
+                    </View>
+                )
+                break;
+            case '3':
+                return (
+                    <View style={s.btnBox}>
+                        <TouchableOpacity onPress={() => this._delete(oid)}>
+                            <Text style={s.btn}>删除订单</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Text style={s.btnRed}>评价</Text>
+                        </TouchableOpacity>
+                    </View>
+                )
+                break;
+            default:
+                break;
+        }
+    }
+
     renderGoods() {
-        // return (
-        //     <View style={{ marginTop: 10 }}>
-        //         <View style={s.listTop}>
-        //             <Text style={s.shop}>&#xe60c;</Text>
-        //             <Text style={{ flex: 9 }}>aaa&nbsp;&nbsp;<Icon name="angle-right" size={20} /></Text>
-        //             <Text style={{ flex: 2, color: '#FFAA25' }}>{item.statusstr}</Text>
-        //         </View>
-        //         <View key={j} style={s.listMid}>
-        //             <Image source={{ uri: 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png'}} style={s.img} />
-        //             <View style={s.goods}>
-        //                 <Text style={s.title} numberOfLines={2}>sadkjska</Text>
-        //             </View>
-        //             <View style={s.price}>
-        //                 <Text style={{ color: 'red', fontWeight: 'bold' }}>&yen;45</Text>
-        //                 <Text style={{ color: 'red' }}>×22</Text>
-        //             </View>
-        //         </View>
-        //         <View style={s.listBottom}>
-        //             <Text style={{ fontSize: 11 }}>共<Text style={{ color: 'red' }}>3333</Text>件商品&nbsp;合计：<Text style={{ color: 'red' }}>&yen;999</Text></Text>
-        //             <View style={{ flexDirection: 'row' }}>
-        //                 <TouchableOpacity>
-        //                     <Text style={s.btn}>按钮1</Text>
-        //                 </TouchableOpacity>
-        //                 <TouchableOpacity>
-        //                     <Text style={s.btn}>按钮2</Text>
-        //                 </TouchableOpacity>
-        //             </View>
-        //         </View>
-        //     </View>
-        // )
+        let data = this.state.detailData;
+        return (
+            <View style={{ marginTop: 10 }}>
+                <View style={s.listTop}>
+                    <Text style={s.shop}>&#xe60c;</Text>
+                    <Text style={{ flex: 9 }}>{data.shopname}&nbsp;&nbsp;<Icon name="angle-right" size={20} /></Text>
+                </View>
+                {this.renderGoodsList(data.goods)}
+                <View style={s.listBottom}>
+                    <Text>小计：<Text style={{ color: 'red' }}>&yen;{data.order.goodsprice}</Text></Text>
+                    <Text>运费：<Text style={{ color: 'red' }}>&yen;{data.order.dispatchprice}</Text></Text>
+                    {this.renderYouhui()}
+                    <Text>总计（含运费）：<Text style={{ color: 'red' }}>&yen;{data.order.price}</Text></Text>
+                </View>
+                {this.renderSn()}
+            </View>
+        )
+    }
+
+    renderSn() {
+        let order = this.state.detailData.order;
+        return (
+            <View style={s.listSn}>
+                <Text>订单编号：{order.ordersn}</Text>
+                <Text>创建时间：{order.createtime}</Text>
+                {order.status >= 1 ? <Text>支付时间：{order.paytime}</Text> : null}
+                {order.status >= 2 ? <Text>发货时间：{order.sendtime}</Text> : null}
+                {order.status == 3 ? <Text>完成时间：{order.createtime}</Text> : null}
+            </View>
+        )
+    }
+
+    renderYouhui() {
+        let order = this.state.detailData.order;
+        if (order.ispackage == 0) {
+            if (order.deductenough > 0) {
+                return (
+                    <Text>满额立减：<Text style={{ color: 'red' }}>-&yen;{order.deductenough}</Text></Text>
+                )
+            }
+            if (order.couponprice > 0) {
+                return (
+                    <Text>优惠券优惠：<Text style={{ color: 'red' }}>-&yen;{order.couponprice}</Text></Text>
+                )
+            }
+            if (order.buyagainprice > 0) {
+                return (
+                    <Text>重复购买优惠：<Text style={{ color: 'red' }}>-&yen;{order.buyagainprice}</Text></Text>
+                )
+            }
+            if (order.discountprice > 0) {
+                return (
+                    <Text>会员优惠：<Text style={{ color: 'red' }}>-&yen;{order.discountprice}</Text></Text>
+                )
+            }
+            if (order.isdiscountprice > 0) {
+                return (
+                    <Text>促销优惠：<Text style={{ color: 'red' }}>-&yen;{order.isdiscountprice}</Text></Text>
+                )
+            }
+            if (order.deductprice > 0) {
+                return (
+                    <Text>抵扣：<Text style={{ color: 'red' }}>-&yen;{order.deductprice}</Text></Text>
+                )
+            }
+            if (order.deductcredit2 > 0) {
+                return (
+                    <Text>抵扣：<Text style={{ color: 'red' }}>-&yen;{order.deductcredit2}</Text></Text>
+                )
+            }
+            if (order.seckilldiscountprice > 0) {
+                return (
+                    <Text>秒杀优惠：<Text style={{ color: 'red' }}>-&yen;{order.seckilldiscountprice}</Text></Text>
+                )
+            }
+        }
+    }
+
+    renderGoodsList(goods) {
+        let goodsArr = [];
+        for (let j = 0; j < goods.length; j++) {
+            goodsArr.push(
+                <View key={j} style={s.listMid}>
+                    <Image source={{ uri: goods[j].thumb }} style={s.img} />
+                    <View style={s.goods}>
+                        <Text style={s.title} numberOfLines={2}>{goods[j].title}</Text>
+                    </View>
+                    <View style={s.price}>
+                        <Text style={{ color: 'red', fontWeight: 'bold' }}>&yen;{goods[j].price}</Text>
+                        <Text style={{ color: 'red' }}>×{goods[j].total}</Text>
+                    </View>
+                </View>
+            )
+        }
+        return goodsArr;
     }
 
     renderAddress() {
@@ -169,6 +426,12 @@ class OrderDetail extends Component {
 }
 
 const s = StyleSheet.create({
+    load: {position: 'absolute', top: ScreenHeight * 0.5, left: ScreenWidth * 0.5, },
+    modText: {
+        textAlign: 'center',
+        padding: 10
+    },
+    mod: { width: ScreenWidth * 0.6, height: ScreenWidth * 0.4, backgroundColor: '#fff', position: 'absolute', top: ScreenHeight * 0.5 - ScreenWidth * 0.2, left: ScreenWidth * 0.2, borderRadius: 5 },
     name: {
         flexDirection: 'row', justifyContent: 'space-between',
         padding: 15,
@@ -221,6 +484,15 @@ const s = StyleSheet.create({
         paddingBottom: 10,
         paddingRight: 20
     },
+    listSn: {
+        backgroundColor: '#fff',
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingRight: 20,
+        marginTop: 10,
+        paddingLeft: 20,
+        marginBottom: 10,
+    },
     price: {
         flex: 0.5,
         alignItems: 'flex-end',
@@ -270,6 +542,21 @@ const s = StyleSheet.create({
         margin: 5,
         fontSize: 11
     },
+    btnBox: {
+        flexDirection: 'row', backgroundColor: '#fff', justifyContent: 'flex-end', padding: 10, borderTopWidth: 1, borderColor: '#eee'
+    },
+    btnRed: {
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingLeft: 15,
+        paddingRight: 15,
+        borderWidth: 1,
+        borderRadius: 20,
+        borderColor: 'red',
+        margin: 5,
+        color: 'red',
+        fontSize: 11
+    }
 })
 
 export default OrderDetail;
