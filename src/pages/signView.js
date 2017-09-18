@@ -25,7 +25,7 @@ import Select from 'teaset/components/Select/Select';
 import Toast from 'react-native-root-toast';
 import SignIndex from '../component/signIndex';
 import SignRanking from '../component/signRanking';
-import IntegralShop from '../component/integralShop';
+import CreditShop from '../component/creditShop';
 
 class Sign extends Component {
     constructor(props) {
@@ -33,6 +33,7 @@ class Sign extends Component {
         this.state = {
             status: false,
             page: 1,
+            
 
         }
     }
@@ -43,7 +44,7 @@ class Sign extends Component {
         } else if (this.state.page == 2) {
             return <SignRanking {...this.props} />
         } else {
-            return <IntegralShop {...this.props} />
+            return <CreditShop {...this.props} />
         }
     }
     render() {

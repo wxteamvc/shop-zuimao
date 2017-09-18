@@ -79,8 +79,9 @@ export const ADDRESSUPDATE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&
 //确认购买前确认
 export const BEFOREBUY = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.cart.submit';
 //签到排行获取
-export const SIGNRANK =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=sign.getRank';
-
+export const SIGNRANK_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=sign.getRank';
+//签到积分商城请求地址
+export const CREDITSHOP_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=creditshop&mid=3773&app=1';
 
 
 
