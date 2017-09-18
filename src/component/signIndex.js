@@ -1,11 +1,9 @@
 /**
- * 签到页面
+ * 签到首页页面
  * 
  * 
  */
 "use strict";
-
-
 import React, { Component } from 'react';
 import {
     StyleSheet,
@@ -23,6 +21,9 @@ import Util from '../common/util';
 import Loading from '../component/loading';
 import Select from 'teaset/components/Select/Select';
 import Toast from 'react-native-root-toast';
+import { updateMemberInfo } from '../actions/memberAction';
+
+
 
 class SignIndex extends Component {
     constructor(props) {
@@ -55,7 +56,6 @@ class SignIndex extends Component {
                 Util.get(url,
                     (resq) => {
                         if (resq.status == 1) {
-                            console.log(resq)
                             this.setState(Object.assign(this.state, resq.result, { status: 'success', contect: true }))
 
                         } else {
@@ -90,6 +90,7 @@ class SignIndex extends Component {
     componentDidUpdate() {
         this.getSign()
     }
+
 
     changeMonth(item) {
         let { loginData } = this.props;
@@ -147,6 +148,7 @@ class SignIndex extends Component {
                             sum: resq.result.signsum,
                             points: resq.result.credit
                         })
+                    this.props.dispatch(updateMemberInfo({credit1:this.state.points}))                    
                     } else {
                         // console.log(resq)
                         this.setState({
@@ -219,10 +221,6 @@ class SignIndex extends Component {
             if (this.state.status == 'success') {
                 return (
                     <View style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
-                        <StatusBar
-                            translucent={false}
-                            backgroundColor="#000"
-                        />
                         <View style={styles.header}>
                             <View style={[styles.header_item, { flex: 0.3 }]}>
                                 <Text style={[styles.font, { fontSize: 18 }]}>连续签到</Text>

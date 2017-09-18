@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { ScreenWidth, DOMAIN } from '../common/global';
+import Ad from '../component/midAd';
 
 export default class WellChosen extends Component {
 
@@ -78,6 +79,8 @@ export default class WellChosen extends Component {
         }
         return (list2)
     }
+
+    
     renderLogoBanner() {
         if(this.props.category.length!=0){
             var nav = []
@@ -96,22 +99,6 @@ export default class WellChosen extends Component {
         
     }
 
-    renderImg() {
-        if (this.props.ad.length != 0) {
-            return (
-                <View>
-                    <Image
-                        source={{ uri: DOMAIN + this.props.ad[0].thumb }}
-                        style={{ height: 100, width: ScreenWidth }}
-                        resizeMode={'stretch'}
-                    />
-                </View>
-            )
-        } else {
-            return (false)
-        }
-    }
-
     render() {
         if (this.state.isShow) {
             return (
@@ -119,7 +106,7 @@ export default class WellChosen extends Component {
                     <View style={styles.head}>
                         <Text style={styles.head_text}>───── 精选好酒 ─────</Text>
                     </View>
-                    {this.renderImg()}
+                    <Ad ad={this.props.ad} {...this.props}/>
                     <FlatList
                         style={{ backgroundColor: '#fff' }}
                         showsHorizontalScrollIndicator={false}

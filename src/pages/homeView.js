@@ -31,7 +31,7 @@ import Findgoods from '../component/findGoods';
 import Ad from '../component/midAd';
 import Loading from '../component/loading';
 import WellChosen from '../component/WellChosenGoods'
-// import Notices from '../component/notice';
+import Notices from '../component/notice';
 import YouLike from '../component/youlike';
 import AddToCart from '../component/addToCart';
 
@@ -116,12 +116,12 @@ class HomeView extends Component {
             }
             range={400}>
             <Banner banner={advs} {...this.props}/>
-            <Ad ad={topad} />
+            <Ad ad={topad} {...this.props}/>
             <IconList navigation={this.props.navigation} />
-            {/* <Notices notices={notices} {...this.props} /> */}
+            <Notices notices={notices} {...this.props} />
             {istime.length > 0 ? <Rush istime={istime}  {...this.props} /> : false}
             <Findgoods cubes={cubes}  {...this.props}/>
-            <Ad ad={bannersclone} />
+            <Ad ad={bannersclone} {...this.props}/>
             <WellChosen ad={bottomad} recommands={recommands}  {...this.props} category={category} />
             <YouLike youlike={youlike} navigate={this.props.navigation} fun={(item) => this.setState({ goodsInfo: item, showModel: true })} />
           </ScrollViewJumpTop>
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   },
   sreach_text: {
     color: '#fff',
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: 'bold'
   },
   search_mid: {

@@ -22,7 +22,7 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import IconEvil from 'react-native-vector-icons/dist/EvilIcons';
 import Swiper from 'react-native-swiper';
-import { DOMAIN, ScreenWidth, ScreenHeight, StatusBarHeight, GOODINFO_URL, GOODCHATCOUNT_URL, GOODCHATLIST_URL, FOUCS_URL, ADD_CART_URL,BEFOREBUY } from '../common/global';
+import { DOMAIN, ScreenWidth, ScreenHeight, StatusBarHeight, GOODINFO_URL, GOODCHATCOUNT_URL, GOODCHATLIST_URL, FOUCS_URL, ADD_CART_URL, BEFOREBUY } from '../common/global';
 import Util from '../common/util';
 import Loading from '../component/loading';
 import co from 'co';
@@ -30,8 +30,8 @@ import FlatListJumpTop from '../component/flatListJumoTop';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 class GoodsInfo extends Component {
-    constructor(props) {
-        super(props);
+    constructor(...props) {
+        super(...props);
         this.state = {
             status: false,
             chatCountStatus: false,
@@ -75,6 +75,7 @@ class GoodsInfo extends Component {
             .then((resq) => resq.json())
             .then((responseJson) => {
                 if (responseJson.status == 1) {
+                    console.log(responseJson)
                     this.setState({
                         status: 'success',
                         data: responseJson.result.goods_detail,
@@ -139,6 +140,7 @@ class GoodsInfo extends Component {
             .then((resq) => resq.json())
             .then((responseJson) => {
                 if (responseJson.status == 1) {
+                    console.log(responseJson)
                     this.setState({
                         chatCountStatus: 'success',
                         chatCount: responseJson.result
@@ -151,6 +153,9 @@ class GoodsInfo extends Component {
                 }
             })
     }
+
+
+
     componentDidMount() {
         co(this.gen.bind(this)).then(function () {
             console.log('加载完成')
@@ -221,7 +226,7 @@ class GoodsInfo extends Component {
             Toast.show('亲 请先登录哦！', { duration: Toast.durations.SHORT, });
         }
     }
-    
+
     render() {
         if (this.state.status == 'success') {
             return (
@@ -284,24 +289,24 @@ class GoodsInfo extends Component {
                                     style={[{ flex: 1 }, styles.center]}>
                                     <Icon name={'shopping-cart'} size={20} color={'#ccc'} />
                                     <Text style={{ fontSize: 10 }}>购物车</Text>
-                                    {this.state.cartCount > 0 ? <View
+                                    {/* {this.state.cartCount > 0 ? <View
                                         style={[styles.center, styles.bottomCarIcon]}
                                     ><Text style={styles.bottomCarIconText}>{this.state.cartCount}</Text>
-                                    </View> : false}
+                                    </View> : false} */}
                                 </TouchableOpacity>
                             </View>
                             <TouchableOpacity
-                                onPress={() => {
-                                    this.addCart()
-                                }}
+                                onPress={() => { this.addCart() }}
                                 style={[styles.bottomCar, styles.center]}>
                                 <Text style={styles.bottomText}>加入购物车</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={
-                                    this.props.loginData.status == 'success' ?
-                                        () => { this.props.navigation.navigate('OrderCreateView', { data: this.state.data.goods, goodsNum: this.state.goodsNum }) } :
-                                        Toast.show('亲 请先登录哦！', { duration: Toast.durations.SHORT, })
+                                    () => {
+                                        this.props.loginData.status == 'success' ?
+                                            this.props.navigation.navigate('OrderCreateView', { data: this.state.data.goods, goodsNum: this.state.goodsNum }) :
+                                            Toast.show('亲 请先登录哦！', { duration: Toast.durations.SHORT, })
+                                    }
                                 }
                                 style={[styles.bottomBuy, styles.center]}>
                                 <Text style={styles.bottomText}>立即购买</Text>
@@ -1065,7 +1070,7 @@ const styles = StyleSheet.create({
         flex: 0.3, backgroundColor: '#FE9402', height: 50
     },
     bottomCarIcon: {
-        paddingLeft: 4, paddingRight: 4, borderRadius: 10, position: 'absolute', top: 0, left: 30, borderColor: 'red', borderWidth: 0.7
+        paddingLeft: 4, paddingRight: 4, borderRadius: 10, position: 'absolute', top: 0, left: 30, borderColor: 'red', borderWidth: 0.7,backgroundColor:'#fff'
     },
     bottomCarIconText: {
         color: 'red', fontSize: 10
@@ -1202,8 +1207,8 @@ const styles = StyleSheet.create({
     ImageViewerHead: {
         backgroundColor: '#fff', opacity: 0.7, height: 30, flexDirection: 'row',
     },
-    rightsText:{
-        marginLeft: 5,fontSize:12
+    rightsText: {
+        marginLeft: 5, fontSize: 12
     }
 
 

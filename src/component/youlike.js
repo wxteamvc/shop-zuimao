@@ -36,7 +36,8 @@ export default class YouLike extends Component {
                     </View>
                     <View style={styles.item_price_container}>
                         <Text style={styles.item_price}>&yen; {item.marketprice}</Text>
-                        <Text style={styles.item_oldprice}> {item.productprice == 0 ? null : '￥' + item.productprice}</Text>
+                         {item.productprice == 0 ? false :
+                          <Text style={styles.item_oldprice}>&yen; {item.productprice}</Text>}
                     </View>
                 </View>
                 <TouchableOpacity style={styles.buy_car} onPress={() => { fun(item) }}>
