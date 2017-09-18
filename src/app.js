@@ -31,6 +31,8 @@ import OrderList from './pages/orderListView';
 import Express from './pages/expressView';
 import Sign from './pages/signView';
 import OrderDetail from './pages/orderDetailView';
+import Scanner from './component/scanner';
+
 
 const App = StackNavigator({
     HomeTab: {
@@ -191,6 +193,9 @@ const App = StackNavigator({
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
         }),
+    },
+    Scanner:{
+        screen: Scanner,
     }
 });
 
