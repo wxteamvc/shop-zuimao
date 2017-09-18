@@ -165,3 +165,5 @@ export const EXPRESS_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=orde
 export const ORDERFINISH_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.op.finish';
 //订单详情
 export const ORDERDETAIL_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.detail';
+//订单详情
+export const COMMENT_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.comment';
