@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyDialogStyle" parent="@style/Base.V7.Theme.AppCompat.Light.Dialog">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">#dc143c</item>
+
+        <!-- Used for the title and text -->
+        <item name="android:textColorPrimary">#1e90ff</item>
+
+        <!-- Used for the background -->
+        <item name="android:background">#ffffff</item>
+    </style>
+</resources>
