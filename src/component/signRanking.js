@@ -4,7 +4,7 @@
  * 
  */
 "use strict"
-import React, { Component,PureComponent } from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
@@ -13,12 +13,43 @@ import {
     Image,
     TouchableOpacity,
 } from 'react-native';
-import { ScreenWidth, SIGNRANK } from '../common/global';
+import { ScreenWidth, SIGNRANK_URL } from '../common/global';
 import Util from '../common/util';
 import { connect } from 'react-redux';
 import Loading from '../component/loading';
 import FlatListJumpTop from '../component/flatListJumoTop';
 
+class RankItem extends React.PureComponent {
+    render() {
+        let { item, index } = this.props.item
+        let url = null;
+        if (item.avatar) {
+            url = { uri: item.avatar }
+        } else {
+            url = require('../assets/images/header.jpg')
+        }
+        return (
+            <View style={[styles.rowCenter, { padding: 10, borderColor: '#ccc', borderBottomWidth: 0.7 }]}>
+                <View style={[styles.center, { flex: 0.15, }]}>
+                    <Image
+                        style={{ height: 60, width: 60, borderRadius: 30, }}
+                        source={url}
+                    />
+                    <View style={styles.rankIcon}>
+                        <Text style={{ fontSize: 12, color: '#fff', }}>{index + 1}</Text>
+                    </View>
+                </View>
+                <View style={{ flex: 0.85, justifyContent: 'center', paddingLeft: 20 }}>
+                    <Text style={{ color: '#000' }}>{item.nickname}</Text>
+                    <Text style={{ fontSize: 12, marginTop: 5 }}>{this.props.type == 'orderday' ?
+                        '当前连续签到' + item.order + '天' :
+                        '当前总签到' + item.sum + '天'
+                    }</Text>
+                </View>
+            </View>
+        )
+    }
+}
 
 class SigngRanking extends Component {
     constructor(props) {
@@ -29,6 +60,7 @@ class SigngRanking extends Component {
             type: 'orderday',
             list: [],
             page: 1,
+            infoStatus: 'more',
         }
     }
 
@@ -42,26 +74,36 @@ class SigngRanking extends Component {
         }
     }
 
+    jumpToTop = (myFlatListJumpTop) => {
+        if (!this.FlatListJumpTop) this.FlatListJumpTop = myFlatListJumpTop;
+    }
+
     getRank(isAdd = 0) {
         let { loginData } = this.props;
         let token = '';
         for (let key in loginData.data.result.token) {
             token = '&' + key + '=' + loginData.data.result.token[key]
         }
-        let url = SIGNRANK + '&type=' + this.state.type + '&page=' + this.state.page + '&_=' + Math.round(new Date().getTime() / 1000) + token;
+        let url = SIGNRANK_URL + '&type=' + this.state.type + '&page=' + this.state.page + '&_=' + Math.round(new Date().getTime() / 1000) + token;
         if (global.isConnected) {
             Util.get(url,
                 (resq) => {
                     if (resq.status == 1) {
-                        if (isAdd) {
-                            this.setState({
-                                status: 'success',
-                                list: this.state.list.concat(resq.result.list),
-                            })
+                        if (resq.result.list.length > 0) {
+                            if (isAdd) {
+                                this.setState({
+                                    status: 'success',
+                                    list: this.state.list.concat(resq.result.list),
+                                })
+                            } else {
+                                this.setState({
+                                    status: 'success',
+                                    list: resq.result.list,
+                                })
+                            }
                         } else {
                             this.setState({
-                                status: 'success',
-                                list: resq.result.list,
+                                infoStatus: 'nomore'
                             })
                         }
                     } else {
@@ -85,32 +127,9 @@ class SigngRanking extends Component {
         }
     }
 
-    renderRankList({ item, index }) {
-        let url = null;
-        if (item.avatar) {
-            url = { uri: item.avatar }
-        } else {
-            url = require('../assets/images/header.jpg')
-        }
+    renderRankList = (item) => {
         return (
-            <View style={[styles.rowCenter, { padding: 10, borderColor: '#ccc', borderBottomWidth: 0.7 }]}>
-                <View style={[styles.center, { flex: 0.15, }]}>
-                    <Image
-                        style={{ height: 60, width: 60, borderRadius: 30, }}
-                        source={url}
-                    />
-                    <View style={styles.rankIcon}>
-                        <Text style={{ fontSize: 12, color: '#fff', }}>{index + 1}</Text>
-                    </View>
-                </View>
-                <View style={{ flex: 0.85, justifyContent: 'center', paddingLeft: 20 }}>
-                    <Text style={{ color: '#000' }}>{item.nickname}</Text>
-                    <Text style={{ fontSize: 12, marginTop: 5 }}>{this.state.type == 'orderday' ?
-                        '当前连续签到' + item.order + '天' :
-                        '当前总签到' + item.sum + '天'
-                    }</Text>
-                </View>
-            </View>
+            <RankItem item={item} type={this.state.type} />
         )
     }
 
@@ -123,40 +142,44 @@ class SigngRanking extends Component {
                     <View style={styles.topNav}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.setState({ type: 'orderday', page: 1 })
+                                this.setState({ type: 'orderday', page: 1,infoStatus:'more' })
+                                this.FlatListJumpTop.scrollToIndex({ viewPosition: 0, index: 0 })
                             }}
                             style={[styles.center, { borderColor: this.state.type == 'orderday' ? '#24B2F4' : '#ccc', borderBottomWidth: this.state.type == 'orderday' ? 2 : 1 }]}>
                             <Text style={{ color: this.state.type == 'orderday' ? '#24B2F4' : '#ccc', fontSize: 16 }}>连续签到排行</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                this.setState({ type: 'sum', page: 1 })
+                                this.setState({ type: 'sum', page: 1,infoStatus:'more' })
+                                this.FlatListJumpTop.scrollToIndex({ viewPosition: 0, index: 0 })
                             }}
                             style={[styles.center, { borderColor: this.state.type == 'sum' ? '#24B2F4' : '#ccc', borderBottomWidth: this.state.type == 'sum' ? 2 : 1 }]}>
                             <Text style={{ color: this.state.type == 'sum' ? '#24B2F4' : '#ccc', fontSize: 16 }}>总签到排行</Text>
                         </TouchableOpacity>
                     </View>
                     <FlatListJumpTop
-                        style={{ flex: 1, backgroundColor: '#fff', marginTop: 10 }}
+                        jumpToTop={this.jumpToTop}
+                        style={{ flex: 1, backgroundColor: '#fff' }}
                         data={this.state.list}
                         keyExtractor={(item, index) => index}
-                        renderItem={this.renderRankList.bind(this)}
+                        renderItem={this.renderRankList}
                         showsVerticalScrollIndicator={false}
                         onEndReachedThreshold={0.5}
                         onEndReached={
-                            () => {
-                                this.setState({
-                                    page: ++this.state.page
-                                })
-                                this.getRank(1)
-                            }}
-                    //ListFooterComponent={
-                    // <View style={[{ flex: 1, paddingBottom: 15, paddingTop: 15 }, styles.center]}>
-                    //  <Text>亲~没有更多了哦</Text>
-                    // </View>
-                    //  }
-
-
+                            this.state.infoStatus == 'nomore' ? false :
+                                () => {
+                                    this.setState({
+                                        page: ++this.state.page
+                                    })
+                                    this.getRank(1)
+                                }
+                        }
+                        ListFooterComponent={
+                            this.state.infoStatus == 'nomore' ? 
+                                <View style={[{ flex: 1, paddingBottom: 15, paddingTop: 15 }, styles.center]}>
+                                    <Text>亲~没有更多了哦</Text>
+                                </View>:false
+                        }
                     />
                 </View>
             )
@@ -167,41 +190,11 @@ class SigngRanking extends Component {
                 </View>
             )
         }
-
     }
 }
 
 
-// class Rank extends PureComponent{
-//     render(){
-//         let url = null;
-//         if (item.avatar) {
-//             url = { uri: item.avatar }
-//         } else {
-//             url = require('../assets/images/header.jpg')
-//         }
-//         return (
-//             <View style={[styles.rowCenter, { padding: 10, borderColor: '#ccc', borderBottomWidth: 0.7 }]}>
-//                 <View style={[styles.center, { flex: 0.15, }]}>
-//                     <Image
-//                         style={{ height: 60, width: 60, borderRadius: 30, }}
-//                         source={url}
-//                     />
-//                     <View style={styles.rankIcon}>
-//                         <Text style={{ fontSize: 12, color: '#fff', }}>{index + 1}</Text>
-//                     </View>
-//                 </View>
-//                 <View style={{ flex: 0.85, justifyContent: 'center', paddingLeft: 20 }}>
-//                     <Text style={{ color: '#000' }}>{item.nickname}</Text>
-//                     <Text style={{ fontSize: 12, marginTop: 5 }}>{this.state.type == 'orderday' ?
-//                         '当前连续签到' + item.order + '天' :
-//                         '当前总签到' + item.sum + '天'
-//                     }</Text>
-//                 </View>
-//             </View>
-//         )
-//     }
-// }
+
 
 const styles = StyleSheet.create({
     // 居中

@@ -26,6 +26,11 @@ export default class FlatListJumpTop extends Component {
         this.backgroundColor = this.props.color ? this.props.color : '#000';
     }
 
+    componentDidMount(){
+        if(this.props.jumpToTop){
+            this.props.jumpToTop(this.FlatList)
+        }   
+    }
 
     //滚动条监听事件
     showJumpTop(e) {

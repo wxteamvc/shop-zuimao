@@ -15,14 +15,14 @@ import {
     Image,
     StatusBar,
 } from 'react-native';
-
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Util from '../common/util';
 import Loading from '../component/loading';
 import FlatListJumoTop from '../component/flatListJumoTop'
 import { SIGNRECORD_URL, ScreenHeight } from '../common/global'
 
-export default class SignRecord extends Component {
+class SignRecord extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -39,7 +39,12 @@ export default class SignRecord extends Component {
     }
 
     getRecord() {
-        let url = SIGNRECORD_URL + '&page=' + this.state.page + '&_=' + Math.round(new Date().getTime()/1000) + '&__ice_shop_member_session_1=eyJpZCI6IjM3NzMiLCJvcGVuaWQiOiJ3YXBfdXNlcl8xXzE1MTkwMzE0NzUyIiwibW9iaWxlIjoiMTUxOTAzMTQ3NTIiLCJwd2QiOiJmODA4ZWIwMzBiNzhlM2JjYjBkZmFjNTE5NWI1M2NkNSIsInNhbHQiOiJINllZT0JINFdiUVJGcGY2IiwiaWNlX3Nob3BfbWVtYmVyX2hhc2giOiI3Y2I4ODNjZjRiMjYxOGYyM2E1ZmEwY2RkZjhiODUwNCJ9'
+        let { loginData } = this.props;
+        let token='';
+        for(let key in loginData.data.result.token){
+           token = '&'+key+'='+loginData.data.result.token[key]
+        };
+        let url = SIGNRECORD_URL + '&page=' + this.state.page + '&_=' + Math.round(new Date().getTime()/1000) + token
         if (global.isConnected) {
             Util.get(url,
                 (resq) => {
@@ -170,3 +175,11 @@ const styles = StyleSheet.create({
         borderColor: '#ccc'
     },
 })
+
+function mapStateToProps(state) {
+    return {
+        loginData: state.loginReducer,
+    }
+}
+
+export default connect(mapStateToProps)(SignRecord);
