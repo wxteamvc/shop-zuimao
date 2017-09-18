@@ -31,6 +31,9 @@ import OrderList from './pages/orderListView';
 import Express from './pages/expressView';
 import Sign from './pages/signView';
 import OrderDetail from './pages/orderDetailView';
+import Scanner from './component/scanner';
+import Comment from './pages/commentView';
+
 
 const App = StackNavigator({
     HomeTab: {
@@ -191,6 +194,17 @@ const App = StackNavigator({
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
         }),
+    },
+Comment:{
+        screen: Comment,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '评论',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
+        }),
+    },
+    Scanner:{
+        screen: Scanner,
     }
 });
 

@@ -8,7 +8,7 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-nati
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import IconT from 'react-native-vector-icons/dist/Foundation';
-import { memberInfo, loginOut,updateMemberInfo } from '../actions/memberAction';
+import { memberInfo, loginOut, updateMemberInfo } from '../actions/memberAction';
 import { ScreenWidth } from '../common/global';
 import { fontSizeScaler as fs } from '../common/global';
 import Toast from 'react-native-root-toast';
@@ -148,25 +148,25 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomList}>
-            <TouchableOpacity onPress={() => islogin ? null : this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('OrderList', { search: { status: 4 } }) : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="plug" size={30} color={'#aaa'} />
                 <Text style={styles.fontS}>退换货</Text>
               </View>
             </TouchableOpacity>
           </View>
-          {islogin?this.renderOrderIcon(0, member.order_0):null}
-          {islogin?this.renderOrderIcon(1, member.order_1):null}
-          {islogin?this.renderOrderIcon(2, member.order_2):null}
-          {islogin?this.renderOrderIcon(4, member.order_4):null}
-          
+          {islogin ? this.renderOrderIcon(0, member.order_0) : null}
+          {islogin ? this.renderOrderIcon(1, member.order_1) : null}
+          {islogin ? this.renderOrderIcon(2, member.order_2) : null}
+          {islogin ? this.renderOrderIcon(4, member.order_4) : null}
+
         </View>
       </View>
     )
   }
 
   renderOrderIcon(type, num) {
-    if(num!=0 && num!='' && num!=undefined){
+    if (num != 0 && num != '' && num != undefined) {
       return (
         <Text style={[styles.fontIcon, { left: ScreenWidth * 0.5 / 4 + ScreenWidth / 4 * type + 10 }]}>{num}</Text>
       )
