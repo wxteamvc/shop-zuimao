@@ -1,5 +1,5 @@
 /**
- * 物流信息
+ * 订单详情
  */
 
 "use strict";
@@ -245,7 +245,7 @@ class OrderDetail extends Component {
                         <TouchableOpacity onPress={() => this._delete(oid)}>
                             <Text style={s.btn}>删除订单</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>this._comment(oid)}>
                             <Text style={s.btnRed}>评价</Text>
                         </TouchableOpacity>
                     </View>
@@ -254,6 +254,10 @@ class OrderDetail extends Component {
             default:
                 break;
         }
+    }
+
+    _comment(oid){
+        this.props.navigation.navigate('Comment', { id: oid, token: this.props.token })
     }
 
     renderGoods() {

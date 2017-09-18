@@ -14,30 +14,53 @@ import Util from '../common/util';
 import { ScreenWidth, ScreenHeight, ORDERDELETE_URL, ORDERCANCEL_URL, ORDERFINISH_URL } from '../common/global';
 import Toast from 'react-native-root-toast';
 import { memberInfo } from '../actions/memberAction';
+import Loading from '../component/loading';
 
 class OrderList extends Component {
+
+    static navigationOptions = ({ navigation, screenProps }) => ({
+        headerTitle: '我的订单',
+        headerTitleStyle: { alignSelf: 'center' },
+        headerRight: <Text style={{ marginRight: 20, color: navigation.state.params.headerRightColor }} onPress={() => navigation.state.params.huishou()}>回收站</Text>
+    });
 
     constructor(...props) {
         super(...props);
         this.state = {
             search: {
                 page: 1,
-                status: '',//空为所有，0为待付款，1为待发货，2为待收货，3为已完成
+                status: '',//空为所有，0为待付款，1为待发货，2为待收货，3为已完成,4为退换货，5为回收站
                 merchid: 0,
                 _: Math.round(new Date().getTime()),
             },
             showMod: false,
             oid: null,
-            showActivityIndicator:false,
+            showActivityIndicator: false,
         }
     }
 
+    _huishou() {
+        this.props.navigation.setParams({ headerRightColor: 'red' })
+        this.setState(Object.assign(
+            this.state.search, { status: 5 }
+        ))
+        let token = this.props.loginData.data.result.token;
+        this.props.dispatch(orderList(Object.assign({}, this.state.search, token)));
+    }
+
     componentDidMount() {
+        /**  
+         * 将单击回调函数作为参数传递  
+         */
+        this.props.navigation.setParams({
+            huishou: () => this._huishou()
+        });
+
         this.setState(Object.assign(
             this.state.search, this.props.navigation.state.params.search
         ))
         let token = this.props.loginData.data.result.token;
-        this.props.dispatch(orderList(Object.assign(this.state.search, token)));
+        this.props.dispatch(orderList(Object.assign({}, this.state.search, token)));
     }
 
     componentWillUnmount() {
@@ -60,16 +83,16 @@ class OrderList extends Component {
         )
     }
 
-    renderActivityIndicator(){
+    renderActivityIndicator() {
         return (
             <Modal
                 animationType={"fade"}
                 transparent={true}
                 visible={this.state.showActivityIndicator}
-                onRequestClose={()=>null}
+                onRequestClose={() => null}
             >
                 <Text style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' }}></Text>
-                <ActivityIndicator style={s.load} color={'#fff'}/>
+                <ActivityIndicator style={s.load} color={'#fff'} />
             </Modal>
         )
     }
@@ -114,7 +137,7 @@ class OrderList extends Component {
                 text: '确定', onPress: () => {
                     this.setState({
                         showMod: false,
-                        showActivityIndicator:true,
+                        showActivityIndicator: true,
                     })
                     let token = this.props.loginData.data.result.token;
                     this._cancel(ORDERCANCEL_URL, Object.assign({}, token, { id: this.state.oid, remark: text }), token)
@@ -124,59 +147,80 @@ class OrderList extends Component {
     }
 
     renderTab() {
-        return (
-            <View>
-                <View style={s.tabBox}>
-                    <Text onPress={() => this._setTab('')} style={[s.tabText, this.state.search.status === '' ? s.tabTextRed : null]}>全部</Text>
-                    <Text onPress={() => this._setTab(0)} style={[s.tabText, this.state.search.status === 0 ? s.tabTextRed : null]}>待付款</Text>
-                    <Text onPress={() => this._setTab(1)} style={[s.tabText, this.state.search.status === 1 ? s.tabTextRed : null]}>待发货</Text>
-                    <Text onPress={() => this._setTab(2)} style={[s.tabText, this.state.search.status === 2 ? s.tabTextRed : null]}>待收货</Text>
-                    <Text onPress={() => this._setTab(3)} style={[s.tabText, this.state.search.status === 3 ? s.tabTextRed : null]}>已完成</Text>
+        if (this.state.search.status !== 4) {
+            return (
+                <View>
+                    <View style={s.tabBox}>
+                        <Text onPress={() => this._setTab('')} style={[s.tabText, this.state.search.status === '' ? s.tabTextRed : null]}>全部</Text>
+                        <Text onPress={() => this._setTab(0)} style={[s.tabText, this.state.search.status === 0 ? s.tabTextRed : null]}>待付款</Text>
+                        <Text onPress={() => this._setTab(1)} style={[s.tabText, this.state.search.status === 1 ? s.tabTextRed : null]}>待发货</Text>
+                        <Text onPress={() => this._setTab(2)} style={[s.tabText, this.state.search.status === 2 ? s.tabTextRed : null]}>待收货</Text>
+                        <Text onPress={() => this._setTab(3)} style={[s.tabText, this.state.search.status === 3 ? s.tabTextRed : null]}>已完成</Text>
+                    </View>
                 </View>
-            </View>
-        )
+            )
+        } else {
+            return (
+                <View>
+                    <View style={s.tabBox}>
+                        <Text onPress={() => this._setTab(4)} style={[s.tabText, this.state.search.status === 4 ? s.tabTextRed : null]}>退换货</Text>
+                    </View>
+                </View>
+            )
+        }
+
     }
 
     renderList() {
         if (this.props.orderListData.status == 'success') {
             let list = this.props.orderListData.list;
             let token = this.props.loginData.data.result.token;
-            return (
-                <FlatListJumoTop
-                    keyExtractor={(item, index) => index}
-                    data={list}
-                    renderItem={({ item }) => <MyListItem item={item} token={token} navigation={this.props.navigation} dispatch={this.props.dispatch} search={this.state.search} show={(id) => {
-                        this.setState({
-                            showMod: true,
-                            oid: id
-                        })
-                    }} 
-                    loading={()=>this.setState({showActivityIndicator:true})}
-                    loaded={()=>this.setState({showActivityIndicator:false})}/>}
-                    onEndReached={() => {
-                        list.length < this.props.orderListData.total ?
-                            this.props.dispatch(orderList(
-                                Object.assign(
-                                    this.state.search,
-                                    { page: ++this.state.search.page },
-                                    token
-                                )
-                            )) : null;
-                    }}
-                    onEndReachedThreshold={list.length > 4 ? 0.2 : 1}
-                    ListFooterComponent={() => list.length < this.props.orderListData.total ? <ActivityIndicator size={40}></ActivityIndicator> : <Text style={{ textAlign: 'center' }}>DUANG~已经到底了哦</Text>
-                    }
-                    showsVerticalScrollIndicator={false}
-                />
-            );
+            if (list.length == 0) {
+                return (
+                    <View style={{marginTop:ScreenHeight*0.3,alignItems:'center'}}>
+                        <Icon name="frown-o" size={60} />
+                        <Text>暂时没有订单</Text>
+                    </View>
+                );
+            } else {
+                return (
+                    <FlatListJumoTop
+                        keyExtractor={(item, index) => index}
+                        data={list}
+                        renderItem={({ item }) => <MyListItem item={item} token={token} navigation={this.props.navigation} dispatch={this.props.dispatch} search={this.state.search} show={(id) => {
+                            this.setState({
+                                showMod: true,
+                                oid: id
+                            })
+                        }}
+                            loading={() => this.setState({ showActivityIndicator: true })}
+                            loaded={() => this.setState({ showActivityIndicator: false })} />}
+                        onEndReached={() => {
+                            list.length < this.props.orderListData.total ?
+                                this.props.dispatch(orderList(
+                                    Object.assign(
+                                        this.state.search,
+                                        { page: ++this.state.search.page },
+                                        token
+                                    )
+                                )) : null;
+                        }}
+                        onEndReachedThreshold={list.length > 4 ? 0.2 : 1}
+                        ListFooterComponent={() => list.length < this.props.orderListData.total ? <ActivityIndicator size={40}></ActivityIndicator> : null
+                        }
+                        showsVerticalScrollIndicator={false}
+                    />
+                );
+            }
         } else {
-            return false;
+            return (<Loading/>);
         }
 
     }
 
     _setTab(type) {
         if (this.state.search.status !== type) {
+            this.props.navigation.setParams({ headerRightColor: null })
             this.setState({
                 search: {
                     ...this.state.search,
@@ -193,7 +237,7 @@ class OrderList extends Component {
         Util.post(url, params,
             (responseJson) => {
                 this.setState({
-                    showActivityIndicator:false,
+                    showActivityIndicator: false,
                 })
                 if (responseJson.status == 1) {
                     this.props.dispatch(orderList(Object.assign({}, this.state.search, token)));
@@ -204,7 +248,7 @@ class OrderList extends Component {
             },
             (error) => {
                 this.setState({
-                    showActivityIndicator:false,
+                    showActivityIndicator: false,
                 })
                 Toast.show('服务器请求失败！');
             },
@@ -229,7 +273,7 @@ class MyListItem extends React.PureComponent {
                     <Text style={{ flex: 9 }}>{item.merchname}&nbsp;&nbsp;<Icon name="angle-right" size={20} /></Text>
                     <Text style={{ flex: 2, color: '#FFAA25' }}>{item.statusstr}</Text>
                 </View>
-                {this.renderGoods(item.goods[0].goods,item.id)}
+                {this.renderGoods(item.goods[0].goods, item.id)}
                 <View style={s.listBottom}>
                     <Text style={{ fontSize: 11 }}>共<Text style={{ color: 'red' }}>{item.goods_num}</Text>件商品&nbsp;合计：<Text style={{ color: 'red' }}>&yen;{item.price}</Text></Text>
                     {this.renderbtns(item.status, item.id)}
@@ -239,16 +283,26 @@ class MyListItem extends React.PureComponent {
     }
 
     renderbtns(status, oid) {
-        let { show } = this.props;
+        let { show, search } = this.props;
         switch (status) {
             case '-1':
-                return (
-                    <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity onPress={() => this._delete(oid)}>
-                            <Text style={s.btn}>删除订单</Text>
-                        </TouchableOpacity>
-                    </View>
-                );
+                if (search.status !== 5) {
+                    return (
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity onPress={() => this._delete(oid)}>
+                                <Text style={s.btn}>删除订单</Text>
+                            </TouchableOpacity>
+                        </View>
+                    );
+                } else {
+                    return (
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity onPress={() => this._deleteSure(oid)}>
+                                <Text style={s.btn}>彻底删除</Text>
+                            </TouchableOpacity>
+                        </View>
+                    );
+                }
                 break;
             case '0':
                 return (
@@ -277,23 +331,69 @@ class MyListItem extends React.PureComponent {
                 );
                 break;
             case '3':
-                return (
-                    <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity onPress={() => this._delete(oid)}>
-                            <Text style={s.btn}>删除订单</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this._express(oid)}>
-                            <Text style={s.btn}>查看物流</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Text style={s.btnRed}>评价</Text>
-                        </TouchableOpacity>
-                    </View>
-                );
+                if (search.status !== 5) {
+                    return (
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity onPress={() => this._delete(oid)}>
+                                <Text style={s.btn}>删除订单</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => this._express(oid)}>
+                                <Text style={s.btn}>查看物流</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={()=>this._comment(oid)}>
+                                <Text style={s.btnRed}>评价</Text>
+                            </TouchableOpacity>
+                        </View>
+                    );
+                } else {
+                    return (
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity onPress={() => this._deleteSure(oid)}>
+                                <Text style={s.btn}>彻底删除</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => this._recovery(oid)}>
+                                <Text style={s.btn}>恢复订单</Text>
+                            </TouchableOpacity>
+                        </View>
+                    );
+                }
+
                 break;
             default:
                 break;
         }
+    }
+
+    _comment(oid){
+        this.props.navigation.navigate('Comment', { id: oid, token: this.props.token })
+    }
+
+    _recovery(oid) {
+        Alert.alert('温馨提醒', '确定恢复吗?', [
+            { text: '取消' },
+            {
+                text: '确定', onPress: () => {
+                    this.props.loading();
+                    let token = this.props.token;
+                    // userdeleted 为1时放到回收站，为2彻底删除
+                    this._fetch(ORDERDELETE_URL, Object.assign({}, token, { id: oid, userdeleted: 0 }), token)
+                }
+            }
+        ])
+    }
+
+    _deleteSure(oid) {
+        Alert.alert('温馨提醒', '确定彻底删除吗?', [
+            { text: '取消' },
+            {
+                text: '确定', onPress: () => {
+                    this.props.loading();
+                    let token = this.props.token;
+                    // userdeleted 为1时放到回收站，为2彻底删除
+                    this._fetch(ORDERDELETE_URL, Object.assign({}, token, { id: oid, userdeleted: 2 }), token)
+                }
+            }
+        ])
     }
 
     _finish(oid) {
@@ -327,7 +427,7 @@ class MyListItem extends React.PureComponent {
         ])
     }
 
-    renderGoods(goods,oid) {
+    renderGoods(goods, oid) {
         let goodsArr = [];
         for (let j = 0; j < goods.length; j++) {
             goodsArr.push(
@@ -344,14 +444,14 @@ class MyListItem extends React.PureComponent {
             )
         }
         return (
-            <TouchableOpacity onPress={()=>this._orderDetail(oid)}>
+            <TouchableOpacity onPress={() => this._orderDetail(oid)}>
                 {goodsArr}
             </TouchableOpacity>
         );
     }
 
-    _orderDetail(oid){
-        this.props.navigation.navigate('OrderDetail', { id: oid, token: this.props.token, dispatch:this.props.dispatch,search:this.props.search})
+    _orderDetail(oid) {
+        this.props.navigation.navigate('OrderDetail', { id: oid, token: this.props.token, dispatch: this.props.dispatch, search: this.props.search })
     }
 
     _fetch(url, params = {}, token = {}) {
@@ -374,7 +474,7 @@ class MyListItem extends React.PureComponent {
 }
 
 const s = StyleSheet.create({
-    load: {position: 'absolute', top: ScreenHeight * 0.5, left: ScreenWidth * 0.5, },
+    load: { position: 'absolute', top: ScreenHeight * 0.5, left: ScreenWidth * 0.5, },
     modText: {
         textAlign: 'center',
         padding: 10
