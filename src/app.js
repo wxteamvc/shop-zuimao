@@ -5,7 +5,7 @@
 "use strict";
 
 import React, { Component } from 'react';
-import { Text, TouchableOpacity,View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import HomeTab from './pages/homeTab';
 // import SignTab from './pages/signTab';
@@ -47,7 +47,7 @@ const App = StackNavigator({
         navigationOptions: ({ navigation }) => ({
             headerTitle: '积分签到',
             headerTitleStyle: { alignSelf: 'center' },
-            headerRight:<View style={{flex:0.1}}></View>,
+            headerRight: <View style={{ flex: 0.1 }}></View>,
         }),
     },
     SignRecord: {
@@ -55,7 +55,7 @@ const App = StackNavigator({
         navigationOptions: ({ navigation }) => ({
             headerTitle: '详细记录',
             headerTitleStyle: { alignSelf: 'center' },
-            headerRight:<View style={{flex:0.1}}></View>,
+            headerRight: <View style={{ flex: 0.1 }}></View>,
         }),
     },
     Coupons: {
@@ -63,7 +63,7 @@ const App = StackNavigator({
         navigationOptions: ({ navigation }) => ({
             headerTitle: '领券中心',
             headerTitleStyle: { alignSelf: 'center' },
-            headerRight:<View style={{flex:0.1}}></View>,
+            headerRight: <View style={{ flex: 0.1 }}></View>,
         }),
     },
     Login: {
@@ -71,10 +71,10 @@ const App = StackNavigator({
         navigationOptions: ({ navigation }) => ({
             headerTitle: '登录',
             headerTitleStyle: { alignSelf: 'center' },
-            headerRight:  
-                <TouchableOpacity onPress={()=>{navigation.navigate('Register')}}>
-                    <Text style={{marginRight:20,fontWeight:'bold'}}>注册</Text>
-                </TouchableOpacity>
+            headerRight:
+            <TouchableOpacity onPress={() => { navigation.navigate('Register') }}>
+                <Text style={{ marginRight: 20, fontWeight: 'bold' }}>注册</Text>
+            </TouchableOpacity>
         }),
     },
     Register: {
@@ -91,31 +91,31 @@ const App = StackNavigator({
             header: null
         }),
     },
-    GoodsInfo:{
+    GoodsInfo: {
         screen: GoodsInfo,
         navigationOptions: ({ navigation }) => ({
             header: null
         }),
     },
-    IsTime:{
+    IsTime: {
         screen: IsTime,
         navigationOptions: ({ navigation }) => ({
             header: null
         }),
     },
-    IsDiscount:{
+    IsDiscount: {
         screen: IsDiscount,
         navigationOptions: ({ navigation }) => ({
             header: null
         }),
     },
-    Search:{
+    Search: {
         screen: Search,
         navigationOptions: ({ navigation }) => ({
             header: null
         })
-        },
-    Address:{
+    },
+    Address: {
         screen: Address,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '收货地址管理',
@@ -123,7 +123,7 @@ const App = StackNavigator({
             headerRight: <Text></Text>
         }),
     },
-    OrderCreateView:{
+    OrderCreateView: {
         screen: OrderCreateView,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '确认订单',
@@ -131,7 +131,7 @@ const App = StackNavigator({
             headerRight: <Text></Text>
         }),
     },
-    AddressEdit:{
+    AddressEdit: {
         screen: AddressEdit,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '编辑收货地址',
@@ -139,7 +139,7 @@ const App = StackNavigator({
             headerRight: <Text></Text>
         }),
     },
-    AddressAdd:{
+    AddressAdd: {
         screen: AddressAdd,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '新增收货地址',
@@ -147,31 +147,31 @@ const App = StackNavigator({
             headerRight: <Text></Text>
         }),
     },
-    WebView:{
+    WebView: {
         screen: WebView,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '公告',
             headerTitleStyle: { alignSelf: 'center' },
-            headerRight:<View style={{flex:0.1}}></View>,
+            headerRight: <View style={{ flex: 0.1 }}></View>,
         }),
     },
-    Notice:{
+    Notice: {
         screen: Notice,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '热点',
             headerTitleStyle: { alignSelf: 'center' },
-            headerRight:<View style={{flex:0.1}}></View>,
+            headerRight: <View style={{ flex: 0.1 }}></View>,
         }),
     },
-    CouponInfo:{
+    CouponInfo: {
         screen: CouponInfo,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '优惠券详情',
             headerTitleStyle: { alignSelf: 'center' },
-            headerRight:<View style={{flex:0.1}}></View>,
+            headerRight: <View style={{ flex: 0.1 }}></View>,
         }),
     },
-    OrderList:{
+    OrderList: {
         screen: OrderList,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '我的订单',
@@ -179,7 +179,7 @@ const App = StackNavigator({
             headerRight: <Text></Text>
         }),
     },
-    Express:{
+    Express: {
         screen: Express,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '物流信息',
@@ -187,7 +187,7 @@ const App = StackNavigator({
             headerRight: <Text></Text>
         }),
     },
-    OrderDetail:{
+    OrderDetail: {
         screen: OrderDetail,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '订单详情',
@@ -195,7 +195,7 @@ const App = StackNavigator({
             headerRight: <Text></Text>
         }),
     },
-Comment:{
+    Comment: {
         screen: Comment,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '评论',
@@ -203,7 +203,7 @@ Comment:{
             headerRight: <Text></Text>
         }),
     },
-    Scanner:{
+    Scanner: {
         screen: Scanner,
         navigationOptions: ({ navigation }) => ({
             header: null
