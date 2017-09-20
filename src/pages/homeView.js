@@ -16,6 +16,7 @@ import {
   RefreshControl,
   Platform,
   StatusBar,
+  Animated,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { init } from '../actions/initAction'
@@ -59,7 +60,7 @@ class HomeView extends Component {
       showModel: false,            //显示加入购物车模态框
       goodsInfo: null,
       isRefreshing: false,           //加入入购物车商品信息
-      avatarSource: [],
+      avatarSource: [],    
     }
   }
 
@@ -85,6 +86,7 @@ class HomeView extends Component {
 
   componentDidMount() {
     this.props.dispatch(init())
+  
   }
 
   // componentWillReceiveProps() {
@@ -94,58 +96,58 @@ class HomeView extends Component {
   // }
 
   render() {
-    if (this.props.homeData.status == 'success') {
-      let { advs, cubes, banners, recommands, category, notices, istime, youlike } = this.props.homeData.data.result
-      let bannersclone = banners.slice(0);
-      let topad = bannersclone.slice(0, 1);
-      bannersclone.splice(0, 1);
-      let bottomad = bannersclone.slice(-1);
-      bannersclone.splice(-1);
-      return (
-        <View style={styles.container}>
-           <StatusBar
-                        translucent={false}
-                        backgroundColor="#C10001"
-                    />
-          <View style={styles.search_body}>
-            <TouchableOpacity style={styles.serach_leftbtn}
-              onPress={() => { this.props.navigation.navigate('Scanner') }}
-            >
-              <Icon name={'frame'} size={18} color={'#fff'} />
-              <Text style={styles.sreach_text}>扫一扫</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate('Search')
-              }}
-              style={{ flex: 0.7, height: 35, }}>
-              <View style={styles.search_mid}>
-              </View>
-              <View style={styles.seearch_mid_content}>
-                <IconTwo name={'search'}
-                  size={18}
-                  color={'#fff'}
-                  style={{ marginLeft: 10, marginRight: 10 }}
-                />
-                <Text style={{ color: '#fff' }}>
-                  输入您当前要搜索的商品
-                 </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.serach_rightbtn}
-              onPress={() => {
-                this._imagePicker()
-              }}
-            >
-              <Icon name={'bubble'} size={18} color={'#fff'} />
-              <Text style={styles.sreach_text}>消息</Text>
-            </TouchableOpacity>
-          </View>
-          {this.state.avatarSource.length > 0 ?
-            <Image source={{ uri: this.state.avatarSource[0].uri }}
-              style={{ height: 100, width: 100 }}
-            /> : false
-          }
+      if (this.props.homeData.status == 'success') {
+        let { advs, cubes, banners, recommands, category, notices, istime, youlike } = this.props.homeData.data.result
+        let bannersclone = banners.slice(0);
+        let topad = bannersclone.slice(0, 1);
+        bannersclone.splice(0, 1);
+        let bottomad = bannersclone.slice(-1);
+        bannersclone.splice(-1);
+        return (
+          <View style={styles.container}>
+            <StatusBar
+              translucent={false}
+              backgroundColor="#C10001"
+            />
+            <View style={styles.search_body}>
+              <TouchableOpacity style={styles.serach_leftbtn}
+                onPress={() => { this.props.navigation.navigate('Scanner') }}
+              >
+                <Icon name={'frame'} size={18} color={'#fff'} />
+                <Text style={styles.sreach_text}>扫一扫</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate('Search')
+                }}
+                style={{ flex: 0.7, height: 35, }}>
+                <View style={styles.search_mid}>
+                </View>
+                <View style={styles.seearch_mid_content}>
+                  <IconTwo name={'search'}
+                    size={18}
+                    color={'#fff'}
+                    style={{ marginLeft: 10, marginRight: 10 }}
+                  />
+                  <Text style={{ color: '#fff' }}>
+                    输入您当前要搜索的商品
+                             </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.serach_rightbtn}
+                onPress={() => {
+                  this._imagePicker()
+                }}
+              >
+                <Icon name={'bubble'} size={18} color={'#fff'} />
+                <Text style={styles.sreach_text}>消息</Text>
+              </TouchableOpacity>
+            </View>
+            {this.state.avatarSource.length > 0 ?
+              <Image source={{ uri: this.state.avatarSource[0].uri }}
+                style={{ height: 100, width: 100 }}
+              /> : false
+            }
             <ScrollViewJumpTop
               refreshControl={
                 <RefreshControl
@@ -169,25 +171,24 @@ class HomeView extends Component {
               <WellChosen ad={bottomad} recommands={recommands}  {...this.props} category={category} />
               <YouLike youlike={youlike} navigate={this.props.navigation} fun={(item) => this.setState({ goodsInfo: item, showModel: true })} />
             </ScrollViewJumpTop>
-          {this.state.showModel ? <AddToCart goodsInfo={this.state.goodsInfo} showModel={this.state.showModel} hide={() => this.setState({ showModel: false })} statusBarTranslucent={true} /> : null}
-        </View>
+            {this.state.showModel ? <AddToCart goodsInfo={this.state.goodsInfo} showModel={this.state.showModel} hide={() => this.setState({ showModel: false })} statusBarTranslucent={true} /> : null}
+          </View>
 
-      );
-    } else {
-      return (
-        <View style={{ flex: 1 }}>
-          <Loading status={this.props.homeData.status} errmessage={this.props.homeData.errmessage} />
-        </View>
-      )
-    }
-
+        );
+      } else {
+        return (
+          <View style={{ flex: 1 }}>
+            <Loading status={this.props.homeData.status} errmessage={this.props.homeData.errmessage} />
+          </View>
+        )
+      }
   }
 }
 
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     backgroundColor: '#EFEFEF',
   },
   search_body: {

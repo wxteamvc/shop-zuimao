@@ -162,7 +162,8 @@ class SignIndex extends Component {
                         status: 'faild',
                         errmessage: error.message,
                     })
-                })
+                }
+            )
         } else {
             this.setState({
                 status: 'faild',

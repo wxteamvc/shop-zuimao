@@ -94,7 +94,7 @@ class Sign extends Component {
                         >
                             <Text style={{ fontFamily: 'iconfont', fontSize: 30 }}>&#xe613;</Text>
                             <Text style={{ fontSize: 10 }}>
-                                商城首页
+                                首页
                         </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -104,7 +104,7 @@ class Sign extends Component {
                         >
                             <Text style={{ fontFamily: 'iconfont', fontSize: 25 }}>&#xe610;</Text>
                             <Text style={{ fontSize: 10 }}>
-                                会员中心
+                                我的
                         </Text>
                         </TouchableOpacity>
                     </View>
