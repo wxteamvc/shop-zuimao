@@ -22,7 +22,7 @@ import {
 import Toast from 'react-native-root-toast';
 import { QRScannerView } from 'ac-qrcode';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 export default class Scanner extends Component {
     constructor(...props) {
         super(...props)
@@ -34,6 +34,7 @@ export default class Scanner extends Component {
             rectWidth: 200,
             rectHeight: 200,
             isShowScanBar:true,
+            torchMode:false,
         }
     }
 
@@ -52,7 +53,7 @@ export default class Scanner extends Component {
                         rectWidth={this.state.rectWidth}
                         rectHeight={this.state.rectHeight}
                         isShowScanBar={this.state.isShowScanBar}
-                        torchMode={true}
+                        torchMode={this.state.torchMode}
                          />
                 </View>
             )
@@ -121,14 +122,36 @@ export default class Scanner extends Component {
                         <Text style={{ fontSize: 16, color: this.state.type == 'barcode' ? '#fff' : '#000' }}> 扫条码 </Text>
                     </TouchableOpacity>
                 </View>
-                <View style={{ flex: 0.15 }}></View>
+                <View style={{ flex: 0.15 }}>
+
+                </View>
             </View>
         );
     }
 
     _renderMenu() {
         return (
-            false
+            <View style={{flex:1,flexDirection: 'row'}}>
+                <View style={[styles.center,{flex:1}]}>
+                    <TouchableOpacity
+                        style={[styles.center,{height:50,width:50,backgroundColor:this.state.torchMode?"#a9a9a9":"transparent",borderRadius:25,borderWidth:1,borderColor:"#fff"}]}
+                        onPress={()=>{
+                            this.setState({
+                                torchMode:!this.state.torchMode,
+                            })
+                        }}
+                    >
+                        <Ionicons name={'ios-bulb'} color={"#fff"} size={30} />
+                    </TouchableOpacity>
+                </View>
+                <View style={[styles.center,{flex:1}]}>
+                   <TouchableOpacity
+                        style={[styles.center,{height:50,width:50,backgroundColor:"transparent",borderRadius:25,borderWidth:1,borderColor:"#fff"}]}
+                    >
+                        <Ionicons name={'ios-image'} color={"#fff"} size={30} />
+                    </TouchableOpacity>                        
+                </View>
+            </View>      
         )
     }
 
