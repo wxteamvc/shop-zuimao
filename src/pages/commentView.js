@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, StatusBar, TouchableOpacity, TextInput, Platform } from 'react-native';
-import { ScreenWidth, ScreenHeight, COMMENT_URL } from '../common/global';
+import { ScreenWidth, ScreenHeight, COMMENT_URL, UPLOADER_URL, COMMENTSSUB_URL } from '../common/global';
 import Util from '../common/util';
 import Toast from 'react-native-root-toast';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -28,13 +28,20 @@ var options = {
 
 class Comment extends Component {
 
+    static navigationOptions = ({ navigation, screenProps }) => ({
+        headerTitle: navigation.state.params.title,
+        headerTitleStyle: { alignSelf: 'center' },
+        headerRight: <Text></Text>
+    });
+
     constructor(...props) {
         super(...props);
         this.state = {
             commentData: '',
             avatarSource: [],
-            comments:{},
+            comments: {},
         }
+        this.comments = [];
     }
 
     componentWillMount() {
@@ -62,9 +69,6 @@ class Comment extends Component {
 
     render() {
         if (this.state.commentData != '') {
-            console.log('====================================');
-            console.log(this.state.comments);
-            console.log('====================================');
             return (
                 <View style={{ flex: 1 }}>
                     <StatusBar
@@ -75,7 +79,7 @@ class Comment extends Component {
                         {this.renderGoods()}
                     </ScrollView>
                     <View style={s.btnBox}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => this._commetSub()}>
                             <Text style={s.btn}>确认评价</Text>
                         </TouchableOpacity>
                     </View>
@@ -87,24 +91,70 @@ class Comment extends Component {
 
     }
 
+    _commetSub() {
+        let params = '';
+        for (let k in this.comments) {
+            params += '&comments[' + k + '][goodsid]=' + this.comments[k].goodsid;
+            if (this.comments[k].level != undefined && this.comments[k].level != '' && this.comments[k].level != null) {
+                params += '&comments[' + k + '][level]=' + this.comments[k].level;
+            }
+            if (this.comments[k].content != undefined && this.comments[k].content != '' && this.comments[k].content != null) {
+                params += '&comments[' + k + '][content]=' + this.comments[k].content;
+            }
+            if (this.comments[k].images != undefined && this.comments[k].images != '' && this.comments[k].images != null) {
+                for (let a in this.comments[k].images) {
+                    params += '&comments[' + k + '][images][]=' + this.comments[k].images[a].uri;
+                }
+            }
+        }
+        let token = this.props.navigation.state.params.token;
+        let key, value;
+        for (let i in token) {
+            key = i;
+            value = token[key]
+        }
+        params += '&orderid=' + this.props.navigation.state.params.id + '&' + key + '=' + value;
+        fetch(COMMENTSSUB_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: params,
+        })
+            .then(response => response.json())
+            .then(responseJson => {
+                if (responseJson.status == 1) {
+                    Toast.show('评论成功');
+                    this.props.navigation.goBack();
+                } else {
+                    Toast.show(responseJson.result.message);
+                }
+            })
+            .catch((error) => {
+                Toast.show('服务器请求失败');
+            });
+    }
+
     renderGoods() {
         let goods = this.state.commentData.goods;
         let goodsArr = [];
         for (let i = 0; i < goods.length; i++) {
+            this.comments[i] = Object.assign({}, this.comments[i], { goodsid: goods[i].id });
             goodsArr.push(
-                <View key={i} style={{marginTop:10}}>
+                <View key={i} style={{ marginTop: 10 }}>
                     <View style={s.top}>
                         <Image source={{ uri: goods[i].thumb }} style={{ width: 50, height: 50, marginRight: 20 }} />
-                        {this.renderStar(goods[i].id)}
+                        {this.renderStar(i)}
                     </View>
                     <View style={s.centet}>
                         <TextInput
                             style={{ textAlignVertical: 'top' }}
                             numberOfLines={5}
                             onChangeText={(text) => {
-                                this.setState({
-                                    comment:Object.assign({},this.state.comments[i],{content:text})
-                                })
+                                this.comments[i] = Object.assign({}, this.comments[i], { content: text })
+                                {/* this.setState({
+                                    comments: this.comments
+                                }) */}
                             }}
                             multiline={true}
                             placeholder='宝贝满足您的期待吗？说说它的有点和美中不足的地方吧'
@@ -112,45 +162,18 @@ class Comment extends Component {
                         />
                     </View>
                     <View style={s.pic}>
+                        {this.renderImg(i)}
                         <TouchableOpacity style={s.addPic} onPress={() => {
                             this._imagePicker(i)
                         }}>
                             <Icon name="camera" size={30} />
                             <Text style={{ fontSize: 11 }}>添加图片</Text>
                         </TouchableOpacity>
-                        {this.renderImg()}
                     </View>
                 </View>
             )
         }
         return goodsArr;
-    }
-
-    renderImg() {
-        let imgs = this.state.avatarSource;
-        let imgArr = [];
-        if (imgs.length > 0) {
-            for (let i = 0; i < imgs.length; i++) {
-                imgArr.push(
-                    <View key={i}>
-                        <Image source={{ uri: imgs[i].uri }} style={s.img} />
-                        <TouchableOpacity style={{ position: 'absolute', top: 0, right: 0}} onPress={()=>this._delImg(i)}>
-                            <Icon name="times-circle"size={20} color={'red'} style={{backgroundColor:'#fff',borderRadius:20}}/>
-                        </TouchableOpacity>
-                    </View>
-                )
-
-            }
-        }
-        return imgArr;
-    }
-
-    _delImg(i){
-        let imgs = this.state.avatarSource;
-        imgs.splice(i,1);
-        this.setState({
-            avatarSource:imgs
-        })
     }
 
     _imagePicker = (i) => {
@@ -165,36 +188,143 @@ class Comment extends Component {
                 } else {
                     source = { uri: res.uri.replace('file://', '') };
                 }
-                this.setState({
-                    avatarSource: [...this.state.avatarSource, source]
-                });
+                this._uploadImage(source.uri, i);
             }
         })
     }
 
-    renderStar(gid) {
+    _uploadImage(url, i) {
+        let formData = new FormData();
+        let file = { uri: url, type: 'multipart/form-data', name: 'image.png' };
+
+        formData.append("file", file);//键名必须为file
+        formData.append("app", 1);
+
+        fetch(UPLOADER_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            body: formData,
+        })
+            .then((response) => response.json())
+            .then((responseData) => {
+                if (responseData.status == 'success') {
+                    this._uploadNext(i, responseData.filename, responseData.url)
+                } else {
+                    Toast.show('上传失败');
+                }
+            })
+            .catch((error) => { Toast.show('服务器请求失败') });
+
+    }
+
+    _uploadNext(i, filename, imgurl) {
+        this.comments[i] && this.comments[i].hasOwnProperty("images") ?
+            this.comments[i] = Object.assign({}, this.comments[i], { images: [...this.comments[i].images, { uri: filename, url: imgurl }] }) :
+            this.comments[i] = Object.assign({}, this.comments[i], { images: [{ uri: filename, url: imgurl }] });
+        this.setState({
+            comments: this.comments
+        });
+    }
+
+
+    renderImg(i) {
+        if (this.state.comments[i] && this.state.comments[i].hasOwnProperty("images")) {
+            let imgs = this.state.comments[i].images;
+            let imgArr = [];
+            if (imgs.length > 0) {
+                for (let j = 0; j < imgs.length; j++) {
+                    imgArr.push(
+                        <View key={j}>
+                            <Image source={{ uri: imgs[j].url }} style={s.img} />
+                            <TouchableOpacity style={{ position: 'absolute', top: 0, right: 0 }} onPress={() => this._delImg(i, j)}>
+                                <Icon name="times-circle" size={20} color={'red'} style={{ backgroundColor: '#fff', borderRadius: 20 }} />
+                            </TouchableOpacity>
+                        </View>
+                    )
+                }
+            }
+            return imgArr;
+        }
+    }
+
+    _delImg(i, j) {
+        this.comments[i].images.splice(j, 1);
+        this.setState({
+            comments: this.comments
+        })
+    }
+
+    renderStar(i) {
         let starArr = [];
-        for (var i = 0; i < 5; i++) {
+        for (let j = 0; j < 5; j++) {
             starArr.push(
-                <TouchableOpacity key={i}><Icon name="star-o" size={25} style={s.star} /></TouchableOpacity>
+                <TouchableOpacity key={j} onPress={(text) => {
+                    this.comments[i] = Object.assign({}, this.comments[i], { level: j * 1 + 1 })
+                    this.setState({
+                        comments: this.comments
+                    })
+                }}>
+                    <Icon name="star-o" size={25} style={s.star} color={this._starcolor(i, j)} />
+                </TouchableOpacity>
             )
 
         }
         return (
             <View style={s.starBox}>
                 {starArr}
-                <Text>未评分</Text>
+                {this._renderPinText(i)}
             </View>
         )
+    }
+
+    _renderPinText(i) {
+        if (this.state.comments[i] && this.state.comments[i].hasOwnProperty("level")) {
+            switch (this.state.comments[i].level) {
+                case 1:
+                    return (<Text style={[s.pinText, { backgroundColor: '#aaa' }]}>差评</Text>);
+                    break;
+                case 2:
+                    return (<Text style={[s.pinText, { backgroundColor: '#0290BE' }]}>一般</Text>);
+                    break;
+                case 3:
+                    return (<Text style={[s.pinText, { backgroundColor: '#04AB02' }]}>还好</Text>);
+                    break;
+                case 4:
+                    return (<Text style={[s.pinText, { backgroundColor: '#FF9326' }]}>满意</Text>);
+                    break;
+                case 5:
+                    return (<Text style={[s.pinText, { backgroundColor: '#EF4F4F' }]}>非常满意</Text>);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            return (<Text>未评分</Text>)
+        }
+    }
+
+    _starcolor(i, j) {
+        if (this.state.comments[i] && this.state.comments[i].hasOwnProperty("level")) {
+            if (this.state.comments[i].level >= (j * 1 + 1)) {
+                return 'red';
+            }
+        }
     }
 }
 
 const s = StyleSheet.create({
+    pinText: {
+        color: '#fff',
+        paddingLeft: 5,
+        paddingRight: 5
+    },
     img: {
         height: 70, width: 70, margin: 5,
     },
     addPic: {
-        padding: 15, borderWidth: 1, borderColor: '#ddd', width: 80, alignItems: 'center'
+        padding: 15, borderWidth: 1, borderColor: '#ddd', width: 80, alignItems: 'center', marginLeft: 10
     },
     btn: {
         textAlign: 'center',
@@ -220,7 +350,7 @@ const s = StyleSheet.create({
     },
     star: {
         marginLeft: 10,
-        marginRight: 10
+        marginRight: 10,
     },
     starBox: {
         flexDirection: 'row',
