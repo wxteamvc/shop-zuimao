@@ -197,11 +197,11 @@ const App = StackNavigator({
     },
     Comment: {
         screen: Comment,
-        navigationOptions: ({ navigation }) => ({
-            headerTitle: '评论',
-            headerTitleStyle: { alignSelf: 'center' },
-            headerRight: <Text></Text>
-        }),
+        // navigationOptions: ({ navigation }) => ({
+        //     headerTitle: '评论',
+        //     headerTitleStyle: { alignSelf: 'center' },
+        //     headerRight: <Text></Text>
+        // }),
     },
     Scanner: {
         screen: Scanner,

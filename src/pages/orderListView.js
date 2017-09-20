@@ -177,7 +177,7 @@ class OrderList extends Component {
             let token = this.props.loginData.data.result.token;
             if (list.length == 0) {
                 return (
-                    <View style={{marginTop:ScreenHeight*0.3,alignItems:'center'}}>
+                    <View style={{ marginTop: ScreenHeight * 0.3, alignItems: 'center' }}>
                         <Icon name="frown-o" size={60} />
                         <Text>暂时没有订单</Text>
                     </View>
@@ -213,7 +213,7 @@ class OrderList extends Component {
                 );
             }
         } else {
-            return (<Loading/>);
+            return (<Loading />);
         }
 
     }
@@ -276,13 +276,13 @@ class MyListItem extends React.PureComponent {
                 {this.renderGoods(item.goods[0].goods, item.id)}
                 <View style={s.listBottom}>
                     <Text style={{ fontSize: 11 }}>共<Text style={{ color: 'red' }}>{item.goods_num}</Text>件商品&nbsp;合计：<Text style={{ color: 'red' }}>&yen;{item.price}</Text></Text>
-                    {this.renderbtns(item.status, item.id)}
+                    {this.renderbtns(item.status, item.id, item.iscomment)}
                 </View>
             </View>
         )
     }
 
-    renderbtns(status, oid) {
+    renderbtns(status, oid, iscomment) {
         let { show, search } = this.props;
         switch (status) {
             case '-1':
@@ -340,8 +340,11 @@ class MyListItem extends React.PureComponent {
                             <TouchableOpacity onPress={() => this._express(oid)}>
                                 <Text style={s.btn}>查看物流</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={()=>this._comment(oid)}>
-                                <Text style={s.btnRed}>评价</Text>
+                            <TouchableOpacity onPress={() => this._comment(oid,iscomment)}>
+                                {iscomment == 1 ?
+                                    <Text style={s.btnRed}>追加评价</Text> :
+                                    <Text style={s.btnRed}>评价</Text>
+                                }
                             </TouchableOpacity>
                         </View>
                     );
@@ -364,8 +367,9 @@ class MyListItem extends React.PureComponent {
         }
     }
 
-    _comment(oid){
-        this.props.navigation.navigate('Comment', { id: oid, token: this.props.token })
+    _comment(oid, iscomment) {
+        let tit= iscomment==1?'追加评价':'评价'
+        this.props.navigation.navigate('Comment', { id: oid, token: this.props.token, title: tit })
     }
 
     _recovery(oid) {

@@ -68,7 +68,7 @@ class Member extends Component {
   _conBGC(e) {
     if (e.nativeEvent.contentOffset.y >= 100) {
       this.setState({
-        confBGC: 'rgba(255, 255, 255,0.9)',
+        confBGC: 'rgba(255, 255, 255,0.5)',
         iconC: '#000',
       })
     }
