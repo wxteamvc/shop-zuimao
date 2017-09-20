@@ -15,7 +15,7 @@ import {
     StatusBar,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SIGNINDEX_URL, SIGN_URL, SIGN_MONTHCHANGE_URL } from '../common/global'
+import { SIGNINDEX_URL, SIGN_URL, SIGN_MONTHCHANGE_URL,ScreenWidth } from '../common/global'
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Util from '../common/util';
 import Loading from '../component/loading';
@@ -184,18 +184,14 @@ class SignIndex extends Component {
         for (let i in item) {
             let flag = item[i].signed || (item[i].today && this.state.signed);
             date.push(
-                <View key={i} style={[styles.dateList, { borderRightWidth: i == item.length - 1 ? 0 : 0.7 }, item[i].today ? styles.dateListBorder : false]}>
-                    <Text style={styles.dateText}>{item[i].day ? item[i].day : ''}
+                <View key={i} style={[styles.dateList,styles.center,item[i].today ?styles.dateListBorder : false]}>
+                    <Text style={[styles.dateText,{color:flag?'red':'#868686'}]}>{item[i].day ? item[i].day : ''}
                     </Text>
-                    {flag ?
-                        <Icon name={'check'} size={20} color={'#24B2F4'} style={{ marginLeft: 5, marginTop: 10 }} /> :
-                        false
-                    }
                 </View>
             )
         }
         return (
-            <View style={{ flexDirection: 'row', height: 50, }}>
+            <View style={{ flexDirection: 'row',height:(ScreenWidth-74)/7 }}>
                 {date}
             </View>
         )
@@ -264,8 +260,9 @@ class SignIndex extends Component {
                                 placeholderTextColor='#24B2F4'
                             />
                         </View>
-                        <View style={{ flex: 1, backgroundColor: '#fff', marginLeft: 4, marginRight: 4, padding: 10, paddingBottom: 0, }}>
+                        <View style={{paddingLeft:30,paddingRight:30,marginTop:10 }}>
                             <FlatList
+                               style={{backgroundColor:'#fff'}}
                                 data={this.state.calendar}
                                 extraData={this.state}
                                 renderItem={this.renderDateList.bind(this)}
@@ -318,11 +315,11 @@ const styles = StyleSheet.create({
     font: {
         marginTop: 5,
         color: '#fff',
-        fontSize: 16,
+        fontSize: 14,
     },
     font2: {
         color: 'yellow',
-        fontSize: 18,
+        fontSize: 16,
     },
     image: {
         height: 70,
@@ -352,17 +349,14 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         borderColor: '#ccc',
-        borderRightWidth: 0.7,
-        borderBottomWidth: 0.7
+        borderWidth: 0.7,
     },
     dateListBorder: {
         borderColor: '#24B2F4',
         borderWidth: 1,
     },
     dateText: {
-        fontSize: 18,
-        marginLeft: 6,
-        marginTop: 6
+        fontSize: 16,
     }
 })
 

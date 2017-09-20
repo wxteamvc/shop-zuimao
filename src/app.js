@@ -205,7 +205,11 @@ Comment:{
     },
     Scanner:{
         screen: Scanner,
-    }
+        navigationOptions: ({ navigation }) => ({
+            header: null
+        }),
+    },
+
 });
 
 export default App;
