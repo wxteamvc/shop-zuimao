@@ -11,18 +11,18 @@ import {
   Text,
   View,
   TouchableOpacity,
-  StatusBar,
   ScrollView,
   Image,
   RefreshControl,
-  Platform
+  Platform,
+  StatusBar,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { init } from '../actions/initAction'
 import Toast from 'react-native-root-toast';
 import ScrollViewJumpTop from '../component/scrollViewJumpTop';
 import FlatListJumpTop from '../component/flatListJumoTop';
-import { COUPONS_URL, ScreenWidth, DOMAIN, StatusBarHeight } from '../common/global';
+import { COUPONS_URL, ScreenWidth, DOMAIN, StatusBarHeight, ScreenHeight } from '../common/global';
 import Icon from 'react-native-vector-icons/dist/SimpleLineIcons';
 import IconTwo from 'react-native-vector-icons/dist/FontAwesome';
 import Banner from '../component/banner';
@@ -38,16 +38,16 @@ import AddToCart from '../component/addToCart';
 
 import ImagePicker from 'react-native-image-picker';
 var options = {
-  title:'请选择图片',
-  cancelButtonTitle:'取消',
-  takePhotoButtonTitle:'拍照片',
-  chooseFromLibraryButtonTitle:'我的相册',
-  quality:0.75,
-  allowsEditing:true,
-  noData:false,
+  title: '请选择图片',
+  cancelButtonTitle: '取消',
+  takePhotoButtonTitle: '拍照片',
+  chooseFromLibraryButtonTitle: '我的相册',
+  quality: 0.75,
+  allowsEditing: true,
+  noData: false,
   storageOptions: {
-      skipBackup: true,
-      path:'images'
+    skipBackup: true,
+    path: 'images'
   }
 }
 
@@ -59,28 +59,28 @@ class HomeView extends Component {
       showModel: false,            //显示加入购物车模态框
       goodsInfo: null,
       isRefreshing: false,           //加入入购物车商品信息
-      avatarSource:[],
+      avatarSource: [],
     }
   }
 
-  _imagePicker = ()=> {
-      ImagePicker.showImagePicker(options,(res) => {
-        console.log(res)
-          if (res.didCancel) {  // 返回
-              return
-          } else {
-              let source;  // 保存选中的图片
-              source = {uri: 'data:image/jpeg;base64,' + res.data};
-              if (Platform.OS === 'android') {
-                  source = { uri: res.uri };
-              } else {
-                  source = { uri: res.uri.replace('file://','') };
-              }
-                this.setState({
-                  avatarSource: [...this.state.avatarSource,source]
-              });
-          }
-      })
+  _imagePicker = () => {
+    ImagePicker.showImagePicker(options, (res) => {
+      console.log(res)
+      if (res.didCancel) {  // 返回
+        return
+      } else {
+        let source;  // 保存选中的图片
+        source = { uri: 'data:image/jpeg;base64,' + res.data };
+        if (Platform.OS === 'android') {
+          source = { uri: res.uri };
+        } else {
+          source = { uri: res.uri.replace('file://', '') };
+        }
+        this.setState({
+          avatarSource: [...this.state.avatarSource, source]
+        });
+      }
+    })
   }
 
   componentDidMount() {
@@ -103,13 +103,13 @@ class HomeView extends Component {
       bannersclone.splice(-1);
       return (
         <View style={styles.container}>
-          <StatusBar
-            translucent={true}
-            backgroundColor="transparent"
-          />
+           <StatusBar
+                        translucent={false}
+                        backgroundColor="#C10001"
+                    />
           <View style={styles.search_body}>
             <TouchableOpacity style={styles.serach_leftbtn}
-              onPress={()=>{this.props.navigation.navigate('Scanner')}}
+              onPress={() => { this.props.navigation.navigate('Scanner') }}
             >
               <Icon name={'frame'} size={18} color={'#fff'} />
               <Text style={styles.sreach_text}>扫一扫</Text>
@@ -133,7 +133,7 @@ class HomeView extends Component {
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.serach_rightbtn}
-              onPress={()=>{
+              onPress={() => {
                 this._imagePicker()
               }}
             >
@@ -141,45 +141,41 @@ class HomeView extends Component {
               <Text style={styles.sreach_text}>消息</Text>
             </TouchableOpacity>
           </View>
-            {this.state.avatarSource.length > 0 ?
-              <Image source={{uri:this.state.avatarSource[0].uri}}
-              style={{height:100,width:100}}
-              />:false
-            }
-          <ScrollViewJumpTop
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.isRefreshing}
-                onRefresh={() => {
-                  this.setState({ isRefreshing: true })
-                  this.props.dispatch(init())
-                  this.setState({ isRefreshing: false })
-                }}
-                colors={['#ff0000', '#00ff00', '#0000ff', '#3ad564']}
-              />
-            }
-            range={400}>
-            <Banner banner={advs} {...this.props}/>
-            <Ad ad={topad} {...this.props}/>
-            <IconList navigation={this.props.navigation} />
-            <Notices notices={notices} {...this.props} />
-            {istime.length > 0 ? <Rush istime={istime}  {...this.props} /> : false}
-            <Findgoods cubes={cubes}  {...this.props}/>
-            <Ad ad={bannersclone} {...this.props}/>
-            <WellChosen ad={bottomad} recommands={recommands}  {...this.props} category={category} />
-            <YouLike youlike={youlike} navigate={this.props.navigation} fun={(item) => this.setState({ goodsInfo: item, showModel: true })} />
-          </ScrollViewJumpTop>
+          {this.state.avatarSource.length > 0 ?
+            <Image source={{ uri: this.state.avatarSource[0].uri }}
+              style={{ height: 100, width: 100 }}
+            /> : false
+          }
+            <ScrollViewJumpTop
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.isRefreshing}
+                  onRefresh={() => {
+                    this.setState({ isRefreshing: true })
+                    this.props.dispatch(init())
+                    this.setState({ isRefreshing: false })
+                  }}
+                  colors={['#ff0000', '#00ff00', '#0000ff', '#3ad564']}
+                />
+              }
+              range={400}>
+              <Banner banner={advs} {...this.props} />
+              <Ad ad={topad} {...this.props} />
+              <IconList navigation={this.props.navigation} />
+              <Notices notices={notices} {...this.props} />
+              {istime.length > 0 ? <Rush istime={istime}  {...this.props} /> : false}
+              <Findgoods cubes={cubes}  {...this.props} />
+              <Ad ad={bannersclone} {...this.props} />
+              <WellChosen ad={bottomad} recommands={recommands}  {...this.props} category={category} />
+              <YouLike youlike={youlike} navigate={this.props.navigation} fun={(item) => this.setState({ goodsInfo: item, showModel: true })} />
+            </ScrollViewJumpTop>
           {this.state.showModel ? <AddToCart goodsInfo={this.state.goodsInfo} showModel={this.state.showModel} hide={() => this.setState({ showModel: false })} statusBarTranslucent={true} /> : null}
         </View>
 
       );
     } else {
       return (
-        <View style={{ flex: 1, }}>
-           <StatusBar
-            translucent={true}
-            backgroundColor="transparent"
-          />
+        <View style={{ flex: 1 }}>
           <Loading status={this.props.homeData.status} errmessage={this.props.homeData.errmessage} />
         </View>
       )
@@ -191,16 +187,15 @@ class HomeView extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex:1,
     backgroundColor: '#EFEFEF',
   },
   search_body: {
     backgroundColor: '#C10001',
-    height: 70,
+    height: 40,
     width: ScreenWidth,
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    paddingBottom: 10
+    alignItems: 'center',
   },
   serach_leftbtn: {
     flex: 0.15,

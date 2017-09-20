@@ -113,6 +113,10 @@ class Sign extends Component {
         } else {
             return (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <StatusBar
+                        translucent={false}
+                        backgroundColor="#000"
+                    />
                     <Text style={{ textAlign: 'center', fontSize: 20 }}>您还没有登陆哦~</Text>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
                         <Text style={{ textAlign: 'center', fontSize: 18, backgroundColor: '#0271BC', borderRadius: 10, padding: 10, color: '#fff', marginTop: 10 }}>立即登录</Text>
