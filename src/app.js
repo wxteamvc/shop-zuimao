@@ -33,12 +33,10 @@ import Sign from './pages/signView';
 import OrderDetail from './pages/orderDetailView';
 import Scanner from './component/scanner';
 import Comment from './pages/commentView';
-<<<<<<< HEAD
 import MyCoupons from './pages/myCouponsView';
-=======
 import Refund from './pages/refundView';
 import Refunding from './pages/refundingView';
->>>>>>> 708c46a4e9b969039c2fc4a8ce747c2f95f8b974
+import RefundExpress from './pages/refundExpressView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -229,6 +227,9 @@ const App = StackNavigator({
     Refunding: {
         screen: Refunding,
     },
+    RefundExpress:{
+        screen: RefundExpress,
+    }
 });
 
 export default App;
