@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, StatusBar, FlatList, TouchableOpacity, Alert, Modal, ActivityIndicator } from 'react-native';
-import { ScreenWidth, ScreenHeight, ORDERDELETE_URL, ORDERCANCEL_URL, ORDERFINISH_URL, ORDERDETAIL_URL } from '../common/global';
+import { ScreenWidth, ScreenHeight, ORDERDELETE_URL, ORDERCANCEL_URL, ORDERFINISH_URL, ORDERDETAIL_URL, REFUNDCANCEL_URL } from '../common/global';
 import Util from '../common/util';
 import Toast from 'react-native-root-toast';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -210,6 +210,7 @@ class OrderDetail extends Component {
                     url == ORDERCANCEL_URL ? Toast.show('取消成功') : null;
                     url == ORDERFINISH_URL ? Toast.show('确认成功') : null;
                     url == ORDERDELETE_URL ? Toast.show('删除成功') : null;
+                    url == REFUNDCANCEL_URL ? Toast.show('取消成功') : null;
                 } else {
                     Toast.show(responseJson.result.message);
                     dispatch(orderList(Object.assign({}, search, token)));
@@ -328,7 +329,7 @@ class OrderDetail extends Component {
         }
         if (data.order.refundstate > 0) {
             btns.push(
-                <TouchableOpacity key={++i}>
+                <TouchableOpacity key={++i} onPress={() => this._refundCancel(data.order.id)}>
                     <Text style={s.btn}>取消申请</Text>
                 </TouchableOpacity>
             )
@@ -336,19 +337,34 @@ class OrderDetail extends Component {
         return btns;
     }
 
+    _refundCancel(oid) {
+        let token = this.props.navigation.state.params.token;
+        Alert.alert('温馨提醒', '确定取消申请吗?', [
+            { text: '取消' },
+            {
+                text: '确定', onPress: () => {
+                    this.setState({
+                        showActivityIndicator: true,
+                    })
+                    this._fetch(REFUNDCANCEL_URL, Object.assign({}, token, { id: oid }), token)
+                }
+            }
+        ])
+    }
+
     _refund(orderData, num) {
-        let tit ;
+        let tit;
         let { dispatch, search } = this.props.navigation.state.params;
-        if(num == 1){
-            tit='申请退款'
+        if (num == 1) {
+            tit = '申请退款'
         }
-        if(num == 2){
-            tit='申请售后'
+        if (num == 2) {
+            tit = '申请售后'
         }
-        if(orderData.refundstate != 0){
-            this.props.navigation.navigate('Refunding', { result: this.state.detailData, token: this.props.token, title: tit,dispatch: dispatch,search:search})
-        }else{
-            this.props.navigation.navigate('Refund', { order: orderData, token: this.props.token, title: tit,dispatch: dispatch,search:search,routeKey:this.props.navigation.state.key})
+        if (orderData.refundstate != 0) {
+            this.props.navigation.navigate('Refunding', { result: this.state.detailData, token: this.props.token, title: tit, dispatch: dispatch, search: search,routeKey: this.props.navigation.state.key })
+        } else {
+            this.props.navigation.navigate('Refund', { order: orderData, token: this.props.token, title: tit, dispatch: dispatch, search: search, routeKey: this.props.navigation.state.key })
         }
     }
 

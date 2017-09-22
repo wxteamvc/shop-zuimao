@@ -174,3 +174,7 @@ export const UPLOADER_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=uti
 export const COMMENTSSUB_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.comment.submit';
 //提交申请退款/售后
 export const REFUNDSUB_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.refund.submit';
+//取消申请退款/售后
+export const REFUNDCANCEL_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.refund.cancel';
+//申请退款/售后，回寄快递
+export const REFUNDEXPRESS_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.refund.express';

@@ -35,6 +35,7 @@ import Scanner from './component/scanner';
 import Comment from './pages/commentView';
 import Refund from './pages/refundView';
 import Refunding from './pages/refundingView';
+import RefundExpress from './pages/refundExpressView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -216,6 +217,9 @@ const App = StackNavigator({
     Refunding: {
         screen: Refunding,
     },
+    RefundExpress:{
+        screen: RefundExpress,
+    }
 });
 
 export default App;
