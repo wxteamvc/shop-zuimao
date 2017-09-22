@@ -158,7 +158,7 @@ class Member extends Component {
           {islogin ? this.renderOrderIcon(0, member.order_0) : null}
           {islogin ? this.renderOrderIcon(1, member.order_1) : null}
           {islogin ? this.renderOrderIcon(2, member.order_2) : null}
-          {islogin ? this.renderOrderIcon(4, member.order_4) : null}
+          {islogin ? this.renderOrderIcon(3, member.order_4) : null}
 
         </View>
       </View>

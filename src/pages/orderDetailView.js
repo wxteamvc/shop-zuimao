@@ -5,8 +5,8 @@
 "use strict";
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, StatusBar, FlatList, TouchableOpacity, Alert, Modal,ActivityIndicator } from 'react-native';
-import { ScreenWidth, ScreenHeight,ORDERDELETE_URL, ORDERCANCEL_URL, ORDERFINISH_URL, ORDERDETAIL_URL } from '../common/global';
+import { StyleSheet, Text, View, ScrollView, Image, StatusBar, FlatList, TouchableOpacity, Alert, Modal, ActivityIndicator } from 'react-native';
+import { ScreenWidth, ScreenHeight, ORDERDELETE_URL, ORDERCANCEL_URL, ORDERFINISH_URL, ORDERDETAIL_URL } from '../common/global';
 import Util from '../common/util';
 import Toast from 'react-native-root-toast';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -19,7 +19,7 @@ class OrderDetail extends Component {
         this.state = {
             detailData: '',
             showMod: false,
-            showActivityIndicator:false,
+            showActivityIndicator: false,
         }
     }
 
@@ -59,7 +59,7 @@ class OrderDetail extends Component {
                         {this.renderAddress()}
                         {this.renderGoods()}
                     </ScrollView>
-                    {this.renderBtns(this.state.detailData.order.status)}
+                    {this.renderBtns(this.state.detailData)}
                     {this.renderModel()}
                     {this.renderActivityIndicator()}
                 </View>
@@ -70,16 +70,16 @@ class OrderDetail extends Component {
 
     }
 
-    renderActivityIndicator(){
+    renderActivityIndicator() {
         return (
             <Modal
                 animationType={"fade"}
                 transparent={true}
                 visible={this.state.showActivityIndicator}
-                onRequestClose={()=>null}
+                onRequestClose={() => null}
             >
                 <Text style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' }}></Text>
-                <ActivityIndicator style={s.load} color={'#fff'}/>
+                <ActivityIndicator style={s.load} color={'#fff'} />
             </Modal>
         )
     }
@@ -126,7 +126,7 @@ class OrderDetail extends Component {
                 text: '确定', onPress: () => {
                     this.setState({
                         showMod: false,
-                        showActivityIndicator:true,
+                        showActivityIndicator: true,
                     })
                     this._fetch(ORDERCANCEL_URL, Object.assign({}, token, { id: oid, remark: text }), token)
                 }
@@ -141,10 +141,42 @@ class OrderDetail extends Component {
             {
                 text: '确定', onPress: () => {
                     this.setState({
-                        showActivityIndicator:true,
+                        showActivityIndicator: true,
                     })
                     // userdeleted 为1时放到回收站，为2彻底删除
                     this._fetch(ORDERDELETE_URL, Object.assign({}, token, { id: oid, userdeleted: 1 }), token)
+                }
+            }
+        ])
+    }
+
+    _deleteSure(oid) {
+        let token = this.props.navigation.state.params.token;
+        Alert.alert('温馨提醒', '确定彻底删除吗?', [
+            { text: '取消' },
+            {
+                text: '确定', onPress: () => {
+                    this.setState({
+                        showActivityIndicator: true,
+                    })
+                    // userdeleted 为1时放到回收站，为2彻底删除
+                    this._fetch(ORDERDELETE_URL, Object.assign({}, token, { id: oid, userdeleted: 2 }), token)
+                }
+            }
+        ])
+    }
+
+    _recovery(oid) {
+        let token = this.props.navigation.state.params.token;
+        Alert.alert('温馨提醒', '确定恢复吗?', [
+            { text: '取消' },
+            {
+                text: '确定', onPress: () => {
+                    this.setState({
+                        showActivityIndicator: true,
+                    })
+                    // userdeleted 为1时放到回收站，为2彻底删除,0为恢复
+                    this._fetch(ORDERDELETE_URL, Object.assign({}, token, { id: oid, userdeleted: 0 }), token)
                 }
             }
         ])
@@ -157,7 +189,7 @@ class OrderDetail extends Component {
             {
                 text: '确定', onPress: () => {
                     this.setState({
-                        showActivityIndicator:true,
+                        showActivityIndicator: true,
                     })
                     this._fetch(ORDERFINISH_URL, Object.assign({}, token, { id: oid }), token)
                 }
@@ -166,19 +198,18 @@ class OrderDetail extends Component {
     }
 
     _fetch(url, params = {}, token = {}) {
-        let {dispatch,search} = this.props.navigation.state.params;
+        let { dispatch, search } = this.props.navigation.state.params;
         Util.post(url, params,
             (responseJson) => {
                 this.setState({
-                    showActivityIndicator:false,
+                    showActivityIndicator: false,
                 })
                 if (responseJson.status == 1) {
                     dispatch(orderList(Object.assign({}, search, token)));
                     this.props.navigation.goBack();
-                    url==ORDERCANCEL_URL?Toast.show('取消成功'):null;
-                    url==ORDERFINISH_URL?Toast.show('确认成功'):null;
-                    url==ORDERDELETE_URL?Toast.show('删除成功'):null;
-                    
+                    url == ORDERCANCEL_URL ? Toast.show('取消成功') : null;
+                    url == ORDERFINISH_URL ? Toast.show('确认成功') : null;
+                    url == ORDERDELETE_URL ? Toast.show('删除成功') : null;
                 } else {
                     Toast.show(responseJson.result.message);
                     dispatch(orderList(Object.assign({}, search, token)));
@@ -186,78 +217,139 @@ class OrderDetail extends Component {
             },
             (error) => {
                 this.setState({
-                    showActivityIndicator:false,
+                    showActivityIndicator: false,
                 })
                 Toast.show('服务器请求失败！');
             },
         )
     }
 
-    renderBtns(status) {
-        let oid = this.state.detailData.order.id;
-        switch (status) {
-            case '-1':
-                return (
-                    <View style={s.btnBox}>
-                        <TouchableOpacity onPress={() => this._delete(oid)}>
-                            <Text style={s.btn}>删除订单</Text>
-                        </TouchableOpacity>
-                    </View>
-                )
-
-                break;
-            case '0':
-                return (
-                    <View style={s.btnBox}>
-                        <TouchableOpacity onPress={() => this.setState({ showMod: true })}>
-                            <Text style={s.btn}>取消订单</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Text style={s.btnRed}>支付订单</Text>
-                        </TouchableOpacity>
-                    </View>
-                )
-                break;
-            case '1':
-                return (
-                    <View style={s.btnBox}>
-                        <TouchableOpacity>
-                            <Text style={s.btn}>申请退款</Text>
-                        </TouchableOpacity>
-                    </View>
-                )
-                break;
-            case '2':
-                return (
-                    <View style={s.btnBox}>
-                        <TouchableOpacity>
-                            <Text style={s.btn}>申请售后</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this._finish(oid)}>
-                            <Text style={s.btnRed}>确认收货</Text>
-                        </TouchableOpacity>
-                    </View>
-                )
-                break;
-            case '3':
-                return (
-                    <View style={s.btnBox}>
-                        <TouchableOpacity onPress={() => this._delete(oid)}>
-                            <Text style={s.btn}>删除订单</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>this._comment(oid)}>
-                            <Text style={s.btnRed}>评价</Text>
-                        </TouchableOpacity>
-                    </View>
-                )
-                break;
-            default:
-                break;
+    renderBtns(data) {
+        let oid = data.order.id;
+        let iscomment = data.order.iscomment;
+        if (data.order.userdeleted == 0) {
+            switch (data.order.status) {
+                case '-1':
+                    return (
+                        <View style={s.btnBox}>
+                            <TouchableOpacity onPress={() => this._delete(oid)}>
+                                <Text style={s.btn}>删除订单</Text>
+                            </TouchableOpacity>
+                            {this.renderCanrefund(data)}
+                        </View>
+                    )
+                    break;
+                case '0':
+                    return (
+                        <View style={s.btnBox}>
+                            <TouchableOpacity onPress={() => this.setState({ showMod: true })}>
+                                <Text style={s.btn}>取消订单</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <Text style={s.btnRed}>支付订单</Text>
+                            </TouchableOpacity>
+                            {this.renderCanrefund(data)}
+                        </View>
+                    )
+                    break;
+                case '1':
+                    return (
+                        <View style={s.btnBox}>
+                            {this.renderCanrefund(data)}
+                        </View>
+                    )
+                    break;
+                case '2':
+                    return (
+                        <View style={s.btnBox}>
+                            <TouchableOpacity onPress={() => this._finish(oid)}>
+                                <Text style={s.btnRed}>确认收货</Text>
+                            </TouchableOpacity>
+                            {this.renderCanrefund(data)}
+                        </View>
+                    )
+                    break;
+                case '3':
+                    return (
+                        <View style={s.btnBox}>
+                            <TouchableOpacity onPress={() => this._delete(oid)}>
+                                <Text style={s.btn}>删除订单</Text>
+                            </TouchableOpacity>
+                            {iscomment == 1 ?
+                                <TouchableOpacity onPress={() => this._comment(oid, iscomment)}>
+                                    <Text style={s.btnRed}>追加评价</Text>
+                                </TouchableOpacity> : null}
+                            {iscomment == 0 ?
+                                <TouchableOpacity onPress={() => this._comment(oid, iscomment)}>
+                                    <Text style={s.btnRed}>评价</Text>
+                                </TouchableOpacity> : null}
+                            {this.renderCanrefund(data)}
+                        </View>
+                    )
+                    break;
+                default:
+                    break;
+            }
+        } else if (data.order.userdeleted == 1) {
+            return (
+                <View style={s.btnBox}>
+                    <TouchableOpacity onPress={() => this._deleteSure(oid)}>
+                        <Text style={s.btn}>彻底删除</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this._recovery(oid)}>
+                        <Text style={s.btnRed}>恢复订单</Text>
+                    </TouchableOpacity>
+                </View>
+            )
         }
     }
 
-    _comment(oid){
-        this.props.navigation.navigate('Comment', { id: oid, token: this.props.token })
+    _comment(oid, iscomment) {
+        let tit = iscomment == 1 ? '追加评价' : '评价'
+        this.props.navigation.navigate('Comment', { id: oid, token: this.props.token, title: tit })
+    }
+
+    renderCanrefund(data) {
+        let btns = [], i = 0;
+        if (data.order.canrefund) {
+            if (data.order.status == 1) {
+                btns.push(
+                    <TouchableOpacity key={++i} onPress={() => this._refund(data.order, 1)}>
+                        <Text style={s.btn}>申请退款{data.order.refundstate != 0 ? '中' : null}</Text>
+                    </TouchableOpacity>
+                )
+            } else {
+                btns.push(
+                    <TouchableOpacity key={++i} onPress={() => this._refund(data.order, 2)}>
+                        <Text style={s.btn}>申请售后{data.order.refundstate != 0 ? '中' : null}</Text>
+                    </TouchableOpacity>
+                )
+            }
+        }
+        if (data.order.refundstate > 0) {
+            btns.push(
+                <TouchableOpacity key={++i}>
+                    <Text style={s.btn}>取消申请</Text>
+                </TouchableOpacity>
+            )
+        }
+        return btns;
+    }
+
+    _refund(orderData, num) {
+        let tit ;
+        let { dispatch, search } = this.props.navigation.state.params;
+        if(num == 1){
+            tit='申请退款'
+        }
+        if(num == 2){
+            tit='申请售后'
+        }
+        if(orderData.refundstate != 0){
+            this.props.navigation.navigate('Refunding', { result: this.state.detailData, token: this.props.token, title: tit,dispatch: dispatch,search:search})
+        }else{
+            this.props.navigation.navigate('Refund', { order: orderData, token: this.props.token, title: tit,dispatch: dispatch,search:search,routeKey:this.props.navigation.state.key})
+        }
     }
 
     renderGoods() {
@@ -430,7 +522,7 @@ class OrderDetail extends Component {
 }
 
 const s = StyleSheet.create({
-    load: {position: 'absolute', top: ScreenHeight * 0.5, left: ScreenWidth * 0.5, },
+    load: { position: 'absolute', top: ScreenHeight * 0.5, left: ScreenWidth * 0.5, },
     modText: {
         textAlign: 'center',
         padding: 10

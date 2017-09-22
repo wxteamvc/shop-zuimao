@@ -340,12 +340,14 @@ class MyListItem extends React.PureComponent {
                             <TouchableOpacity onPress={() => this._express(oid)}>
                                 <Text style={s.btn}>查看物流</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this._comment(oid,iscomment)}>
-                                {iscomment == 1 ?
-                                    <Text style={s.btnRed}>追加评价</Text> :
+                            {iscomment == 1 ?
+                                <TouchableOpacity onPress={() => this._comment(oid, iscomment)}>
+                                    <Text style={s.btnRed}>追加评价</Text>
+                                </TouchableOpacity> : null}
+                            {iscomment == 0 ?
+                                <TouchableOpacity onPress={() => this._comment(oid, iscomment)}>
                                     <Text style={s.btnRed}>评价</Text>
-                                }
-                            </TouchableOpacity>
+                                </TouchableOpacity> : null}
                         </View>
                     );
                 } else {
@@ -368,7 +370,7 @@ class MyListItem extends React.PureComponent {
     }
 
     _comment(oid, iscomment) {
-        let tit= iscomment==1?'追加评价':'评价'
+        let tit = iscomment == 1 ? '追加评价' : '评价'
         this.props.navigation.navigate('Comment', { id: oid, token: this.props.token, title: tit })
     }
 
@@ -507,7 +509,7 @@ const s = StyleSheet.create({
         fontWeight: 'bold'
     },
     price: {
-        flex: 0.5,
+        flex: 1,
         alignItems: 'flex-end',
         justifyContent: 'center',
         paddingRight: 15

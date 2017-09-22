@@ -33,7 +33,12 @@ import Sign from './pages/signView';
 import OrderDetail from './pages/orderDetailView';
 import Scanner from './component/scanner';
 import Comment from './pages/commentView';
+<<<<<<< HEAD
 import MyCoupons from './pages/myCouponsView';
+=======
+import Refund from './pages/refundView';
+import Refunding from './pages/refundingView';
+>>>>>>> 708c46a4e9b969039c2fc4a8ce747c2f95f8b974
 
 const App = StackNavigator({
     HomeTab: {
@@ -173,11 +178,11 @@ const App = StackNavigator({
     },
     OrderList: {
         screen: OrderList,
-        navigationOptions: ({ navigation }) => ({
-            headerTitle: '我的订单',
-            headerTitleStyle: { alignSelf: 'center' },
-            headerRight: <Text></Text>
-        }),
+        // navigationOptions: ({ navigation }) => ({
+        //     headerTitle: '我的订单',
+        //     headerTitleStyle: { alignSelf: 'center' },
+        //     headerRight: <Text></Text>
+        // }),
     },
     Express: {
         screen: Express,
@@ -197,11 +202,11 @@ const App = StackNavigator({
     },
     Comment: {
         screen: Comment,
-        // navigationOptions: ({ navigation }) => ({
-        //     headerTitle: '评论',
-        //     headerTitleStyle: { alignSelf: 'center' },
-        //     headerRight: <Text></Text>
-        // }),
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '评论',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
+        }),
     },
     Scanner: {
         screen: Scanner,
@@ -218,6 +223,12 @@ const App = StackNavigator({
         }),
     },
 
+    Refund: {
+        screen: Refund,
+    },
+    Refunding: {
+        screen: Refunding,
+    },
 });
 
 export default App;

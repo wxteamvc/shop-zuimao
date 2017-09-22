@@ -38,7 +38,6 @@ class Comment extends Component {
         super(...props);
         this.state = {
             commentData: '',
-            avatarSource: [],
             comments: {},
         }
         this.comments = [];
@@ -97,9 +96,19 @@ class Comment extends Component {
             params += '&comments[' + k + '][goodsid]=' + this.comments[k].goodsid;
             if (this.comments[k].level != undefined && this.comments[k].level != '' && this.comments[k].level != null) {
                 params += '&comments[' + k + '][level]=' + this.comments[k].level;
+            } else {
+                this.comments.length == 1 ?
+                    Toast.show('商品没有评分') :
+                    Toast.show('第' + (k * 1 + 1) + '个商品没有评分');
+                return false;
             }
             if (this.comments[k].content != undefined && this.comments[k].content != '' && this.comments[k].content != null) {
                 params += '&comments[' + k + '][content]=' + this.comments[k].content;
+            } else {
+                this.comments.length == 1 ?
+                    Toast.show('商品没有评论') :
+                    Toast.show('第' + (k * 1 + 1) + '个商品没有评论');
+                return false;
             }
             if (this.comments[k].images != undefined && this.comments[k].images != '' && this.comments[k].images != null) {
                 for (let a in this.comments[k].images) {
@@ -166,8 +175,9 @@ class Comment extends Component {
                         <TouchableOpacity style={s.addPic} onPress={() => {
                             this._imagePicker(i)
                         }}>
-                            <Icon name="camera" size={30} />
+                            <Icon name="camera" size={25} />
                             <Text style={{ fontSize: 11 }}>添加图片</Text>
+                            <Text style={{ fontSize: 11 }}>{this.comments[i].hasOwnProperty("images") ? this.comments[i].images.length : '0'}/5</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -177,20 +187,24 @@ class Comment extends Component {
     }
 
     _imagePicker = (i) => {
-        ImagePicker.showImagePicker(options, (res) => {
-            if (res.didCancel) {  // 返回
-                return
-            } else {
-                let source;  // 保存选中的图片
-                source = { uri: 'data:image/jpeg;base64,' + res.data };
-                if (Platform.OS === 'android') {
-                    source = { uri: res.uri };
+        if (this.comments[i].hasOwnProperty("images") && this.comments[i].images.length >= 5) {
+            Toast.show('最多上传5张图片');
+        } else {
+            ImagePicker.showImagePicker(options, (res) => {
+                if (res.didCancel) {  // 返回
+                    return
                 } else {
-                    source = { uri: res.uri.replace('file://', '') };
+                    let source;  // 保存选中的图片
+                    source = { uri: 'data:image/jpeg;base64,' + res.data };
+                    if (Platform.OS === 'android') {
+                        source = { uri: res.uri };
+                    } else {
+                        source = { uri: res.uri.replace('file://', '') };
+                    }
+                    this._uploadImage(source.uri, i);
                 }
-                this._uploadImage(source.uri, i);
-            }
-        })
+            })
+        }
     }
 
     _uploadImage(url, i) {
@@ -324,7 +338,7 @@ const s = StyleSheet.create({
         height: 70, width: 70, margin: 5,
     },
     addPic: {
-        padding: 15, borderWidth: 1, borderColor: '#ddd', width: 80, alignItems: 'center', marginLeft: 10
+        padding: 10, borderWidth: 1, borderColor: '#ddd', width: 80, alignItems: 'center', marginLeft: 10
     },
     btn: {
         textAlign: 'center',
