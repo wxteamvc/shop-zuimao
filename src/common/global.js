@@ -170,5 +170,7 @@ export const ORDERDETAIL_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=
 export const COMMENT_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.comment';
 //上传文件
 export const UPLOADER_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=util.uploader';
-//提交
+//提交评价
 export const COMMENTSSUB_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.comment.submit';
+//提交申请退款/售后
+export const REFUNDSUB_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.refund.submit';

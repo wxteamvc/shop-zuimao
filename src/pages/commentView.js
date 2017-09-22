@@ -38,7 +38,6 @@ class Comment extends Component {
         super(...props);
         this.state = {
             commentData: '',
-            avatarSource: [],
             comments: {},
         }
         this.comments = [];

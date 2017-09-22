@@ -33,7 +33,8 @@ import Sign from './pages/signView';
 import OrderDetail from './pages/orderDetailView';
 import Scanner from './component/scanner';
 import Comment from './pages/commentView';
-
+import Refund from './pages/refundView';
+import Refunding from './pages/refundingView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -173,11 +174,11 @@ const App = StackNavigator({
     },
     OrderList: {
         screen: OrderList,
-        navigationOptions: ({ navigation }) => ({
-            headerTitle: '我的订单',
-            headerTitleStyle: { alignSelf: 'center' },
-            headerRight: <Text></Text>
-        }),
+        // navigationOptions: ({ navigation }) => ({
+        //     headerTitle: '我的订单',
+        //     headerTitleStyle: { alignSelf: 'center' },
+        //     headerRight: <Text></Text>
+        // }),
     },
     Express: {
         screen: Express,
@@ -197,11 +198,11 @@ const App = StackNavigator({
     },
     Comment: {
         screen: Comment,
-        // navigationOptions: ({ navigation }) => ({
-        //     headerTitle: '评论',
-        //     headerTitleStyle: { alignSelf: 'center' },
-        //     headerRight: <Text></Text>
-        // }),
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '评论',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
+        }),
     },
     Scanner: {
         screen: Scanner,
@@ -209,7 +210,12 @@ const App = StackNavigator({
             header: null
         }),
     },
-
+    Refund: {
+        screen: Refund,
+    },
+    Refunding: {
+        screen: Refunding,
+    },
 });
 
 export default App;

@@ -509,7 +509,7 @@ const s = StyleSheet.create({
         fontWeight: 'bold'
     },
     price: {
-        flex: 0.5,
+        flex: 1,
         alignItems: 'flex-end',
         justifyContent: 'center',
         paddingRight: 15
