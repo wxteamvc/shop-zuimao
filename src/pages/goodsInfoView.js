@@ -277,17 +277,17 @@ class GoodsInfo extends Component {
                                 <TouchableOpacity
                                     onPress={() => { this.focus() }}
                                     style={[{ flex: 1 }, styles.center]}>
-                                    <Icon name={this.state.isFavorite ? 'heart' : 'heart-o'} size={20} color={this.state.isFavorite ? 'red' : '#ccc'} />
+                                    <Icon name={this.state.isFavorite ? 'heart' : 'heart-o'} size={20} color={this.state.isFavorite ? 'red' : '#767676'} />
                                     <Text style={{ fontSize: 10 }}>{this.state.isFavorite ? '已关注' : '关注'}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={[{ flex: 1 }, styles.center]}>
-                                    <Icon name={'shopping-bag'} size={20} color={'#ccc'} />
+                                    <Text style={{ fontFamily: 'iconfont', fontSize: 20 }}>&#xe60c;</Text>
                                     <Text style={{ fontSize: 10 }}>店铺</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => { this.props.navigation.navigate('Cart') }}
                                     style={[{ flex: 1 }, styles.center]}>
-                                    <Icon name={'shopping-cart'} size={20} color={'#ccc'} />
+                                    <Icon name={'shopping-cart'} size={20} color={'#767676'} />
                                     <Text style={{ fontSize: 10 }}>购物车</Text>
                                     {/* {this.state.cartCount > 0 ? <View
                                         style={[styles.center, styles.bottomCarIcon]}
@@ -1070,7 +1070,7 @@ const styles = StyleSheet.create({
         flex: 0.3, backgroundColor: '#FE9402', height: 50
     },
     bottomCarIcon: {
-        paddingLeft: 4, paddingRight: 4, borderRadius: 10, position: 'absolute', top: 0, left: 30, borderColor: 'red', borderWidth: 0.7,backgroundColor:'#fff'
+        paddingLeft: 4, paddingRight: 4, borderRadius: 10, position: 'absolute', top: 0, left: 30, borderColor: 'red', borderWidth: 0.7, backgroundColor: '#fff'
     },
     bottomCarIconText: {
         color: 'red', fontSize: 10

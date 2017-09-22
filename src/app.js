@@ -33,7 +33,7 @@ import Sign from './pages/signView';
 import OrderDetail from './pages/orderDetailView';
 import Scanner from './component/scanner';
 import Comment from './pages/commentView';
-
+import MyCoupons from './pages/myCouponsView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -207,6 +207,14 @@ const App = StackNavigator({
         screen: Scanner,
         navigationOptions: ({ navigation }) => ({
             header: null
+        }),
+    },
+    MyCoupons: {
+        screen: MyCoupons,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '我的优惠券',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
         }),
     },
 

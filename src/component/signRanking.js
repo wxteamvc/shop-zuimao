@@ -89,21 +89,21 @@ class SigngRanking extends Component {
             Util.get(url,
                 (resq) => {
                     if (resq.status == 1) {
-                        if (resq.result.list.length > 0) {
-                            if (isAdd) {
+                        if (isAdd) {
+                            if (resq.result.list.length > 0) {
                                 this.setState({
                                     status: 'success',
                                     list: this.state.list.concat(resq.result.list),
                                 })
                             } else {
                                 this.setState({
-                                    status: 'success',
-                                    list: resq.result.list,
+                                    infoStatus: 'nomore'
                                 })
                             }
                         } else {
                             this.setState({
-                                infoStatus: 'nomore'
+                                status: 'success',
+                                list: resq.result.list,
                             })
                         }
                     } else {
@@ -142,7 +142,7 @@ class SigngRanking extends Component {
                     <View style={styles.topNav}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.setState({ type: 'orderday', page: 1,infoStatus:'more' })
+                                this.setState({ type: 'orderday', page: 1, infoStatus: 'more' })
                                 this.FlatListJumpTop.scrollToIndex({ viewPosition: 0, index: 0 })
                             }}
                             style={[styles.center, { borderColor: this.state.type == 'orderday' ? '#24B2F4' : '#ccc', borderBottomWidth: this.state.type == 'orderday' ? 2 : 1 }]}>
@@ -150,7 +150,7 @@ class SigngRanking extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                this.setState({ type: 'sum', page: 1,infoStatus:'more' })
+                                this.setState({ type: 'sum', page: 1, infoStatus: 'more' })
                                 this.FlatListJumpTop.scrollToIndex({ viewPosition: 0, index: 0 })
                             }}
                             style={[styles.center, { borderColor: this.state.type == 'sum' ? '#24B2F4' : '#ccc', borderBottomWidth: this.state.type == 'sum' ? 2 : 1 }]}>
@@ -175,10 +175,10 @@ class SigngRanking extends Component {
                                 }
                         }
                         ListFooterComponent={
-                            this.state.infoStatus == 'nomore' ? 
+                            this.state.infoStatus == 'nomore' ?
                                 <View style={[{ flex: 1, paddingBottom: 15, paddingTop: 15 }, styles.center]}>
                                     <Text>亲~没有更多了哦</Text>
-                                </View>:false
+                                </View> : false
                         }
                     />
                 </View>

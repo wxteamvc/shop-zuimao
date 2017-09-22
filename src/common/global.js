@@ -82,7 +82,8 @@ export const BEFOREBUY = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member
 export const SIGNRANK_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=sign.getRank';
 //签到积分商城请求地址
 export const CREDITSHOP_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=creditshop&mid=3773&app=1';
-
+//我的优惠券请求地址
+export const MYCOUPONS_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=sale.coupon.my.getlist&mid=3773';
 
 
 

@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
     cartReducer,
     HistoryReducer,
     addressReducer,
-    orderListReducer
+    orderListReducer,
 })
 
 export default rootReducer;
