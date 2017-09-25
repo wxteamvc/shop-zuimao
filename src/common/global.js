@@ -73,7 +73,7 @@ export const ADDRESSDELETE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&
 //收获地址编辑
 export const ADDRESSEDIT_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.address.post';
 //创建订单地址
-export const ORDERCREATE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.create.caculate&mid=3773'
+export const ORDERCREATE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.create';
 //收获地址新增或更新
 export const ADDRESSUPDATE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.address.submit';
 //确认购买前确认
@@ -179,3 +179,5 @@ export const REFUNDSUB_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=or
 export const REFUNDCANCEL_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.refund.cancel';
 //申请退款/售后，回寄快递
 export const REFUNDEXPRESS_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.refund.express';
+//创建订单计算地址
+export const ORDERCREATECACULATE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.create.caculate';

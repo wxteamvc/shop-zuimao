@@ -75,7 +75,6 @@ class GoodsInfo extends Component {
             .then((resq) => resq.json())
             .then((responseJson) => {
                 if (responseJson.status == 1) {
-                    console.log(responseJson)
                     this.setState({
                         status: 'success',
                         data: responseJson.result.goods_detail,
@@ -140,7 +139,6 @@ class GoodsInfo extends Component {
             .then((resq) => resq.json())
             .then((responseJson) => {
                 if (responseJson.status == 1) {
-                    console.log(responseJson)
                     this.setState({
                         chatCountStatus: 'success',
                         chatCount: responseJson.result
@@ -158,7 +156,7 @@ class GoodsInfo extends Component {
 
     componentDidMount() {
         co(this.gen.bind(this)).then(function () {
-            console.log('加载完成')
+            //console.log('加载完成')
         })
 
 
@@ -301,13 +299,7 @@ class GoodsInfo extends Component {
                                 <Text style={styles.bottomText}>加入购物车</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                onPress={
-                                    () => {
-                                        this.props.loginData.status == 'success' ?
-                                            this.props.navigation.navigate('OrderCreateView', { data: this.state.data.goods, goodsNum: this.state.goodsNum }) :
-                                            Toast.show('亲 请先登录哦！', { duration: Toast.durations.SHORT, })
-                                    }
-                                }
+                                onPress={() => this._goPay()}
                                 style={[styles.bottomBuy, styles.center]}>
                                 <Text style={styles.bottomText}>立即购买</Text>
                             </TouchableOpacity>
@@ -339,6 +331,15 @@ class GoodsInfo extends Component {
             )
         }
 
+    }
+
+    _goPay() {
+        if (this.props.loginData.status == 'success') {
+            let goods = this.state.data.goods;
+            this.props.navigation.navigate('OrderCreateView', { id: goods.id, total: this.state.goodsNum, type: 'goodsInfo', optionid: 0, giftid: '' })
+        } else {
+            Toast.show('亲 请先登录哦！', { duration: Toast.durations.SHORT, })
+        }
     }
 
     renderImageViwerHerder() {
@@ -822,7 +823,7 @@ class GoodsInfo extends Component {
         let time = date - Math.round(new Date().getTime() / 1000);
         if (time == 0) {
             co(this.gen.bind(this)).then(function () {
-                console.log('加载完成')
+                //console.log('加载完成')
             })
         } else {
             d = parseInt(time / 86400)
