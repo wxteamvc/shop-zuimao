@@ -39,6 +39,7 @@ import Refunding from './pages/refundingView';
 import RefundExpress from './pages/refundExpressView';
 import AboutUs from './pages/aboutUsView';
 import Favorite from './pages/favoriteView';
+import Pay from './pages/payView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -247,6 +248,9 @@ const App = StackNavigator({
     },
     RefundExpress:{
         screen: RefundExpress,
+    },
+    Pay:{
+        screen: Pay,
     }
 });
 

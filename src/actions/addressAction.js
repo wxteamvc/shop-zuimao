@@ -17,7 +17,7 @@ export function address(params={}) {
                             dispatch(error(Types.ADDRESS_FAILED,responseJson.message));
                         }
                     },
-                    (error)=>{
+                    (err)=>{
                         dispatch(error(Types.ADDRESS_FAILED,'服务器请求失败！'));
                     },
                 )

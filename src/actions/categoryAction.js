@@ -16,9 +16,9 @@ export function category() {
                             dispatch(error(Types.CATEGORY_FAILED,'服务器请求失败！'));
                         }
                     },
-                    (error)=>{
+                    (err)=>{
                         
-                        dispatch(error(Types.CATEGORY_FAILED,error.message));
+                        dispatch(error(Types.CATEGORY_FAILED,err.message));
                     },
                 )
             }

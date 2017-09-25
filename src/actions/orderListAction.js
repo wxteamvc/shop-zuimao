@@ -18,7 +18,7 @@ export function orderList(params={}) {
                         }
                     },
                     (err)=>{
-                        dispatch(error(Types.ORDERLIST_FAILED,error.message));
+                        dispatch(error(Types.ORDERLIST_FAILED,err.message));
                     },
                 )
             }

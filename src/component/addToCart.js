@@ -99,7 +99,7 @@ export class AddToCart extends Component {
         if(this.props.loginData.status==='success'){
             let token = this.props.loginData.data.result.token;
             let key, value;
-            for (i in token) {
+            for (let i in token) {
                 key = i;
                 value = token[key]
             }

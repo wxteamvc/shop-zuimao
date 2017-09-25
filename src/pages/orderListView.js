@@ -310,7 +310,7 @@ class MyListItem extends React.PureComponent {
                         <TouchableOpacity onPress={() => show(oid)}>
                             <Text style={s.btn}>取消订单</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>this.props.navigation.navigate('Pay')}>
                             <Text style={s.btnRed}>立即支付</Text>
                         </TouchableOpacity>
                     </View>
