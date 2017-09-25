@@ -37,6 +37,7 @@ import MyCoupons from './pages/myCouponsView';
 import Refund from './pages/refundView';
 import Refunding from './pages/refundingView';
 import RefundExpress from './pages/refundExpressView';
+import Pay from './pages/payView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -229,6 +230,9 @@ const App = StackNavigator({
     },
     RefundExpress:{
         screen: RefundExpress,
+    },
+    Pay:{
+        screen: Pay,
     }
 });
 

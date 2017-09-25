@@ -25,7 +25,7 @@ class Member extends Component {
 
   componentDidUpdate(nextProps) {
     //请求用户信息
-    if (this.props.loginData.status === "success" && this.props.memberData.status === false) {
+    if (this.props.loginData.status === "success" && this.props.memberData.status !== 'success') {
       let token = this.props.loginData.data.result.token;
       this.props.dispatch(memberInfo(token))
     }
@@ -82,17 +82,21 @@ class Member extends Component {
 
   //登陆状态文字
   renderText() {
-    if (this.props.loginData.status === "success" && this.props.memberData.status === "success") {
-      let memberData = this.props.memberData.data.result.member;
-      let name = memberData.realname == null || memberData.realname == '' ? memberData.nickname : memberData.realname;
-      let levelname = memberData.levelname == null || memberData.levelname == '' ? '[普通会员]' : memberData.levelname;
-      return (
-        <View>
-          <Text style={[styles.fontWhite, { fontSize: 18 }]}>{name}</Text>
-          <Text style={styles.fontWhite}>{levelname}</Text>
-        </View>
-
-      )
+    if (this.props.loginData.status === "success" ) {
+      if(this.props.memberData.status === "success"){
+        let memberData = this.props.memberData.data.result.member;
+        let name = memberData.realname == null || memberData.realname == '' ? memberData.nickname : memberData.realname;
+        let levelname = memberData.levelname == null || memberData.levelname == '' ? '[普通会员]' : memberData.levelname;
+        return (
+          <View>
+            <Text style={[styles.fontWhite, { fontSize: 18 }]}>{name}</Text>
+            <Text style={styles.fontWhite}>{levelname}</Text>
+          </View>
+  
+        )
+      }else{
+        return false
+      }
     } else {
       return (
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
@@ -310,9 +314,9 @@ class Member extends Component {
 
   //退出登陆
   renderLoginOut() {
-    if (this.props.loginData.status === "success" && this.props.memberData.status === "success") {
+    if (this.props.loginData.status === "success") {
       return (
-        <View style={{ marginTop: 10, marginBottom: 10, backgroundColor: '#fff', padding: 10 ,height:1000}}>
+        <View style={{ marginTop: 10, marginBottom: 10, backgroundColor: '#fff', padding: 10 }}>
           <TouchableOpacity onPress={() => this.props.dispatch(loginOut())}>
             <Text style={{ color: 'red', textAlign: 'center' }}>退出登陆</Text>
           </TouchableOpacity>

@@ -40,7 +40,7 @@ export function memberInfo() {
                         dispatch(error(Types.MEMBER_INFO_FAILED, responseJson.result.message));
                     }
                 },
-                (error) => {
+                (err) => {
                     dispatch(error(Types.MEMBER_INFO_FAILED, '服务器请求失败！'));
                 },
             )
