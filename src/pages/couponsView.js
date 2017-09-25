@@ -216,10 +216,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row', marginTop: 10, marginLeft: 20, marginRight: 20,
     },
     coupons_img: {
-        width: ScreenWidth - 40, height: 140, borderRadius: 5
+        width: ScreenWidth - 40, height: 120, borderRadius: 5
     },
     coupons_bottom: {
-        height: 55, width: ScreenWidth - 90, position: 'absolute', bottom: 0, right: 0, flexDirection: 'row',
+        height: 50, width: ScreenWidth - 90, position: 'absolute', bottom: 0, right: 0, flexDirection: 'row',
     },
     coupons_bottom_left: {
         flex: 1, justifyContent: 'center',
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
         flex: 1, justifyContent: 'center', alignItems: 'center',
     },
     coupons_top_left: {
-        width: (ScreenWidth - 40) / 3, height: 82, position: 'absolute', top: 0, left: 0
+        width: (ScreenWidth - 40) / 3, height: 80, position: 'absolute', top: 0, left: 0
     },
     coupons_top_left_top: {
         alignItems: 'flex-start', marginLeft: 10, marginTop: 10
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
         color: '#fff', fontSize: 22,
     },
     fontSize30: {
-        color: '#fff', fontSize: 30,
+        color: '#fff', fontSize: 25,
     },
 
 })

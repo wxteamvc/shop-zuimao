@@ -55,7 +55,6 @@ class SignRecord extends Component {
                                 data: this.state.data.concat(resq.result.list),
                                 page: ++this.state.page,
                             })
-                            console.log(this.state.data)
                         } else {
                             this.setState({
                                 infoStatus: 'nomore',

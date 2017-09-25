@@ -33,6 +33,7 @@ import Sign from './pages/signView';
 import OrderDetail from './pages/orderDetailView';
 import Scanner from './component/scanner';
 import Comment from './pages/commentView';
+import MyCoupons from './pages/myCouponsView';
 import Refund from './pages/refundView';
 import Refunding from './pages/refundingView';
 import RefundExpress from './pages/refundExpressView';
@@ -211,6 +212,15 @@ const App = StackNavigator({
             header: null
         }),
     },
+    MyCoupons: {
+        screen: MyCoupons,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '我的优惠券',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
+        }),
+    },
+
     Refund: {
         screen: Refund,
     },

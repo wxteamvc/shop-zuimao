@@ -213,7 +213,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomList}>
-            <TouchableOpacity onPress={() => islogin ? null : this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('MyCoupons') : this._unlogin()}>
               <View style={styles.center}>
                 <Text style={{ fontSize: 16 }}>{coupon}</Text>
                 <Text style={styles.fontS}>优惠券</Text>

@@ -9,6 +9,7 @@ import {
     View,
     TouchableOpacity,
     Image,
+    ScrollView
 } from 'react-native';
 import { ScreenWidth, DOMAIN, COUPONSINFO_URL } from '../common/global';
 import Util from '../common/util';
@@ -47,7 +48,8 @@ export default class CouponsInfo extends Component {
                     status: 'faild',
                     errmessage: error.message,
                 })
-            })
+            }
+        )
     }
 
     renderRule() {
@@ -166,11 +168,7 @@ export default class CouponsInfo extends Component {
                         <Text>允许以下商品使用 :</Text>
                         {goods}
                     </View>
-            } else {
-                goodsUse = null;
             }
-
-
         }
 
         //允许以下商品分类使用
@@ -203,32 +201,34 @@ export default class CouponsInfo extends Component {
 
         return (
             <View style={{ flex: 1, padding: 15, backgroundColor: '#fff' }}>
-                <View style={styles.listView}>
-                    <Text style={styles.titleText}>领取限制</Text>
-                    {getLimit}
-                </View>
-                <View style={styles.listView}>
-                    <Text style={styles.titleText}>有效期限</Text>
-                    <Text>{period}</Text>
-                    {this.state.data.merchname ?
-                        <Text>
-                            限购{this.state.data.merchname}店铺商品
+                <ScrollView showsVerticalScrollIndicator ={false}>
+                    <View style={styles.listView}>
+                        <Text style={styles.titleText}>领取限制</Text>
+                        {getLimit}
+                    </View>
+                    <View style={styles.listView}>
+                        <Text style={styles.titleText}>有效期限</Text>
+                        <Text>{period}</Text>
+                        {this.state.data.merchname ?
+                            <Text>
+                                限购{this.state.data.merchname}店铺商品
                         </Text> :
-                        false}
-                </View>
-                <View style={styles.listView}>
-                    <Text style={styles.titleText}>使用说明</Text>
-                    {instructions}
+                            false}
+                    </View>
+                    <View style={styles.listView}>
+                        <Text style={styles.titleText}>使用说明</Text>
+                        {instructions}
 
-                </View>
-                <View style={styles.listView}>
-                    <Text style={styles.titleText}>使用限制</Text>
-                    {this.state.data.coupontype == '2' ? <Text>本优惠卷只能在收银台中使用</Text> : false}
-                    {cannotUse}
-                    {goodsUse}
-                    {category}
-                    {last}
-                </View>
+                    </View>
+                    <View style={styles.listView}>
+                        <Text style={styles.titleText}>使用限制</Text>
+                        {this.state.data.coupontype == '2' ? <Text>本优惠卷只能在收银台中使用</Text> : false}
+                        {cannotUse}
+                        {goodsUse}
+                        {category}
+                        {last}
+                    </View>
+                </ScrollView>
             </View>
 
         )
@@ -240,7 +240,7 @@ export default class CouponsInfo extends Component {
             if (this.state.data.timestr == 0) {
                 period = '永久有效';
             } else if (this.state.data.timestr == 1) {
-                period = '即'+this.state.data.gettypestr + '日内' + this.state.data.timedays + '天有效';
+                period = '即' + this.state.data.gettypestr + '日内' + this.state.data.timedays + '天有效';
             } else {
                 period = '有效期' + this.state.data.timestr;
             }
@@ -275,7 +275,7 @@ export default class CouponsInfo extends Component {
                         source={require('../assets/images/coupons/couponBG.jpg')}
                         style={{ width: ScreenWidth, height: 200 }}
                     >
-                        <View style={[styles.center, { flex: 1}]}>
+                        <View style={[styles.center, { flex: 1 }]}>
                             <View style={styles.center}>
                                 <Text style={[styles.whiteText, { fontSize: 20 }]}>{this.state.data.couponname}
                                 </Text>
@@ -283,7 +283,7 @@ export default class CouponsInfo extends Component {
                             <View style={[styles.rowCenter, { marginTop: 5 }]}>
                                 <Text style={[styles.whiteText]}>{period}</Text>
                                 {this.state.data.merchname ?
-                                    <Text style={[styles.whiteText,{marginLeft:10}]}>
+                                    <Text style={[styles.whiteText, { marginLeft: 10 }]}>
                                         限购{this.state.data.merchname}店铺商品
                                     </Text> :
                                     false}
@@ -339,9 +339,9 @@ const styles = StyleSheet.create({
     listView: {
         paddingTop: 10, paddingBottom: 10, borderBottomWidth: 0.7, borderColor: '#ccc'
     },
-    titleText:{
-        color:'#000',
-        fontSize:16,
-        marginBottom:5,
+    titleText: {
+        color: '#000',
+        fontSize: 16,
+        marginBottom: 5,
     }
 })
