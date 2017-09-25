@@ -47,7 +47,8 @@ export class AddToCart extends Component {
     }
     render() {
         let { goodsInfo, showModel, hide ,statusBarTranslucent } = this.props;
-        let modH=statusBarTranslucent===true?ScreenHeight-StatusBarHeight:ScreenHeight;
+        // let modH=statusBarTranslucent===true?ScreenHeight-StatusBarHeight:ScreenHeight;
+        let modH=statusBarTranslucent===true?ScreenHeight-StatusBarHeight*2:ScreenHeight;
         if (this.props.showModel) {
             return (
                 <View style={{ position: 'absolute', height: modH }}>

@@ -60,13 +60,13 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ backgroundColor: '#C10001', position: 'absolute', top: 0, width: ScreenWidth, height: 30 }}></View>
+        
       </View>
     );
   }
 
   _conBGC(e) {
-    if (e.nativeEvent.contentOffset.y >= 100) {
+    if (e.nativeEvent.contentOffset.y >= 125) {
       this.setState({
         confBGC: 'rgba(255, 255, 255,0.5)',
         iconC: '#000',
@@ -312,7 +312,7 @@ class Member extends Component {
   renderLoginOut() {
     if (this.props.loginData.status === "success" && this.props.memberData.status === "success") {
       return (
-        <View style={{ marginTop: 10, marginBottom: 10, backgroundColor: '#fff', padding: 10 }}>
+        <View style={{ marginTop: 10, marginBottom: 10, backgroundColor: '#fff', padding: 10 ,height:1000}}>
           <TouchableOpacity onPress={() => this.props.dispatch(loginOut())}>
             <Text style={{ color: 'red', textAlign: 'center' }}>退出登陆</Text>
           </TouchableOpacity>
@@ -348,12 +348,13 @@ const styles = StyleSheet.create({
   topView: {
     height: 170,
     backgroundColor: '#C10001',
-    paddingTop: 70
+    paddingTop: 50
   },
   conf: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     padding: 15,
+    paddingTop: 0,
   },
   icon: {
     fontSize: 18,

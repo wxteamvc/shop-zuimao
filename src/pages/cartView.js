@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', flex: 1
   },
   cartTop: {
-    flexDirection: 'row', paddingLeft: 10, paddingRight: 10, paddingBottom: 15, backgroundColor: '#C10001', borderBottomWidth: 1, borderColor: '#aaa', marginBottom: 10, paddingTop: 30
+    flexDirection: 'row', paddingLeft: 10, paddingRight: 10, paddingBottom: 15, backgroundColor: '#C10001', borderBottomWidth: 1, borderColor: '#aaa', marginBottom: 10, paddingTop: 10
   },
   cartTitle: {
     flex: 8, justifyContent: 'center', alignItems: 'center'

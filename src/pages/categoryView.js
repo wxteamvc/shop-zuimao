@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     searchBar: {
         backgroundColor: '#C10001',
         width: ScreenWidth,
-        height: 40,
+        height: 20,
         justifyContent: 'center'
     },
     main: {
