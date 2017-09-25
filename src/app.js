@@ -37,6 +37,8 @@ import MyCoupons from './pages/myCouponsView';
 import Refund from './pages/refundView';
 import Refunding from './pages/refundingView';
 import RefundExpress from './pages/refundExpressView';
+import AboutUs from './pages/aboutUsView';
+import Favorite from './pages/favoriteView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -216,6 +218,22 @@ const App = StackNavigator({
         screen: MyCoupons,
         navigationOptions: ({ navigation }) => ({
             headerTitle: '我的优惠券',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
+        }),
+    },
+    AboutUs: {
+        screen: AboutUs,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '关于我们',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
+        }),
+    },
+    Favorite: {
+        screen: Favorite,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '我的关注',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
         }),

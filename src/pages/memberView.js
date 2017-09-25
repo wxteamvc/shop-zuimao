@@ -240,7 +240,7 @@ class Member extends Component {
       <View style={styles.modView}>
         <View style={[styles.modBottom, { flexWrap: 'wrap' }]}>
           <View style={styles.modBottomOther}>
-            <TouchableOpacity onPress={() => islogin ? null : this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ?this.props.navigation.navigate('Favorite') : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="heart" size={25} color={'#FB585E'} />
                 <Text style={styles.fontS}>我的关注</Text>

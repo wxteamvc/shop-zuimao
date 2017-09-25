@@ -69,7 +69,6 @@ var options = {
 
   _imagePicker = () => {
     ImagePicker.showImagePicker(options, (res) => {
-      console.log(res)
       if (res.didCancel) {  // 返回
         return
       } else {

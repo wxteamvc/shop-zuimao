@@ -115,11 +115,11 @@ class MyCoupons extends Component {
         }
 
         return (
-            <View style={{ height: 120, width: ScreenWidth, flexDirection: 'row', padding: 10 }}>
+            <View style={styles.itemBody}>
                 <TouchableOpacity 
                 activeOpacity={1}
               onPress={()=>{this.props.navigation.navigate('CouponInfo',{id:item.couponid})}}
-                style={{ flex: 0.8, backgroundColor: '#fff', borderRadius: 10 }}>
+                style={styles.itemLeft}>
                     <View style={{ flexDirection: 'row', marginLeft: 10 }}>
                         <View style={{ backgroundColor: color, borderRadius: 5, paddingLeft: 15, paddingRight: 15 }}>
                             <Text style={{ color: '#fff', fontSize: 12 }}>{item.tagtitle}</Text>
@@ -136,15 +136,20 @@ class MyCoupons extends Component {
                         </View>
                     </View>
                 </TouchableOpacity>
-                <View style={{ flex: 0.2, backgroundColor: color, borderRadius: 10, alignItems: 'center', justifyContent: 'center', }}>
+                <View style={[styles.itemRight,{backgroundColor:this.state.cate==''? color:'#767676'} ]  }>
                     <TouchableOpacity
+                        disabled={this.state.cate==''?false:true} 
                         activeOpacity={1}
-                        style={{ width: (ScreenWidth - 20) * 0.2, height: (ScreenWidth - 20) * 0.2, borderRadius: (ScreenWidth - 20) * 0.2 / 2,alignItems: 'center', justifyContent: 'center', }}
+                        onPress={()=>{this.props.navigation.navigate('Goods',{search:{couponid:item.id,type:'couponGoods'}})}}
+                        style={styles.itemRightBtn}
                     >
                         <Text style={{ color: '#fff' }}>立即</Text>
                         <Text style={{ color: '#fff' }}>使用</Text>
                     </TouchableOpacity>
                 </View>
+                {this.state.cate==''?<Image source={require('../assets/images/ling.png')} style={styles.logo}/>:false}
+                {this.state.cate=='used'?<Image source={require('../assets/images/used.png')} style={styles.logo}/>:false}
+                {this.state.cate=='past'?<Image source={require('../assets/images/past.png')} style={styles.logo}/>:false}             
             </View>
         )
     }
@@ -164,7 +169,7 @@ class MyCoupons extends Component {
                                 this.setState({ cate: '', page: 1, infoStatus: 'more' })
                                 //this.FlatListJumpTop.scrollToIndex({ viewPosition: 0, index: 0 })
                             }}
-                            style={[styles.center, { borderColor: this.state.cate == '' ? 'red' : '#ccc', borderBottomWidth: this.state.type == '' ? 2 : 1 }]}>
+                            style={[styles.center, { borderColor: this.state.cate == '' ? 'red' : '#ccc', borderBottomWidth: this.state.cate == '' ? 2 : 1 }]}>
                             <Text style={{ color: this.state.cate == '' ? 'red' : '#767676', fontSize: 16 }}>未使用</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -277,6 +282,21 @@ const styles = StyleSheet.create({
     fontSize30: {
         color: '#fff', fontSize: 30,
     },
+    logo:{
+        width:60,height:60,position:'absolute',top:5,right:ScreenWidth* 0.2-20
+    },
+    itemBody:{
+        height: 120, width: ScreenWidth, flexDirection: 'row', padding: 10 
+    },
+    itemLeft:{
+        flex: 0.8, backgroundColor: '#fff', borderRadius: 10 
+    },
+    itemRight:{
+        flex: 0.2, borderRadius: 10, alignItems: 'center', justifyContent: 'center',
+    },
+    itemRightBtn:{
+        width: (ScreenWidth - 20) * 0.2, height: (ScreenWidth - 20) * 0.2, borderRadius: (ScreenWidth - 20) * 0.2 / 2,alignItems: 'center', justifyContent: 'center',
+    }
 })
 
 

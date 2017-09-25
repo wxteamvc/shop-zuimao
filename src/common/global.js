@@ -84,6 +84,12 @@ export const SIGNRANK_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=sign.
 export const CREDITSHOP_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=creditshop&mid=3773&app=1';
 //我的优惠券请求地址
 export const MYCOUPONS_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=sale.coupon.my.getlist&mid=3773';
+//优惠券商品请求地址
+export const MYCOUPONSGOODS_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=sale.coupon.my.get_list&mid=3773'
+//我关注的商品请求地址
+export const FAVORITEGOODS_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=member.favorite.get_list&mid=3773'
+//我关注的店铺请求地址
+export const FAVORITESHOPS_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=merch.member.favorite.get_list&mid=3773'
 
 
 

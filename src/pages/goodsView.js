@@ -41,8 +41,10 @@ class Goods extends Component {
                 order: "",
                 by: "",
                 merchid: "",
+                couponid:"",
                 page: 1,
                 _: Math.round(new Date().getTime()),
+                type:'',
             }
         }
     }

@@ -76,6 +76,7 @@ class Coupons extends Component {
             }
         }
     }
+
     componentDidMount() {
          this.getCoupons()
     }
