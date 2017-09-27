@@ -6,8 +6,8 @@
 "use strict";
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, TextInput, Modal, Alert } from 'react-native';
-import { ORDERCREATE_URL, ORDERCREATECACULATE_URL, ORDERCREATECOUPON_URL, ScreenWidth, StatusBarHeight, ORDERCREATEGETCOUPONPRICE_URL } from '../common/global';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, TextInput, Modal, Alert, ActivityIndicator } from 'react-native';
+import { ScreenHeight,ORDERCREATE_URL, ORDERCREATECACULATE_URL, ORDERCREATECOUPON_URL, ScreenWidth, StatusBarHeight, ORDERCREATEGETCOUPONPRICE_URL, ORDERCREATESUB_URL } from '../common/global';
 import Toast from 'react-native-root-toast';
 import { connect } from 'react-redux';
 import Loading from '../component/loading';
@@ -20,10 +20,15 @@ class OrderCreate extends Component {
     this.state = {
       status: false,
       showMod: false,
+      showActivityIndicator: false,
       coupons: null,
       selectedCouponId: null,
       selectedCouponName: null,
       selectedCouponDeductprice: 0,
+      finalprice: 0,
+      deductcreditSelected: false,
+      deductcredit2Selected: false,
+      remark: null,
     }
     this.result = {};
     let token = '';
@@ -45,6 +50,9 @@ class OrderCreate extends Component {
   componentDidMount() {
     if (this.type == 'goodsInfo') {
       this._post(ORDERCREATE_URL, this.params);
+    }
+    if (this.type == 'cart') {
+      this._post(ORDERCREATE_URL, {});
     }
   }
 
@@ -83,8 +91,9 @@ class OrderCreate extends Component {
   _caculate(url, data) {
     let params = '';
     for (let k in data) {
-      params += '&' + k + '=' + data[k];
-      if (k == 'goods') {
+      if (k != 'goods') {
+        params += '&' + k + '=' + data[k];
+      } else {
         let goods = data[k];
         for (let i = 0; i < goods.length; i++) {
           params += '&goods[' + i + '][goodsid]=' + goods[i].goodsid;
@@ -113,7 +122,7 @@ class OrderCreate extends Component {
       .then(responseJson => {
         if (responseJson.status == 1) {
           this.caculate = responseJson.result;
-          this.setState({ status: true });
+          this.setState({ status: true, finalprice: responseJson.result.realprice });
         } else {
           Toast.show(responseJson.result.message);
         }
@@ -150,13 +159,14 @@ class OrderCreate extends Component {
           <View style={s.bottom}>
             <View style={s.bottomPrice}>
               <Text>合计：</Text>
-              <Text style={{ color: 'red' }}>&yen;{this.caculate.realprice}</Text>
+              <Text style={{ color: 'red' }}>&yen;{this.state.finalprice}</Text>
             </View>
-            <TouchableOpacity style={s.sub}>
+            <TouchableOpacity style={s.sub} onPress={() => this._orderSub()}>
               <Text style={{ color: '#fff' }}>提交订单</Text>
             </TouchableOpacity>
           </View>
           {this.renderMod()}
+          {this.renderActivityIndicator()}
         </View>
       )
     } else {
@@ -168,13 +178,138 @@ class OrderCreate extends Component {
     }
   }
 
+  renderActivityIndicator() {
+    return (
+      <Modal
+        animationType={"fade"}
+        transparent={true}
+        visible={this.state.showActivityIndicator}
+        onRequestClose={() => null}
+      >
+        <Text style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' }}></Text>
+        <ActivityIndicator style={s.load} color={'#fff'} />
+      </Modal>
+    )
+  }
+
+  _orderSub() {
+    this._postSub(ORDERCREATESUB_URL, {
+      orderid: '',
+      id: this.result.createInfo.id,
+      goods: this.result.goodslist[0].goods,
+      giftid: this.result.createInfo.giftid,
+      gdid: this.result.createInfo.gdid,
+      diydata: '',
+      dispatchtype: 0,
+      fromcart: this.result.createInfo.fromcart,
+      carrierid: 0,
+      addressid: this.result.createInfo.addressid,
+      carriers: '',
+      remark: this.state.remark,
+      deduct: this.state.deductcreditSelected ? this.caculate.deductmoney : 0,
+      deduct2: this.state.deductcredit2Selected ? this.caculate.deductcredit2 : 0,
+      couponid: this.state.selectedCouponId,
+      submit: true,
+      packageid: this.result.packageid,
+    });
+  }
+
+  _postSub(url, data) {
+    this.setState({showActivityIndicator:true});
+    let params = '';
+    for (let k in data) {
+      if (k != 'goods') {
+        params += '&' + k + '=' + data[k];
+      } else {
+        let goods = data[k];
+        for (let i = 0; i < goods.length; i++) {
+          params += '&goods[' + i + '][goodsid]=' + goods[i].goodsid;
+          params += '&goods[' + i + '][total]=' + goods[i].total;
+          params += '&goods[' + i + '][optionid]=' + goods[i].optionid;
+          params += '&goods[' + i + '][marketprice]=' + goods[i].marketprice;
+          params += '&goods[' + i + '][merchid]=' + goods[i].merchid;
+          params += '&goods[' + i + '][cates]=' + goods[i].cates;
+          params += '&goods[' + i + '][discounttype]=' + goods[i].discounttype;
+          params += '&goods[' + i + '][isdiscountprice]=' + goods[i].isdiscountprice;
+          params += '&goods[' + i + '][discountprice]=' + goods[i].discountprice;
+          params += '&goods[' + i + '][isdiscountunitprice]=' + goods[i].isdiscountunitprice;
+          params += '&goods[' + i + '][discountunitprice]=' + goods[i].discountunitprice;
+        }
+      }
+    }
+    // params += '&app=1';
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: params,
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson.status == 1) {
+          this.setState({showActivityIndicator:false});
+          this.props.navigation.navigate('Pay',{id:responseJson.result.orderid,token:this.props.loginData.data.result.token})
+        } else {
+          Toast.show(responseJson.result.message);
+        }
+      })
+      .catch((error) => {
+        Toast.show('服务器请求失败');
+      });
+  }
+
+  _caculate(url, data) {
+    let params = '';
+    for (let k in data) {
+      if (k != 'goods') {
+        params += '&' + k + '=' + data[k];
+      } else {
+        let goods = data[k];
+        for (let i = 0; i < goods.length; i++) {
+          params += '&goods[' + i + '][goodsid]=' + goods[i].goodsid;
+          params += '&goods[' + i + '][total]=' + goods[i].total;
+          params += '&goods[' + i + '][optionid]=' + goods[i].optionid;
+          params += '&goods[' + i + '][marketprice]=' + goods[i].marketprice;
+          params += '&goods[' + i + '][merchid]=' + goods[i].merchid;
+          params += '&goods[' + i + '][cates]=' + goods[i].cates;
+          params += '&goods[' + i + '][discounttype]=' + goods[i].discounttype;
+          params += '&goods[' + i + '][isdiscountprice]=' + goods[i].isdiscountprice;
+          params += '&goods[' + i + '][discountprice]=' + goods[i].discountprice;
+          params += '&goods[' + i + '][isdiscountunitprice]=' + goods[i].isdiscountunitprice;
+          params += '&goods[' + i + '][discountunitprice]=' + goods[i].discountunitprice;
+        }
+      }
+    }
+    // params += '&app=1';
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: params,
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson.status == 1) {
+          this.caculate = responseJson.result;
+          this.setState({ status: true, finalprice: responseJson.result.realprice });
+        } else {
+          Toast.show(responseJson.result.message);
+        }
+      })
+      .catch((error) => {
+        Toast.show('服务器请求失败');
+      });
+  }
+
   renderMod() {
     let { goodsprice } = this.result;
     let conpons = [];
     if (this.state.coupons != null) {
       for (let i = 0; i < this.state.coupons.length; i++) {
         conpons.push(
-          <TouchableOpacity key={i} style={{ flexDirection: 'row', marginBottom: 10 }} onPress={() => this._selectedCoupon(this.state.coupons[i])}>
+          <TouchableOpacity key={i} style={[{ flexDirection: 'row', marginBottom: 10 }, this.state.selectedCouponId == this.state.coupons[i].id ? s.couponSelected : null]} onPress={() => this._selectedCoupon(this.state.coupons[i])}>
             <View style={s.couponL}>
               <Image source={{ uri: this.state.coupons[i].thumb }} style={s.couponImg} />
               <View>
@@ -206,11 +341,12 @@ class OrderCreate extends Component {
           </ScrollView>
           <View style={s.bottom}>
             <TouchableOpacity style={s.modBtn} onPress={() => {
-              this.setState({ 
+              this.setState({
                 showMod: false,
                 selectedCouponId: null,
                 selectedCouponName: null,
                 selectedCouponDeductprice: 0,
+                finalprice: this.caculate.realprice,
               })
             }}>
               <Text>取消使用</Text>
@@ -265,9 +401,12 @@ class OrderCreate extends Component {
         .then(response => response.json())
         .then(responseJson => {
           if (responseJson.status == 1) {
-            this.setState({ showMod: false, selectedCouponId: null, selectedCouponDeductprice: responseJson.result.deductprice });
-            this.caculate.realprice = responseJson.result.totalprice - responseJson.result.deductprice;
-            this.forceUpdate();
+            this.setState({
+              showMod: false,
+              // selectedCouponId: null, 
+              selectedCouponDeductprice: responseJson.result.deductprice,
+              finalprice: this.caculate.realprice - responseJson.result.deductprice,
+            });
           } else {
             Toast.show(responseJson.result.message);
           }
@@ -402,6 +541,36 @@ class OrderCreate extends Component {
             </View>
           )
         }
+        if (this.caculate.deductcredit > 0) {
+          arr.push(
+            <View key={++i} style={s.totalPrice}>
+              <Text>积分可抵扣:</Text>
+              <Text style={{ color: 'red' }}>&nbsp;-&nbsp;&yen;{this.caculate.deductmoney}</Text>
+              <TouchableOpacity style={{ marginLeft: 15 }} onPress={() =>
+                this.setState({
+                  deductcreditSelected: !this.state.deductcreditSelected,
+                  finalprice: this.state.deductcreditSelected ? this.state.finalprice + this.caculate.deductmoney : this.state.finalprice - this.caculate.deductmoney,
+                })}>
+                {this.state.deductcreditSelected ? <Icon name="check-circle" size={25} color={'#EF4F4F'} /> : <Icon name="circle-thin" size={25} />}
+              </TouchableOpacity>
+            </View>
+          )
+        }
+        if (this.caculate.deductcredit2 > 0) {
+          arr.push(
+            <View key={++i} style={s.totalPrice}>
+              <Text>余额可抵扣:</Text>
+              <Text style={{ color: 'red' }}>&nbsp;-&nbsp;&yen;{this.caculate.deductcredit2}</Text>
+              <TouchableOpacity style={{ marginLeft: 15 }} onPress={() =>
+                this.setState({
+                  deductcredit2Selected: !this.state.deductcredit2Selected,
+                  finalprice: this.state.deductcredit2Selected ? this.state.finalprice + this.caculate.deductcredit2 : this.state.finalprice - this.caculate.deductcredit2,
+                })}>
+                {this.state.deductcredit2Selected ? <Icon name="check-circle" size={25} color={'#EF4F4F'} /> : <Icon name="circle-thin" size={25} />}
+              </TouchableOpacity>
+            </View>
+          )
+        }
         if (this.caculate.isdiscountprice > 0) {
           arr.push(
             <View key={++i} style={s.totalPrice}>
@@ -413,7 +582,7 @@ class OrderCreate extends Component {
         if (this.caculate.deductenough_money > 0) {
           arr.push(
             <View key={++i} style={s.totalPrice}>
-              <Text>商城单笔满{saleset.enoughmoney}元立减:</Text>
+              <Text>商城单笔满{this.caculate.deductenough_enough}元立减:</Text>
               <Text style={{ color: 'red' }}>&nbsp;-&nbsp;&yen;{this.caculate.deductenough_money}</Text>
             </View>
           )
@@ -421,7 +590,7 @@ class OrderCreate extends Component {
         if (this.caculate.merch_deductenough_money > 0) {
           arr.push(
             <View key={++i} style={s.totalPrice}>
-              <Text>商户单笔满{saleset.enoughmoney}元立减:</Text>
+              <Text>商户单笔满{this.caculate.merch_deductenough_enough}元立减:</Text>
               <Text style={{ color: 'red' }}>&nbsp;-&nbsp;&yen;{this.caculate.merch_deductenough_money}</Text>
             </View>
           )
@@ -470,10 +639,11 @@ class OrderCreate extends Component {
         <Text style={{ flex: 1 }}>留言：</Text>
         <TextInput
           style={{ flex: 6 }}
-          onChangeText={(text) => null}
+          onChangeText={(text) => this.setState({ remark: text })}
           multiline={true}
-          placeholder='可填'
+          placeholder='可填(50字以内)'
           underlineColorAndroid="transparent"
+          maxLength={50}
         />
       </View>
     )
@@ -508,6 +678,10 @@ class OrderCreate extends Component {
 
 
 const s = StyleSheet.create({
+  load: { position: 'absolute', top: ScreenHeight * 0.5, left: ScreenWidth * 0.5 },
+  couponSelected: {
+    borderWidth: 2, borderColor: 'red', borderRadius: 10
+  },
   modBtn: {
     flex: 1, alignItems: 'center', justifyContent: 'center', padding: 10
   },

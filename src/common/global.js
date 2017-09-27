@@ -191,3 +191,13 @@ export const ORDERCREATECACULATE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=m
 export const ORDERCREATECOUPON_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=sale.coupon.util.query';
 //创建订单请求优惠券价格
 export const ORDERCREATEGETCOUPONPRICE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.create.getcouponprice';
+//创建订单提交
+export const ORDERCREATESUB_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.create.submit';
+//收营台页面
+export const PAY_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.pay';
+//支付检测
+export const PAYCHECK_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.pay.check';
+//支付
+export const PAYCOMPLETE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.pay.complete';
+//支付成功
+export const PAYSUCCESS_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.pay.success';

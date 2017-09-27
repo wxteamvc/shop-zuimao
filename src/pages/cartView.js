@@ -126,7 +126,7 @@ class Cart extends Component {
                 <View style={{ flexDirection: 'row' }}>
                   {total == 0 ?
                     <Text style={styles.payBtnGray}>结算({total})</Text> :
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('OrderCreateView', { type: 'cart' })}>
                       <Text style={styles.payBtn}>结算({total})</Text>
                     </TouchableOpacity>
                   }
