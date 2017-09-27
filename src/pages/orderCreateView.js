@@ -206,9 +206,8 @@ class OrderCreate extends Component {
           </ScrollView>
           <View style={s.bottom}>
             <TouchableOpacity style={s.modBtn} onPress={() => {
-              this.setState({
+              this.setState({ 
                 showMod: false,
-                selectedCouponId: null,
                 selectedCouponId: null,
                 selectedCouponName: null,
                 selectedCouponDeductprice: 0,
