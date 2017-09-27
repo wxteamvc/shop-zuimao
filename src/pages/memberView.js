@@ -268,7 +268,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomOther}>
-            <TouchableOpacity onPress={() => islogin ? null : this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('RechargeRecord') : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="credit-card" size={25} color={'#FFAB15'} />
                 <Text style={styles.fontS}>充值记录</Text>
@@ -276,7 +276,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomOther}>
-            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('SignTab') : this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('Sign') : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="gift" size={25} color={'#9400d3'} />
                 <Text style={styles.fontS}>积分签到</Text>
