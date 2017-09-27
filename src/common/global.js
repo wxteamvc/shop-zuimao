@@ -192,3 +192,7 @@ export const REFUNDCANCEL_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r
 export const REFUNDEXPRESS_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.refund.express';
 //创建订单计算地址
 export const ORDERCREATECACULATE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.create.caculate';
+//创建订单请求优惠券信息
+export const ORDERCREATECOUPON_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=sale.coupon.util.query';
+//创建订单请求优惠券价格
+export const ORDERCREATEGETCOUPONPRICE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.create.getcouponprice';
