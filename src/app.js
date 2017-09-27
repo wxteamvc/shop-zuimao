@@ -41,6 +41,7 @@ import AboutUs from './pages/aboutUsView';
 import Favorite from './pages/favoriteView';
 import Pay from './pages/payView';
 import MyHistory from './pages/historyView';
+import RechargeRecord from './pages/rechargeRecordView';
 import PaySuccess from './pages/paySuccessView';
 
 const App = StackNavigator({
@@ -245,6 +246,14 @@ const App = StackNavigator({
         screen: MyHistory,
         navigationOptions: ({ navigation }) => ({
             header: null
+        }),
+    },
+    RechargeRecord: {
+        screen: RechargeRecord,
+        navigationOptions: ({ navigation }) => ({
+            headerTitle: '充值记录',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
         }),
     },
 
