@@ -260,7 +260,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomOther}>
-            <TouchableOpacity onPress={() => islogin ? null : this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('MyHistory') : this._unlogin()}>
               <View style={styles.center}>
                 <IconT name="foot" size={25} color={'#1B8EFF'} />
                 <Text style={styles.fontS}>我的足迹</Text>

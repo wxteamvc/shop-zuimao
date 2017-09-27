@@ -40,6 +40,7 @@ import RefundExpress from './pages/refundExpressView';
 import AboutUs from './pages/aboutUsView';
 import Favorite from './pages/favoriteView';
 import Pay from './pages/payView';
+import MyHistory from './pages/historyView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -237,6 +238,12 @@ const App = StackNavigator({
             headerTitle: '我的关注',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
+        }),
+    },
+    MyHistory: {
+        screen: MyHistory,
+        navigationOptions: ({ navigation }) => ({
+            header: null
         }),
     },
 

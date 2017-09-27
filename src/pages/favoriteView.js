@@ -27,7 +27,7 @@ class Favorite extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            status: 'success',
+            status: false,
             errmessage: '',
             list: [],
             page: 1,
@@ -97,26 +97,22 @@ class Favorite extends Component {
 
 
 
-    // jumpToTop = (myFlatListJumpTop) => {
-    //     if (!this.FlatListJumpTop) this.FlatListJumpTop = myFlatListJumpTop;
-    // }
+    jumpToTop = (myFlatListJumpTop) => {
+        if (!this.FlatListJumpTop) this.FlatListJumpTop = myFlatListJumpTop;
+    }
 
 
     renderGoodsList({ item }) {
         return (
-            <View style={{ borderColor: '#ccc', borderTopWidth: 0.7, borderBottomWidth: 0.7,marginTop:10,backgroundColor:'#fff' }}>
-                <View style={{ padding: 10, borderColor: '#ccc', borderBottomWidth: 0.5 }}>
-                    <Text>{item.merchname}</Text>
-                </View>
-                <TouchableOpacity style={{ flexDirection: 'row',paddingTop:10,paddingBottom:10 }}
-                onPress={()=>{this.props.navigation.navigate('GoodsInfo',{id:item.goodsid})}}
+            <View style={{ flex: 1 / 2, backgroundColor: '#fff', marginTop: 10, marginLeft: 5, marginRight: 5, borderRadius: 5 ,}}>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => { this.props.navigation.navigate('GoodsInfo', { id: item.goodsid }) }}
                 >
-                    <View style={[styles.center, { flex: 0.3 }]}>
-                        <Image source={{ uri: item.thumb }} style={{ width: 80, height: 80 }} />
-                    </View>
-                    <View style={ { flex: 0.7, paddingLeft: 10,justifyContent: 'center', }}>
-                        <Text>{item.title}</Text>
-                        <Text style={{ color: 'red' }}>&yen;{item.marketprice}</Text>
+                    <Image source={{ uri: item.thumb }} style={{ width: (ScreenWidth - 30) / 2, height: (ScreenWidth - 30) / 2,borderTopLeftRadius:5,borderTopRightRadius:5 }} />
+                    <View style={{ padding: 5, justifyContent: 'center', borderColor: '#ccc', borderTopWidth: 0.5 }}>
+                        <Text numberOfLines={1} style={{ fontSize: 12 }}>{item.title}</Text>
+                        <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>&yen;&nbsp;{item.marketprice}</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -150,12 +146,13 @@ class Favorite extends Component {
                         </TouchableOpacity>
                     </View>
                     {this.state.list.length > 0 ?
-                        <View style={{ flex: 1 }}>
+                        <View style={{ flex: 1, paddingLeft: 5, paddingRight: 5 }}>
                             <FlatListJumoTop
-                                //jumpToTop={this.jumpToTop}
+                                jumpToTop={this.jumpToTop}
                                 data={this.state.list}
                                 keyExtractor={(item, index) => index}
                                 renderItem={this.renderGoodsList.bind(this)}
+                                numColumns={2}
                                 showsVerticalScrollIndicator={false}
                                 onEndReachedThreshold={0.3}
                                 onEndReached={
