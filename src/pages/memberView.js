@@ -52,7 +52,7 @@ class Member extends Component {
         </ScrollView>
         <View style={{ backgroundColor: this.state.confBGC, paddingTop: 20, position: 'absolute', top: 0, width: ScreenWidth }}>
           <View style={styles.conf}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>this.props.navigation.navigate('Config')}>
               <Icon name='cog' color={this.state.iconC} style={styles.icon} />
             </TouchableOpacity>
             {/* <TouchableOpacity>
