@@ -26,7 +26,7 @@ export default class Pay extends Component {
     super(...props);
     this.state = {
       status: false,
-      payType: null,//credit:余额支付，we:微信支付，ali支付宝支付
+      payType: null,//credit:余额支付，wx:微信支付，ali支付宝支付
       result: null,
       showActivityIndicator: false,
     }
@@ -78,7 +78,7 @@ export default class Pay extends Component {
           <View style={s.pay}>
             <Text style={s.title}>支付方式：</Text>
             <View style={s.box}>
-              <Image source={require('../assets/images/yupay.png')} style={s.img} />
+              <Image source={require('../assets/images/creditpay.png')} style={s.img} />
               <Text style={s.text}>余额支付（当前余额<Text style={{ color: 'red' }}>&yen;{this.state.result.member.credit2}</Text>）</Text>
               <TouchableOpacity onPress={() => {
                 this._paycheck();
@@ -87,10 +87,10 @@ export default class Pay extends Component {
               </TouchableOpacity>
             </View>
             <View style={s.box}>
-              <Image source={require('../assets/images/wepay.png')} style={s.img} />
+              <Image source={require('../assets/images/wxpay.png')} style={s.img} />
               <Text style={s.text}>微信支付</Text>
-              <TouchableOpacity onPress={() => this.setState({ payType: 'we' })} style={{ flex: 1 }}>
-                {this.state.payType == 'we' ? <Icon name="check-circle" size={25} color={'#EF4F4F'} /> : <Icon name="circle-thin" size={25} />}
+              <TouchableOpacity onPress={() => this.setState({ payType: 'wx' })} style={{ flex: 1 }}>
+                {this.state.payType == 'wx' ? <Icon name="check-circle" size={25} color={'#EF4F4F'} /> : <Icon name="circle-thin" size={25} />}
               </TouchableOpacity>
             </View>
             <View style={s.box}>
