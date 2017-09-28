@@ -55,9 +55,9 @@ class Member extends Component {
             <TouchableOpacity>
               <Icon name='cog' color={this.state.iconC} style={styles.icon} />
             </TouchableOpacity>
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <Icon name='commenting-o' color={this.state.iconC} style={styles.icon} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         
