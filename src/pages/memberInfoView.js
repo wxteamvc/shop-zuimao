@@ -115,7 +115,7 @@ export default class MemberInfo extends Component {
               <Text style={{ flex: 1 }}>手机号：</Text>
               <Text style={{ flex: 2 }}>{this.state.mobile}(已绑定)</Text>
               <TouchableOpacity style={{ flex: 1, flexDirection: 'row' }}
-              onPress={()=>this.props.navigation.navigate('MemberBind',{mobile:this.state.mobile,token:this.token})}>
+              onPress={()=>this.props.navigation.navigate('MemberBind',{mobile:this.state.mobile,token:this.token,changeMobile:(e)=>this.setState({mobile:e})})}>
                 <Text style={{ flex: 1 }}>更换绑定</Text>
                 <Icon name="angle-right" size={20} color={'#ccc'} style={{ flex: 0.1 }} />
               </TouchableOpacity>

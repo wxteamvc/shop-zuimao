@@ -5,10 +5,8 @@
 "use strict";
 
 import React, { Component } from 'react';
-import { NetInfo } from 'react-native';
-import { Provider } from 'react-redux';
+import { NetInfo,View } from 'react-native';
 import App from './app';
-import Store from "./store/store";
 
 //全局联网状态
 global.isConnected = null;
@@ -40,12 +38,12 @@ export default class Root extends Component {
   render() {
     if (this.state.isok) {
       return (
-        <Provider store={ Store }>
           <App />
-        </Provider>
       );
     } else {
-      return false;
+      return (
+        <View style={{flex:1,backgroundColor:'#fff'}}></View>
+      );
     }
 
   }

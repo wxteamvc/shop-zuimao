@@ -20,7 +20,7 @@ import {
 } from 'react-native';
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux';
-import { init } from '../actions/initAction'
+// import { init } from '../actions/initAction'
 import Toast from 'react-native-root-toast';
 import ScrollViewJumpTop from '../component/scrollViewJumpTop';
 import FlatListJumpTop from '../component/flatListJumoTop';
@@ -53,8 +53,7 @@ var options = {
   }
 }
 
-
-  class HomeView extends Component {
+class HomeView extends Component {
 
   constructor(...props) {
     super(...props);
@@ -65,7 +64,6 @@ var options = {
       avatarSource: [],
     }
   }
-
 
   _imagePicker = () => {
     ImagePicker.showImagePicker(options, (res) => {
@@ -85,17 +83,6 @@ var options = {
       }
     })
   }
-
-  componentDidMount() {
-    this.props.dispatch(init())
-
-  }
-
-  // componentWillReceiveProps() {
-  //   if (this.props.homeData.status == 'failed') {
-  //     Toast.show(this.props.homeData.message)
-  //   }
-  // }
 
   render() {
     if (this.props.homeData.status == 'success') {

@@ -3361,7 +3361,7 @@ react-native-datepicker@^1.6.0:
   dependencies:
     moment "2.x.x"
 
-react-native-deprecated-custom-components@latest:
+react-native-deprecated-custom-components@^0.1.1, react-native-deprecated-custom-components@latest:
   version "0.1.1"
   resolved "http://registry.npm.taobao.org/react-native-deprecated-custom-components/download/react-native-deprecated-custom-components-0.1.1.tgz#bb911f01bf2f47f0a91764757bf918f3216e94e9"
   dependencies:

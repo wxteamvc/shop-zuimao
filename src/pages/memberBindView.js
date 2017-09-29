@@ -4,7 +4,7 @@
 "use strict";
 
 import React, { Component } from 'react';
-import { ScreenWidth, ScreenHeight, MEMBERINFO_URL, MEMBERINFOSUB_URL } from '../common/global';
+import { ScreenWidth, ScreenHeight, MEMBERBIND_URL, VERIFY_CODE_URL } from '../common/global';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, StatusBar } from 'react-native';
 import Toast from 'react-native-root-toast';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -27,38 +27,8 @@ export default class MemberBind extends Component {
       pwdSure: null,
     }
     this.token = this.props.navigation.state.params.token;
+    this.changeMobile = this.props.navigation.state.params.changeMobile;
   }
-
-  componentWillMount() {
-    this._post();
-  }
-
-  _post() {
-    let key, value;
-    for (i in this.token) {
-      key = i;
-      value = this.token[key]
-    }
-    fetch(MEMBERINFO_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: '&app=1&' + key + '=' + value,
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        if (responseJson.status == 1) {
-
-        } else {
-          Toast.show(responseJson.result.message);
-        }
-      })
-      .catch((error) => {
-        Toast.show('服务器请求失败');
-      });
-  }
-
 
   render() {
     return (
@@ -67,7 +37,7 @@ export default class MemberBind extends Component {
         <ScrollView>
           <View style={styles.inputView}>
             <View style={styles.inputbox}>
-              <Text style={{flex:1}}>手机号：</Text>
+              <Text style={{ flex: 1 }}>手机号：</Text>
               <TextInput style={styles.input}
                 onChangeText={(text) => this.setState({
                   mobile: text
@@ -77,7 +47,7 @@ export default class MemberBind extends Component {
               />
             </View>
             <View style={styles.inputbox}>
-              <Text style={{flex:1}}>验证码：</Text>
+              <Text style={{ flex: 1 }}>验证码：</Text>
               <TextInput style={styles.inputcode}
                 onChangeText={(text) => this.setState({
                   verifycode: text
@@ -92,7 +62,7 @@ export default class MemberBind extends Component {
               </View>
             </View>
             <View style={styles.inputbox}>
-              <Text style={{flex:1}}>登录密码：</Text>
+              <Text style={{ flex: 1 }}>登录密码：</Text>
               <TextInput style={styles.input}
                 onChangeText={(text) => this.setState({
                   pwd: text
@@ -102,7 +72,7 @@ export default class MemberBind extends Component {
               />
             </View>
             <View style={styles.inputbox}>
-              <Text style={{flex:1}}>确认密码：</Text>
+              <Text style={{ flex: 1 }}>确认密码：</Text>
               <TextInput style={styles.input}
                 onChangeText={(text) => this.setState({
                   pwdSure: text
@@ -132,7 +102,7 @@ export default class MemberBind extends Component {
     var pwd = this.state.pwd;
     var verifycode = this.state.verifycode;
     if (this.state.pwd === this.state.pwdSure) {
-      fetch(REGISTER_URL, {
+      fetch(MEMBERBIND_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -145,20 +115,52 @@ export default class MemberBind extends Component {
           //判断返回码
           //{ status: 0, result: { message: '*******' } }
           if (responseJson.status == 1) {
-            this.setState({
-              isRegistered: true,
-            });
-            Toast.show(responseJson.result.message);
+            this.changeMobile(this.state.mobile);
+            this.props.navigation.goBack();
+            Toast.show('绑定成功');
           } else {
-            Toast.show(responseJson.result.message);
+            Toast.show('绑定失败');
           }
         }
         ).catch((error) => {
-
           Toast.show('服务器请求失败！');
         });
     } else {
       Toast.show('两次密码不一致！');
+    }
+  }
+
+  _verifycode() {
+    var mobile = this.state.mobile;
+    var isMobile = this._checkMobile(mobile);
+    if (isMobile) {
+      fetch(VERIFY_CODE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'mobile=' + mobile + '&temp=sms_bind'
+      })
+        .then(response => response.json())
+        .then(
+        responseJson => {
+          Toast.show(responseJson.result.message);
+        }
+        ).catch((error) => {
+          Toast.show("验证码发送请求失败！");
+        });
+
+    } else {
+      Toast.show("手机号格式不正确");
+    }
+  }
+
+  _checkMobile(mobile) {
+    let re = /^1[3|4|5|7|8][0-9]{9}$/;
+    if (re.test(mobile)) {
+      return true;
+    } else {
+      return false;
     }
   }
 

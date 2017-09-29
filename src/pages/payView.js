@@ -188,7 +188,7 @@ export default class Pay extends Component {
       .then(responseJson => {
         if (responseJson.status == 1) {
           this.setState({showActivityIndicator:false});
-          this.props.navigation.navigate('PaySuccess',{result:responseJson.result})
+          this.props.navigation.navigate('PaySuccess',{result:responseJson.result,token:this.props.navigation.state.params.token})
         } else {
           Toast.show(responseJson.result.message);
         }

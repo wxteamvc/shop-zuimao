@@ -24,7 +24,7 @@ const HomeTab = TabNavigator({
             tabBarIcon: ({ focused, tintColor }) => (
                 <Text style={{ fontFamily: 'iconfont', color: tintColor, fontSize: 30 }}>&#xe613;</Text>
             ),
-            
+            // tabBarVisible:navigation.state.hasOwnProperty("params")?navigation.state.params.tabShow:false
         }),
     },
     Category: {
@@ -39,13 +39,7 @@ const HomeTab = TabNavigator({
     Cart: {
         screen: Cart,
         navigationOptions: ({ navigation }) => ({
-            tabBarLabel: () => {
-                if (navigation.state.hasOwnProperty("params")) {
-                    return `购物车 ${navigation.state.params.num}`;
-                } else {
-                    return "购物车"
-                }
-            },
+            tabBarLabel: '购物车',
             tabBarIcon: ({ focused, tintColor }) => (
                 <Text style={{ fontFamily: 'iconfont', color: tintColor, fontSize: 30 }}>&#xe62c;</Text>
             )

@@ -213,3 +213,5 @@ export const PAYSUCCESS_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=o
 export const MEMBERINFO_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.info';
 //会员信息修改提交
 export const MEMBERINFOSUB_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.info.submit';
+//会员绑定
+export const MEMBERBIND_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.bind';
