@@ -47,6 +47,7 @@ import MemberNotice from './pages/memberNoticeView';
 import Recharge from './pages/rechargeView';
 import MemberInfo from './pages/memberInfoView';
 import MemberBind from './pages/memberBindView';
+import CreditGoodInfo from './pages/creditGoodInfo';
 
 const App = StackNavigator({
     HomeTab: {
@@ -294,6 +295,15 @@ const App = StackNavigator({
         navigationOptions: ({ navigation }) => ({
             headerStyle:{height:40},
             headerTitle: '账户充值',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
+        }),
+    },
+    CreditGoodInfo: {
+        screen: CreditGoodInfo,
+        navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
+            headerTitle: '签到商品详情',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
         }),
