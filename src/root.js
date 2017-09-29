@@ -14,17 +14,11 @@ global.isConnected = null;
 export default class Root extends Component {
   constructor(...props) {
     super(...props);
-    this.state = {
-      isok: null
-    }
   }
 
   componentWillMount() {
     NetInfo.isConnected.fetch().done((isConnected) => {
       global.isConnected = isConnected;
-      this.setState({
-        isok: true,
-      })
     });
     function handleFirstConnectivityChange(isConnected) {
       global.isConnected = isConnected;
@@ -36,16 +30,9 @@ export default class Root extends Component {
   }
 
   render() {
-    if (this.state.isok) {
       return (
           <App />
       );
-    } else {
-      return (
-        <View style={{flex:1,backgroundColor:'#fff'}}></View>
-      );
-    }
-
   }
 }
 
