@@ -53,7 +53,7 @@ class Member extends Component {
         </ScrollView>
         <View style={{ backgroundColor: this.state.confBGC, paddingTop: 20, position: 'absolute', top: 0, width: ScreenWidth }}>
           <View style={styles.conf}>
-            <TouchableOpacity onPress={() => islogin ?this.props.navigation.navigate('MemberInfo',{token:this.props.loginData.data.result.token}):this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('MemberInfo', { token: this.props.loginData.data.result.token }) : this._unlogin()}>
               <Icon name='cog' color={this.state.iconC} style={styles.icon} />
             </TouchableOpacity>
             {/* <TouchableOpacity>
@@ -61,7 +61,7 @@ class Member extends Component {
             </TouchableOpacity> */}
           </View>
         </View>
-        
+
       </View>
     );
   }
@@ -83,19 +83,22 @@ class Member extends Component {
 
   //登陆状态文字
   renderText() {
-    if (this.props.loginData.status === "success" ) {
-      if(this.props.memberData.status === "success"){
+    if (this.props.loginData.status === "success") {
+      if (this.props.memberData.status === "success") {
         let memberData = this.props.memberData.data.result.member;
         let name = memberData.realname == null || memberData.realname == '' ? memberData.nickname : memberData.realname;
-        let levelname = memberData.levelname == null || memberData.levelname == '' ? '[普通会员]' : memberData.levelname;
+        let levelname = memberData.levelname == null || memberData.levelname == '' ? '普通会员' : memberData.levelname;
+        let level = this.props.memberData.data.result.level;
         return (
           <View>
             <Text style={[styles.fontWhite, { fontSize: 18 }]}>{name}</Text>
-            <Text style={styles.fontWhite}>{levelname}</Text>
+            <Text style={styles.levelname}>
+              <Icon name='vimeo' color='#F3CB12' style={styles.icon} />&nbsp;
+              {level.id != '' && level.id != null && level.id != undefined ? level.levelname : levelname}
+            </Text>
           </View>
-  
         )
-      }else{
+      } else {
         return false
       }
     } else {
@@ -106,7 +109,6 @@ class Member extends Component {
       )
     }
   }
-
   //订单
   renderOrder() {
     let islogin = this.props.loginData.status === "success" && this.props.memberData.status === "success";
@@ -226,7 +228,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomList}>
-            <TouchableOpacity onPress={() => islogin ?  this.props.navigation.navigate('Sign',{page:3}) : this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('Sign', { page: 3 }) : this._unlogin()}>
               <View style={styles.center}>
                 <Text style={{ fontSize: 16 }}>{credit1}</Text>
                 <Text style={styles.fontS}>积分</Text>
@@ -245,7 +247,7 @@ class Member extends Component {
       <View style={styles.modView}>
         <View style={[styles.modBottom, { flexWrap: 'wrap' }]}>
           <View style={styles.modBottomOther}>
-            <TouchableOpacity onPress={() => islogin ?this.props.navigation.navigate('Favorite') : this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('Favorite') : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="heart" size={25} color={'#FB585E'} />
                 <Text style={styles.fontS}>我的关注</Text>
@@ -277,7 +279,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomOther}>
-            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('Sign',{}) : this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('Sign', {}) : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="gift" size={25} color={'#9400d3'} />
                 <Text style={styles.fontS}>积分签到</Text>
@@ -349,6 +351,14 @@ const styles = StyleSheet.create({
   },
   fontWhite: {
     color: 'white',
+  },
+  levelname: {
+    color: 'white',
+    backgroundColor: '#9F3838',
+    borderRadius: 10,
+    paddingRight: 5,
+    marginTop: 10,
+    fontSize:12
   },
   topView: {
     height: 170,

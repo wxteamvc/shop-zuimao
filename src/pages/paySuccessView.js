@@ -26,11 +26,10 @@ export default class PaySuccess extends Component {
     super(...props);
     this.state = {
     }
+    this.result = this.props.navigation.state.params.result;
+    this.token = this.props.navigation.state.params.token;
   }
 
-  // componentWillMount() {
-  //   let result=this.props.navigation.state.params.result;
-  // }
 
   render() {
     return (
@@ -49,19 +48,19 @@ export default class PaySuccess extends Component {
             <Icon name={'map-marker'} size={15} />
           </View>
           <View style={{ flex: 0.9 }}>
-            <Text style={{ fontSize: 14, marginBottom: 5, }}>测试 13900000000</Text>
+            <Text style={{ fontSize: 14, marginBottom: 5, }}>{this.result.address.realname}&nbsp;{this.result.address.mobile}</Text>
             <Text style={{ fontSize: 12, }}>
-              北京市北京辖区东城区朝阳区玄武区永安区北京市北京辖区东城区朝阳区玄武区永安区
-              </Text>
+              {this.result.address.province + this.result.address.city + this.result.address.area + this.result.address.address}
+            </Text>
           </View>
         </View>
-        <View style={[styles.rowBetween,styles.middle2]}>
+        <View style={[styles.rowBetween, styles.middle2]}>
           <Text>实付金额</Text>
-          <Text style={{ color: 'red' }}>&yen;19.90</Text>
+          <Text style={{ color: 'red' }}>&yen;{this.result.order.price}</Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 20 }}>
           <View style={styles.center}>
-            <TouchableOpacity style={styles.btn}>
+            <TouchableOpacity style={styles.btn} onPress={()=>this.props.navigation.navigate('OrderDetail',{id:this.result.order.id,token:this.token})}>
               <Text style={{ color: 'red' }}>订单详情</Text>
             </TouchableOpacity>
           </View>
@@ -101,22 +100,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#EFEFEF',
   },
-  top:{
+  top: {
     flexDirection: 'row', backgroundColor: '#C10001', paddingTop: 20, paddingBottom: 20
   },
-  text1:{
+  text1: {
     fontSize: 16, marginBottom: 5, color: '#fff'
   },
-  text2:{
+  text2: {
     fontSize: 12, color: '#fff'
   },
-  middle:{
+  middle: {
     flexDirection: 'row', backgroundColor: '#fff', margin: 10, paddingTop: 5, paddingBottom: 5
   },
-  middle2:{
+  middle2: {
     marginLeft: 10, marginRight: 10, backgroundColor: '#fff', paddingTop: 10, paddingBottom: 10
   },
-  btn:{
-    padding: 5, paddingLeft: 25, paddingRight: 25, borderColor: 'red', borderWidth: 0.7, borderRadius: 5 
+  btn: {
+    padding: 5, paddingLeft: 25, paddingRight: 25, borderColor: 'red', borderWidth: 0.7, borderRadius: 5
   }
 })
