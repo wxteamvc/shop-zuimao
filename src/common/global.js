@@ -96,7 +96,8 @@ export const HISTORY_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=member
 export const DELETEHISTORY_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=member.history.remove&mid=3773';
 //充值记录地址
 export const RECHARGERECORD_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=member.log.get_list&mid=3773';
-
+//消息提醒设置地址
+export const MEMBERNOTICE_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=member.notice&mid=3773';
 
 
 

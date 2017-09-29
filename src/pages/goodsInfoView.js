@@ -238,7 +238,7 @@ class GoodsInfo extends Component {
                             <TouchableOpacity style={[{ flex: 0.1, },]} onPress={() => {
                                 this.props.navigation.goBack(null)
                             }}>
-                                <Icon name={'angle-left'} size={30} color={'#ccc'} style={{ marginLeft: 10 }} />
+                                <Icon name={'angle-left'} size={30} color={'#000'} style={{ marginLeft: 10 }} />
                             </TouchableOpacity>
                             <View style={styles.topNavRight}>
                                 <View style={[{ borderColor: this.state.page == 1 ? 'red' : '#ccc', }, styles.top]}>

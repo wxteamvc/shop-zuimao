@@ -210,7 +210,7 @@ class Member extends Component {
         </View>
         <View style={styles.modBottom}>
           <View style={styles.modBottomList}>
-            <TouchableOpacity onPress={() => islogin ? null : this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('Recharge') : this._unlogin()}>
               <View style={styles.center}>
                 <Text style={{ fontSize: 16 }}>{credit2}</Text>
                 <Text style={styles.fontS}>账户余额</Text>
@@ -226,7 +226,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomList}>
-            <TouchableOpacity onPress={() => islogin ? null : this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ?  this.props.navigation.navigate('Sign',{page:3}) : this._unlogin()}>
               <View style={styles.center}>
                 <Text style={{ fontSize: 16 }}>{credit1}</Text>
                 <Text style={styles.fontS}>积分</Text>
@@ -277,7 +277,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomOther}>
-            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('Sign') : this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('Sign',{}) : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="gift" size={25} color={'#9400d3'} />
                 <Text style={styles.fontS}>积分签到</Text>
@@ -293,7 +293,7 @@ class Member extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.modBottomOther}>
-            <TouchableOpacity onPress={() => islogin ? null : this._unlogin()}>
+            <TouchableOpacity onPress={() => islogin ? this.props.navigation.navigate('MemberNotice') : this._unlogin()}>
               <View style={styles.center}>
                 <Icon name="bell" size={25} color={'#6b8e23'} />
                 <Text style={styles.fontS}>消息提醒</Text>

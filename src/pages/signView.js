@@ -33,10 +33,16 @@ class Sign extends Component {
         this.state = {
             status: false,
             page: 1,
-            
-
         }
+      
     }
+
+
+    componentWillMount() {
+       this.props.navigation.state.params.page?  this.setState({ page: this.props.navigation.state.params.page }):false; 
+    }
+
+
 
     show() {
         if (this.state.page == 1) {

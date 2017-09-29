@@ -43,6 +43,8 @@ import Pay from './pages/payView';
 import MyHistory from './pages/historyView';
 import RechargeRecord from './pages/rechargeRecordView';
 import PaySuccess from './pages/paySuccessView';
+import MemberNotice from './pages/memberNoticeView';
+import Recharge from './pages/rechargeView';
 import MemberInfo from './pages/memberInfoView';
 import MemberBind from './pages/memberBindView';
 
@@ -56,6 +58,7 @@ const App = StackNavigator({
     Sign: {
         screen: Sign,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '积分签到',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <View style={{ flex: 0.1 }}></View>,
@@ -64,6 +67,7 @@ const App = StackNavigator({
     SignRecord: {
         screen: SignRecord,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '详细记录',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <View style={{ flex: 0.1 }}></View>,
@@ -72,6 +76,7 @@ const App = StackNavigator({
     Coupons: {
         screen: Coupons,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '领券中心',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <View style={{ flex: 0.1 }}></View>,
@@ -80,6 +85,7 @@ const App = StackNavigator({
     Login: {
         screen: Login,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '登录',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight:
@@ -91,6 +97,7 @@ const App = StackNavigator({
     Register: {
         screen: Register,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '注册',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
@@ -129,6 +136,7 @@ const App = StackNavigator({
     Address: {
         screen: Address,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '收货地址管理',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
@@ -137,6 +145,7 @@ const App = StackNavigator({
     OrderCreateView: {
         screen: OrderCreateView,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '确认订单',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
@@ -145,6 +154,7 @@ const App = StackNavigator({
     AddressEdit: {
         screen: AddressEdit,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '编辑收货地址',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
@@ -153,6 +163,7 @@ const App = StackNavigator({
     AddressAdd: {
         screen: AddressAdd,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '新增收货地址',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
@@ -161,6 +172,7 @@ const App = StackNavigator({
     WebView: {
         screen: WebView,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '公告',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <View style={{ flex: 0.1 }}></View>,
@@ -169,6 +181,7 @@ const App = StackNavigator({
     Notice: {
         screen: Notice,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '热点',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <View style={{ flex: 0.1 }}></View>,
@@ -177,6 +190,7 @@ const App = StackNavigator({
     CouponInfo: {
         screen: CouponInfo,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '优惠券详情',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <View style={{ flex: 0.1 }}></View>,
@@ -185,6 +199,7 @@ const App = StackNavigator({
     OrderList: {
         screen: OrderList,
         // navigationOptions: ({ navigation }) => ({
+            //headerStyle:{height:40},
         //     headerTitle: '我的订单',
         //     headerTitleStyle: { alignSelf: 'center' },
         //     headerRight: <Text></Text>
@@ -193,6 +208,7 @@ const App = StackNavigator({
     Express: {
         screen: Express,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '物流信息',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
@@ -201,6 +217,7 @@ const App = StackNavigator({
     OrderDetail: {
         screen: OrderDetail,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '订单详情',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
@@ -209,6 +226,7 @@ const App = StackNavigator({
     Comment: {
         screen: Comment,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '评论',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
@@ -223,6 +241,7 @@ const App = StackNavigator({
     MyCoupons: {
         screen: MyCoupons,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '我的优惠券',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
@@ -231,6 +250,7 @@ const App = StackNavigator({
     AboutUs: {
         screen: AboutUs,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '关于我们',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
@@ -239,6 +259,7 @@ const App = StackNavigator({
     Favorite: {
         screen: Favorite,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '我的关注',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
@@ -253,7 +274,26 @@ const App = StackNavigator({
     RechargeRecord: {
         screen: RechargeRecord,
         navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
             headerTitle: '充值记录',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
+        }),
+    },
+    MemberNotice: {
+        screen: MemberNotice,
+        navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
+            headerTitle: '消息提醒设置',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
+        }),
+    },
+    Recharge: {
+        screen: Recharge,
+        navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
+            headerTitle: '账户充值',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
         }),

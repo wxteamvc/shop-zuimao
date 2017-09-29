@@ -132,7 +132,7 @@ class RechargeRecord extends Component {
                     <View style={{ flex: 0.8, paddingLeft: 10 }}>
                         <Text>{text1}{item.money}</Text>
                         {item.type == 1 ?
-                            <Text>(提现方式:{item.typestr}，实际{item.status==1?'到账':'金额'}：{item.deductionmoney>0?item.realmoney:item.money}元，手续费:{item.deductionmoney}元 )</Text>
+                            <Text>(提现方式:{item.typestr}，实际{item.status == 1 ? '到账' : '金额'}：{item.deductionmoney > 0 ? item.realmoney : item.money}元，手续费:{item.deductionmoney}元 )</Text>
                             : false}
                     </View>
                 </View>
@@ -145,6 +145,10 @@ class RechargeRecord extends Component {
         if (this.state.status == 'success') {
             return (
                 <View style={{ flex: 1 }}>
+                    <StatusBar
+                        translucent={false}
+                        backgroundColor="#000"
+                    />
                     {this.state.list.length > 0 ?
                         <View style={{ flex: 1, paddingLeft: 10, paddingRight: 10 }}>
                             <FlatListJumoTop
