@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import Icon2 from 'react-native-vector-icons/dist/Ionicons';
 import Toast from 'react-native-root-toast';
 import Util from '../common/util';
 import Loading from '../component/loading';
@@ -134,7 +135,7 @@ class MyHistory extends Component {
         let url = DELETEHISTORY_URL + token;
         let ids = '';
         for (let i = 0; i < this.state.ids.length; i++) {
-                ids += '&ids[]=' + this.state.ids[i]
+            ids += '&ids[]=' + this.state.ids[i]
         }
         if (global.isConnected) {
             fetch(url, {
@@ -178,6 +179,10 @@ class MyHistory extends Component {
     renderList({ item }) {
         return (
             <View style={{ backgroundColor: '#fff', marginTop: 10, paddingLeft: 10, paddingRight: 10 }}>
+                <StatusBar
+                    translucent={false}
+                    backgroundColor="#000"
+                />
                 <View style={[styles.rowBetween, { borderColor: '#ccc', borderBottomWidth: 0.5, paddingTop: 5, paddingBottom: 5 }]}>
                     <Text style={{ fontSize: 12 }}>{item.createtime}</Text>
                     <Text style={{ fontSize: 12 }}>{item.merchname}</Text>
@@ -216,15 +221,15 @@ class MyHistory extends Component {
                         <TouchableOpacity
                             onPress={() => { this.props.navigation.goBack(null) }}
                             style={[styles.center, { flex: 0.15 }]}>
-                            <Icon name={'angle-left'} size={20} />
+                            <Icon2 name={'md-arrow-back'} size={25} color={'#000'} />
                         </TouchableOpacity>
                         <View style={[styles.center, { flex: 0.7 }]}>
-                            <Text>我的足迹</Text>
+                            <Text style={{ color: '#000', fontSize:20,fontWeight:'bold' }}>我的足迹</Text>
                         </View>
                         <TouchableOpacity
                             onPress={() => { this.setState({ edit: this.state.edit ? false : true, ids: [], chooseAll: false }) }}
                             style={[styles.center, { flex: 0.15 }]}>
-                            <Text>{this.state.edit ? '完成' : '编辑'}</Text>
+                            <Text style={{ fontSize: 12 }}>{this.state.edit ? '完成' : '编辑'}</Text>
                         </TouchableOpacity>
                     </View>
                     {this.state.list.length > 0 ?

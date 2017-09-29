@@ -127,6 +127,10 @@ class Favorite extends Component {
         if (this.state.status == 'success') {
             return (
                 <View style={{ flex: 1, backgroundColor: '#EFEFEF' }}>
+                     <StatusBar
+                        translucent={false}
+                        backgroundColor="#000"
+                    />
                     <View style={styles.topNav}>
                         <TouchableOpacity
                             onPress={() => {
