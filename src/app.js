@@ -45,6 +45,8 @@ import RechargeRecord from './pages/rechargeRecordView';
 import PaySuccess from './pages/paySuccessView';
 import MemberNotice from './pages/memberNoticeView';
 import Recharge from './pages/rechargeView';
+import MemberInfo from './pages/memberInfoView';
+import MemberBind from './pages/memberBindView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -311,6 +313,12 @@ const App = StackNavigator({
     },
     PaySuccess:{
         screen: PaySuccess,
+    },
+    MemberInfo:{
+        screen: MemberInfo,
+    },
+    MemberBind:{
+        screen: MemberBind,
     }
 });
 

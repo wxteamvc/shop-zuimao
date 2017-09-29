@@ -32,6 +32,7 @@ class Member extends Component {
   }
 
   render() {
+    let islogin = this.props.loginData.status === "success" && this.props.memberData.status === "success";
     return (
       <View style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator={false} onScroll={(e) => this._conBGC(e)}>
@@ -52,12 +53,12 @@ class Member extends Component {
         </ScrollView>
         <View style={{ backgroundColor: this.state.confBGC, paddingTop: 20, position: 'absolute', top: 0, width: ScreenWidth }}>
           <View style={styles.conf}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => islogin ?this.props.navigation.navigate('MemberInfo',{token:this.props.loginData.data.result.token}):this._unlogin()}>
               <Icon name='cog' color={this.state.iconC} style={styles.icon} />
             </TouchableOpacity>
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <Icon name='commenting-o' color={this.state.iconC} style={styles.icon} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         

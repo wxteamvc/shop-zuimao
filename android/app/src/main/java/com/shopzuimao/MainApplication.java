@@ -3,6 +3,8 @@ package com.shopzuimao;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.theweflex.react.WeChatPackage;
+import com.theweflex.react.WeChatPackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.beefe.picker.PickerViewPackage;
@@ -27,6 +29,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new WeChatPackage(),
+            new WeChatPackage(),
             new RCTCameraPackage(),
             new ImagePickerPackage(R.style.MyDialogStyle),
             new PickerViewPackage(),

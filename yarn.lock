@@ -1479,6 +1479,10 @@ event-target-shim@^1.0.5:
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/event-target-shim/download/event-target-shim-1.1.1.tgz#a86e5ee6bdaa16054475da797ccddf0c55698491"
 
+events@1.0.2:
+  version "1.0.2"
+  resolved "http://registry.npm.taobao.org/events/download/events-1.0.2.tgz#75849dcfe93d10fb057c30055afdbd51d06a8e24"
+
 exec-sh@^0.2.0:
   version "0.2.0"
   resolved "http://registry.npm.taobao.org/exec-sh/download/exec-sh-0.2.0.tgz#14f75de3f20d286ef933099b2ce50a90359cef10"
@@ -2862,6 +2866,10 @@ minimist@~0.0.1:
   dependencies:
     minimist "0.0.8"
 
+moment@2.x.x:
+  version "2.18.1"
+  resolved "http://registry.npm.taobao.org/moment/download/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
+
 morgan@~1.6.1:
   version "1.6.1"
   resolved "http://registry.npm.taobao.org/morgan/download/morgan-1.6.1.tgz#5fd818398c6819cba28a7cd6664f292fe1c0bbf2"
@@ -3347,6 +3355,12 @@ react-native-camera@^0.7.0:
   version "0.7.0"
   resolved "http://registry.npm.taobao.org/react-native-camera/download/react-native-camera-0.7.0.tgz#a033a80b73fb1d56c2459a829f65a6f8f1a7328c"
 
+react-native-datepicker@^1.6.0:
+  version "1.6.0"
+  resolved "http://registry.npm.taobao.org/react-native-datepicker/download/react-native-datepicker-1.6.0.tgz#3a40dc9b112023c49d60ba2a0789d440b7e3d97c"
+  dependencies:
+    moment "2.x.x"
+
 react-native-deprecated-custom-components@latest:
   version "0.1.1"
   resolved "http://registry.npm.taobao.org/react-native-deprecated-custom-components/download/react-native-deprecated-custom-components-0.1.1.tgz#bb911f01bf2f47f0a91764757bf918f3216e94e9"
@@ -3424,6 +3438,12 @@ react-native-vector-icons@^4.3.0:
     lodash "^4.0.0"
     prop-types "^15.5.10"
     yargs "^8.0.2"
+
+react-native-wechat@^1.9.9:
+  version "1.9.9"
+  resolved "http://registry.npm.taobao.org/react-native-wechat/download/react-native-wechat-1.9.9.tgz#acc4f7f22a3aeae13671108bcee39cbcb023c23a"
+  dependencies:
+    events "1.0.2"
 
 react-native@0.47.2:
   version "0.47.2"
