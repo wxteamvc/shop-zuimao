@@ -20,7 +20,7 @@ import {
 } from 'react-native';
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux';
-// import { init } from '../actions/initAction'
+import { init } from '../actions/initAction'
 import Toast from 'react-native-root-toast';
 import ScrollViewJumpTop from '../component/scrollViewJumpTop';
 import FlatListJumpTop from '../component/flatListJumoTop';

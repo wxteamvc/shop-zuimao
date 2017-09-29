@@ -20,6 +20,16 @@ class Launch extends Component {
 
   constructor(...props) {
     super(...props);
+    NetInfo.isConnected.fetch().done((isConnected) => {
+      global.isConnected = isConnected;
+    });
+    function handleFirstConnectivityChange(isConnected) {
+      global.isConnected = isConnected;
+    }
+    NetInfo.isConnected.addEventListener(
+      'channge',
+      handleFirstConnectivityChange
+    );
     this.state = {
       time: 3
     }
@@ -36,21 +46,7 @@ class Launch extends Component {
     );
   }
 
-  componentWillMount() {
-    NetInfo.isConnected.fetch().done((isConnected) => {
-      global.isConnected = isConnected;
-    });
-    function handleFirstConnectivityChange(isConnected) {
-      global.isConnected = isConnected;
-    }
-    NetInfo.isConnected.addEventListener(
-      'channge',
-      handleFirstConnectivityChange
-    );
-  }
-
   componentDidMount() {
-    this.props.dispatch(init());
     this.timer = setInterval(() => {
       this.setState({ time: this.state.time > 0 ? --this.state.time : 0 })
       if (this.state.time == 0 && this.props.homeData.status == 'success') {
@@ -61,8 +57,9 @@ class Launch extends Component {
         });
       }
     }, 1000)
-
+    this.props.dispatch(init());
   }
+  
   componentWillUnmount() {
     this.timer && clearInterval(this.timer);
   }
