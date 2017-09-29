@@ -27,38 +27,8 @@ export default class MemberBind extends Component {
       pwdSure: null,
     }
     this.token = this.props.navigation.state.params.token;
+    this.changeMobile = this.props.navigation.state.params.changeMobile;
   }
-
-  componentWillMount() {
-    this._post();
-  }
-
-  _post() {
-    let key, value;
-    for (i in this.token) {
-      key = i;
-      value = this.token[key]
-    }
-    fetch(MEMBERINFO_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: '&app=1&' + key + '=' + value,
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        if (responseJson.status == 1) {
-
-        } else {
-          Toast.show(responseJson.result.message);
-        }
-      })
-      .catch((error) => {
-        Toast.show('服务器请求失败');
-      });
-  }
-
 
   render() {
     return (
@@ -67,7 +37,7 @@ export default class MemberBind extends Component {
         <ScrollView>
           <View style={styles.inputView}>
             <View style={styles.inputbox}>
-              <Text style={{flex:1}}>手机号：</Text>
+              <Text style={{ flex: 1 }}>手机号：</Text>
               <TextInput style={styles.input}
                 onChangeText={(text) => this.setState({
                   mobile: text
@@ -77,7 +47,7 @@ export default class MemberBind extends Component {
               />
             </View>
             <View style={styles.inputbox}>
-              <Text style={{flex:1}}>验证码：</Text>
+              <Text style={{ flex: 1 }}>验证码：</Text>
               <TextInput style={styles.inputcode}
                 onChangeText={(text) => this.setState({
                   verifycode: text
@@ -92,7 +62,7 @@ export default class MemberBind extends Component {
               </View>
             </View>
             <View style={styles.inputbox}>
-              <Text style={{flex:1}}>登录密码：</Text>
+              <Text style={{ flex: 1 }}>登录密码：</Text>
               <TextInput style={styles.input}
                 onChangeText={(text) => this.setState({
                   pwd: text
@@ -102,7 +72,7 @@ export default class MemberBind extends Component {
               />
             </View>
             <View style={styles.inputbox}>
-              <Text style={{flex:1}}>确认密码：</Text>
+              <Text style={{ flex: 1 }}>确认密码：</Text>
               <TextInput style={styles.input}
                 onChangeText={(text) => this.setState({
                   pwdSure: text
@@ -145,16 +115,14 @@ export default class MemberBind extends Component {
           //判断返回码
           //{ status: 0, result: { message: '*******' } }
           if (responseJson.status == 1) {
-            this.setState({
-              isRegistered: true,
-            });
+            this.changeMobile(this.state.mobile);
+            this.props.navigation.goBack();
             Toast.show(responseJson.result.message);
           } else {
             Toast.show(responseJson.result.message);
           }
         }
         ).catch((error) => {
-
           Toast.show('服务器请求失败！');
         });
     } else {
