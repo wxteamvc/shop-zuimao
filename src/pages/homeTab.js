@@ -23,7 +23,8 @@ const HomeTab = TabNavigator({
             tabBarLabel: '首页',
             tabBarIcon: ({ focused, tintColor }) => (
                 <Text style={{ fontFamily: 'iconfont', color: tintColor, fontSize: 30 }}>&#xe613;</Text>
-            )
+            ),
+            
         }),
     },
     Category: {

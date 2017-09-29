@@ -93,7 +93,9 @@ class CreditShop extends Component {
                         </TouchableOpacity>
                     </View>
                     {this.state.data.exchanges.length > 0 ?
-                        <ShopList icon={'gift'} title={'积分实物兑换'} list={this.state.data.exchanges} />
+                        <ShopList 
+                        {...this.props}
+                        icon={'gift'} title={'积分实物兑换'} list={this.state.data.exchanges} />
                         : false}
                 </View>
             )
@@ -123,7 +125,9 @@ class ShopList extends Component {
         let itemPart = [];
         for (let i = 0; i < this.list.length; i++) {
             itemPart.push(
-                <View style={[{ flex: 1 / 3, padding: 10 }, styles.center]} key={i}>
+                <TouchableOpacity 
+                onPress={()=>{this.props.navigation.navigate('CreditGoodInfo')}}
+                style={[{ flex: 1 / 3, padding: 10 }, styles.center]} key={i}>
                     <View>
                         <Image
                             source={{ uri: this.list[i].thumb }}
@@ -139,7 +143,7 @@ class ShopList extends Component {
                             <Text style={{ color: '#fff' }}>兑换</Text>
                         </TouchableOpacity>
                     </View>
-                </View>
+                </TouchableOpacity>
             )
         }
         return (
