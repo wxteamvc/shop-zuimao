@@ -1,18 +1,19 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
+ * 欢迎页面
  */
 
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View,NetInfo } from 'react-native';
 
 var Dimensions = require('Dimensions');
 var { width, height } = Dimensions.get('window');
-import Root from './root'
 import Loading from './component/loading';
 import { connect } from 'react-redux';
-import { init } from './actions/initAction'
+import { init } from './actions/initAction';
+import App from './app';
+
+//全局联网状态
+global.isConnected = null;
 
 class Launch extends Component {
 
@@ -29,6 +30,16 @@ class Launch extends Component {
   }
 
   componentWillMount() {
+    NetInfo.isConnected.fetch().done((isConnected) => {
+      global.isConnected = isConnected;
+    });
+    function handleFirstConnectivityChange(isConnected) {
+      global.isConnected = isConnected;
+    }
+    NetInfo.isConnected.addEventListener(
+      'channge',
+      handleFirstConnectivityChange
+    );
     this.props.dispatch(init());
   }
 
@@ -36,7 +47,7 @@ class Launch extends Component {
     this.timer = setTimeout(() => {
       this.props.navigator.replace({
         title: '首页',
-        component: Root,
+        component: App,
         //    passProps:{'id':1}传值
       });
     }, 1000)
