@@ -208,3 +208,7 @@ export const PAYCHECK_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=ord
 export const PAYCOMPLETE_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.pay.complete';
 //支付成功
 export const PAYSUCCESS_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=order.pay.success';
+//会员信息
+export const MEMBERINFO_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.info';
+//会员信息修改提交
+export const MEMBERINFOSUB_URL = BASIC_URL + '?i=1&c=entry&m=ice_shop&do=mobile&r=member.info.submit';
