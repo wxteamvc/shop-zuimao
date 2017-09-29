@@ -12,7 +12,7 @@ import {
     FlatList,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
-import { ScreenWidth, DOMAIN ,JUMP} from '../common/global';
+import { ScreenWidth, DOMAIN, JUMP } from '../common/global';
 
 export default class Notice extends Component {
     constructor(props) {
@@ -39,14 +39,14 @@ export default class Notice extends Component {
             news.push(
                 <View key={i} style={{ flex: 1, justifyContent: 'center', }}>
                     <TouchableOpacity
-                        onPress={() => { JUMP(this.props.notices[i].link,this.props.navigation) }}
+                        onPress={() => { JUMP(this.props.notices[i].link, this.props.navigation) }}
                     >
                         <Text numberOfLines={1} >{this.props.notices[i].title}</Text>
                     </TouchableOpacity>
                 </View>
             )
         }
-        return (news)
+        return news;
     }
     getURLPara(name) {
         var reg = new RegExp("[^\?&]?" + encodeURI(name) + "=[^&]+");
@@ -58,35 +58,39 @@ export default class Notice extends Component {
     }
 
     render() {
-        return (
-            <View style={styles.notice}>
-                <Image
-                    source={require('../assets/images/notice.jpg')}
-                    style={styles.notice_hotimage}
-                    resizeMode={'stretch'}
-                />
-                <View style={styles.notice_mid}>
-                    <Text style={styles.notice_mid_text1}>：</Text>
-                    <Text style={styles.notice_mid_text2}>推荐</Text>
-                    <Swiper
-                        style={{ flex: 1 }}
-                        horizontal={false}
-                        autoplay={true}
-                        showsPagination={false}
+        if (this.state.isShow) {
+            return (
+                <View style={styles.notice}>
+                    <Image
+                        source={require('../assets/images/notice.jpg')}
+                        style={styles.notice_hotimage}
+                        resizeMode={'stretch'}
+                    />
+                    <View style={styles.notice_mid}>
+                        <Text style={styles.notice_mid_text1}>：</Text>
+                        <Text style={styles.notice_mid_text2}>推荐</Text>
+                        <Swiper
+                            style={{ flex: 1 }}
+                            horizontal={false}
+                            autoplay={true}
+                            showsPagination={false}
 
-                    >
-                        {this.renderNotices()}
-                    </Swiper>
+                        >
+                            {this.renderNotices()}
+                        </Swiper>
+                    </View>
+                    <View style={{ flex: 0.15 }}>
+                        <TouchableOpacity
+                            onPress={() => { this.props.navigation.navigate('Notice', { notice: this.props.notices }) }}
+                        >
+                            <Text style={styles.notice_right}>更多</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View style={{ flex: 0.15 }}>
-                    <TouchableOpacity
-                    onPress={()=>{this.props.navigation.navigate('Notice',{notice:this.props.notices})}}
-                    >
-                        <Text style={styles.notice_right}>更多</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        )
+            )
+        } else {
+            return false;
+        }
     }
 
 }

@@ -19,17 +19,6 @@ class Launch extends Component {
 
   constructor(...props) {
     super(...props);
-  }
-
-  render() {
-    return (
-      <View style={{ flex: 1 }}>
-        <Loading />
-      </View>
-    );
-  }
-
-  componentWillMount() {
     NetInfo.isConnected.fetch().done((isConnected) => {
       global.isConnected = isConnected;
     });
@@ -39,6 +28,14 @@ class Launch extends Component {
     NetInfo.isConnected.addEventListener(
       'channge',
       handleFirstConnectivityChange
+    );
+  }
+
+  render() {
+    return (
+      <View style={{ flex: 1 }}>
+        <Loading />
+      </View>
     );
   }
 
@@ -52,6 +49,7 @@ class Launch extends Component {
     }, 1000)
     this.props.dispatch(init());
   }
+  
   componentWillUnmount() {
     this.timer && clearTimeout(this.timer);
   }
