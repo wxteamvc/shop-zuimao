@@ -23,6 +23,11 @@ class Member extends Component {
     }
   }
 
+  componentWillMount() {
+    let token = this.props.loginData.data.result.token;
+    this.props.dispatch(memberInfo(token))
+  }
+
   componentDidUpdate(nextProps) {
     //请求用户信息
     if (this.props.loginData.status === "success" && this.props.memberData.status !== 'success') {
@@ -92,10 +97,10 @@ class Member extends Component {
         return (
           <View>
             <Text style={[styles.fontWhite, { fontSize: 18 }]}>{name}</Text>
-            <Text style={styles.levelname}>
-              <Icon name='vimeo' color='#F3CB12' style={styles.icon} />&nbsp;
-              {level.id != '' && level.id != null && level.id != undefined ? level.levelname : levelname}
-            </Text>
+            <View style={styles.levelname}>
+              <Icon name='vimeo' color={this._levelColor(level)} style={styles.icon} />
+              <Text style={{ color: '#fff', fontSize: 12 }}>&nbsp;&nbsp;{level.id != '' && level.id != null && level.id != undefined ? level.levelname : levelname}</Text>
+            </View>
           </View>
         )
       } else {
@@ -109,6 +114,22 @@ class Member extends Component {
       )
     }
   }
+
+  _levelColor(level) {
+    switch (level.level) {
+      case '1':
+        return '#F5E509'
+      case '2':
+        return '#2FD475'
+      case '4':
+        return '#4290F2'
+      case '5':
+        return '#CF3DF5'
+      default:
+        return '#C39169'
+    }
+  }
+
   //订单
   renderOrder() {
     let islogin = this.props.loginData.status === "success" && this.props.memberData.status === "success";
@@ -353,12 +374,14 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   levelname: {
-    color: 'white',
+    flexDirection: 'row',
     backgroundColor: '#9F3838',
-    borderRadius: 10,
-    paddingRight: 5,
+    borderRadius: 15,
+    padding: 3,
+    paddingRight: 8,
     marginTop: 10,
-    fontSize:12
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   topView: {
     height: 170,
@@ -373,7 +396,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: 18,
-    marginLeft: 20,
   },
   userIconView: {
     width: 70,
