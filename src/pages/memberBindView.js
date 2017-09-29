@@ -4,7 +4,7 @@
 "use strict";
 
 import React, { Component } from 'react';
-import { ScreenWidth, ScreenHeight, MEMBERINFO_URL, MEMBERINFOSUB_URL } from '../common/global';
+import { ScreenWidth, ScreenHeight, MEMBERBIND_URL, VERIFY_CODE_URL } from '../common/global';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, StatusBar } from 'react-native';
 import Toast from 'react-native-root-toast';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -102,7 +102,7 @@ export default class MemberBind extends Component {
     var pwd = this.state.pwd;
     var verifycode = this.state.verifycode;
     if (this.state.pwd === this.state.pwdSure) {
-      fetch(REGISTER_URL, {
+      fetch(MEMBERBIND_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -117,9 +117,9 @@ export default class MemberBind extends Component {
           if (responseJson.status == 1) {
             this.changeMobile(this.state.mobile);
             this.props.navigation.goBack();
-            Toast.show(responseJson.result.message);
+            Toast.show('绑定成功');
           } else {
-            Toast.show(responseJson.result.message);
+            Toast.show('绑定失败');
           }
         }
         ).catch((error) => {
@@ -127,6 +127,40 @@ export default class MemberBind extends Component {
         });
     } else {
       Toast.show('两次密码不一致！');
+    }
+  }
+
+  _verifycode() {
+    var mobile = this.state.mobile;
+    var isMobile = this._checkMobile(mobile);
+    if (isMobile) {
+      fetch(VERIFY_CODE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'mobile=' + mobile + '&temp=sms_bind'
+      })
+        .then(response => response.json())
+        .then(
+        responseJson => {
+          Toast.show(responseJson.result.message);
+        }
+        ).catch((error) => {
+          Toast.show("验证码发送请求失败！");
+        });
+
+    } else {
+      Toast.show("手机号格式不正确");
+    }
+  }
+
+  _checkMobile(mobile) {
+    let re = /^1[3|4|5|7|8][0-9]{9}$/;
+    if (re.test(mobile)) {
+      return true;
+    } else {
+      return false;
     }
   }
 
