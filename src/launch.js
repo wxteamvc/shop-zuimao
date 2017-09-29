@@ -40,7 +40,6 @@ class Launch extends Component {
       'channge',
       handleFirstConnectivityChange
     );
-    this.props.dispatch(init());
   }
 
   componentDidMount() {
@@ -51,6 +50,7 @@ class Launch extends Component {
         //    passProps:{'id':1}传值
       });
     }, 1000)
+    this.props.dispatch(init());
   }
   componentWillUnmount() {
     this.timer && clearTimeout(this.timer);
