@@ -97,7 +97,7 @@ export class AddToCart extends Component {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <View style={{ width: 100, height: 100, position: 'absolute', bottom: 150, backgroundColor: '#fff', left: 25, borderWidth: 1, borderColor: '#ccc', borderRadius: 10, padding: 5 }}>
+                        <View style={{ width: 100, height: 100, position: 'absolute', bottom: 120, backgroundColor: '#fff', left: 25, borderWidth: 1, borderColor: '#ccc', borderRadius: 10, padding: 5 }}>
                             <Image source={{ uri: this.props.goodsInfo.thumb }} style={{ width: 90, height: 90 }} />
                         </View>
                     </Modal>
