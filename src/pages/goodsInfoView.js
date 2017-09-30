@@ -354,7 +354,6 @@ class GoodsInfo extends Component {
         )
     }
 
-
     renderImageViwerFooter() {
         return (
             <View style={{ backgroundColor: '#fff', opacity: 0.7, width: ScreenWidth, height: 500 }}>
@@ -377,63 +376,76 @@ class GoodsInfo extends Component {
     }
     //渲染选择数量面板
     renderNum() {
-        return (
-            <Modal
-                visible={this.state.modalNum}
-                animationType={'slide'}
-                transparent={true}
-                onRequestClose={() => {
-                    this.setstate({ modalNum: false })
-                }}>
-                <TouchableOpacity
-                    activeOpacity={0.7}
-                    onPress={() => { this.setState({ modalNum: false }) }}
-                    style={[styles.motaiTop, { flex: 0.7 }]}>
-                </TouchableOpacity>
-                <View style={[styles.motaiBottom, { flex: 0.3 }]}>
-                    <View style={[styles.rowCenter, styles.usbTop, { height: 60 }]}>
-                        <View style={[{ flex: 0.9 }]}>
-                            <Text style={styles.showNumTopText}>&yen;{this.state.data.goods.marketprice}</Text>
-                        </View>
-                        <View style={[{ flex: 0.1, }, styles.center]}>
-                            <TouchableOpacity
-                                style={[styles.center, { padding: 10 }]}
-                                onPress={() => {
-                                    this.setState({ goodsNum: 1, modalNum: false })
-                                }}>
-                                <Icon name={'close'} size={16} color={'#ccc'} />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={[styles.rowCenter, styles.showNummid]}>
-                        <Text>数量</Text>
-                        <View style={[styles.rowCenter, { borderColor: '#ccc', borderWidth: 0.7 }]}>
-                            <TouchableOpacity
-                                onPress={() => { this.state.goodsNum > 1 ? this.setState({ goodsNum: --this.state.goodsNum }) : '' }}
-                                style={styles.showNumMidText}>
-                                <Text>-</Text>
-                            </TouchableOpacity>
-                            <View style={{ paddingLeft: 15, paddingRight: 15 }}>
-                                <Text>{this.state.goodsNum}</Text>
+        if (this.state.modalNum) {
+            return (
+                <View
+                    style={[styles.motaiTop]}>
+                    <Modal
+                        visible={this.state.modalNum}
+                        animationType={'slide'}
+                        transparent={true}
+                        onRequestClose={() => {
+                            this.setstate({ modalNum: false })
+                        }}>
+                        <TouchableOpacity style={{ flex: 1 }}
+                            activeOpacity={1}
+                            onPress={() => { this.setState({ modalNum: false }) }}
+                        >
+                        </TouchableOpacity>
+                        <View style={[styles.motaiBottom]}
+
+                        >
+                            <View style={[styles.rowCenter, styles.usbTop, { height: 60 }]}>
+                                <View style={[{ flex: 0.9 }]}>
+                                    <Text style={styles.showNumTopText}>&yen;{this.state.data.goods.marketprice}</Text>
+                                </View>
+                                <View style={[{ flex: 0.1, }, styles.center]}>
+                                    <TouchableOpacity
+                                        style={[styles.center, { padding: 10 }]}
+                                        onPress={() => {
+                                            this.setState({ modalNum: false })
+                                        }}>
+                                        <Icon name={'close'} size={16} color={'#ccc'} />
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                            <TouchableOpacity
-                                onPress={() => { this.setState({ goodsNum: ++this.state.goodsNum }) }}
-                                style={[styles.showNumMidText, { borderLeftWidth: 0.7, borderRightWidth: 0 }]}>
-                                <Text>+</Text>
-                            </TouchableOpacity>
+                            <View style={[styles.rowCenter, styles.showNummid]}>
+                                <Text>数量</Text>
+                                <View style={[styles.rowCenter, { borderColor: '#ccc', borderWidth: 0.7 }]}>
+                                    <TouchableOpacity
+                                        onPress={() => { this.state.goodsNum > 1 ? this.setState({ goodsNum: --this.state.goodsNum }) : '' }}
+                                        style={styles.showNumMidText}>
+                                        <Text>-</Text>
+                                    </TouchableOpacity>
+                                    <View style={{ paddingLeft: 15, paddingRight: 15 }}>
+                                        <Text>{this.state.goodsNum}</Text>
+                                    </View>
+                                    <TouchableOpacity
+                                        onPress={() => { this.setState({ goodsNum: ++this.state.goodsNum }) }}
+                                        style={[styles.showNumMidText, { borderLeftWidth: 0.7, borderRightWidth: 0 }]}>
+                                        <Text>+</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            <View onPress={() => { this.setState({ modalNum: false }) }}>
+                                <View style={[styles.showNumBottom, styles.center]}>
+                                    <Text style={{ color: '#fff' }}>确定</Text>
+                                </View>
+                            </View>
                         </View>
-                    </View>
-                    <TouchableOpacity onPress={() => { this.setState({ modalNum: false }) }}>
-                        <View style={[styles.showNumBottom, styles.center]}>
-                            <Text style={{ color: '#fff' }}>确定</Text>
-                        </View>
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            style={styles.showNumImg}
+                        >
+                            <Image
+                                style={{ flex: 1 }}
+                                source={{ uri: this.state.data.goods.thumb }} />
+                        </TouchableOpacity>
+                    </Modal>
                 </View>
-                <Image
-                    style={styles.showNumImg}
-                    source={{ uri: this.state.data.goods.thumb }} />
-            </Modal>
-        )
+            )
+        }
+
     }
 
 
@@ -448,47 +460,56 @@ class GoodsInfo extends Component {
     }
 
     renderUnSend() {
-        return (
-            <Modal
-                visible={this.state.modalUnsend}
-                animationType={'slide'}
-                transparent={true}
-                onRequestClose={() => {
-                    this.setstate({ modalUnsend: false })
-                }}
-            >
-                <TouchableOpacity
+        if (this.state.modalUnsend) {
+            return (
+                <View
                     activeOpacity={0.7}
                     onPress={() => { this.setState({ modalUnsend: false }) }}
                     style={[styles.motaiTop]}>
-                </TouchableOpacity>
-                <View style={styles.motaiBottom}>
-                    <View style={[styles.rowCenter, styles.usbTop]}>
-                        <View style={styles.unSendTopLeft}>
-                            <Text>不配送区域</Text>
+                    <Modal
+                        visible={this.state.modalUnsend}
+                        animationType={'slide'}
+                        transparent={true}
+                        onRequestClose={() => {
+                            this.setstate({ modalUnsend: false })
+                        }}
+                    >
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            style={{ flex: 0.6 }}
+                            onPress={() => { this.setState({ modalUnsend: false }) }}
+                        >
+                        </TouchableOpacity>
+                        <View
+                            style={[{ flex: 0.4, backgroundColor: '#fff' }]}>
+                            <View style={[styles.rowCenter, styles.usbTop]}>
+                                <View style={styles.unSendTopLeft}>
+                                    <Text>不配送区域</Text>
+                                </View>
+                                <View style={styles.unSendTopRight} >
+                                    <TouchableOpacity
+                                        style={[styles.center, { padding: 10 }]}
+                                        onPress={() => {
+                                            this.setState({
+                                                modalUnsend: false,
+                                            })
+                                        }}>
+                                        <Icon name={'close'} size={16} color={'#ccc'} />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            <FlatList
+                                data={this.state.data.citys}
+                                keyExtractor={(item, index) => index}
+                                renderItem={this.renderUnSendArea.bind(this)}
+                                numColumns={3}
+                                showsVerticalScrollIndicator={false}
+                            />
                         </View>
-                        <View style={styles.unSendTopRight} >
-                            <TouchableOpacity
-                                style={[styles.center, { padding: 10 }]}
-                                onPress={() => {
-                                    this.setState({
-                                        modalUnsend: false,
-                                    })
-                                }}>
-                                <Icon name={'close'} size={16} color={'#ccc'} />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <FlatList
-                        data={this.state.data.citys}
-                        keyExtractor={(item, index) => index}
-                        renderItem={this.renderUnSendArea.bind(this)}
-                        numColumns={3}
-                        showsVerticalScrollIndicator={false}
-                    />
+                    </Modal>
                 </View>
-            </Modal>
-        )
+            )
+        }
     }
 
     getChatList(condition = {}, isAdd = 0) {
@@ -1086,10 +1107,10 @@ const styles = StyleSheet.create({
         width: ScreenWidth, height: ScreenHeight - StatusBarHeight, position: 'absolute', bottom: 0
     },
     motaiTop: {
-        flex: 0.6, backgroundColor: '#000', opacity: 0.7,
+        backgroundColor: '#000', opacity: 0.7, position: 'absolute', width: ScreenWidth, height: ScreenHeight
     },
     motaiBottom: {
-        flex: 0.4, backgroundColor: '#fff'
+        backgroundColor: '#fff', position: 'absolute', bottom: 0, width: ScreenWidth,
     },
     usbTop: {
         padding: 10, borderColor: '#ccc', borderBottomWidth: 0.7, marginBottom: 15

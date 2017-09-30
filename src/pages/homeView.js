@@ -224,6 +224,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     homeData: state.initReducer,
+    loginData: state.loginReducer,
   }
 }
 
