@@ -24,8 +24,10 @@ class Member extends Component {
   }
 
   componentWillMount() {
-    let token = this.props.loginData.data.result.token;
-    this.props.dispatch(memberInfo(token))
+    if (this.props.loginData.status === "success") {
+      let token = this.props.loginData.data.result.token;
+      this.props.dispatch(memberInfo(token))
+    }
   }
 
   componentDidUpdate(nextProps) {

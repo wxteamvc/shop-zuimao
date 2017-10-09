@@ -24,7 +24,7 @@ class Cart extends Component {
   componentWillMount() {    
     let { loginData, memberData } = this.props;
     //请求购物车
-    if (loginData.status === "success" && memberData.status !== "success") {
+    if (loginData.status === "success") {
       this.props.dispatch(cart(loginData.data.result.token))
     }
   }
