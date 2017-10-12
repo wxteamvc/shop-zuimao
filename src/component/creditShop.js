@@ -79,17 +79,25 @@ class CreditShop extends Component {
                                 {this.state.data.credittext} : {this.state.data.credit}
                             </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[{ flex: 1 }, styles.rowCenter]}>
+                        <TouchableOpacity 
+                        onPress={()=>{this.props.navigation.navigate('CreditShopRecord',{credit:this.state.data.credit})}}
+                        style={[{ flex: 1 }, styles.rowCenter]}>
                             <Icon name={'list'} size={20} />
                             <Text style={{ marginLeft: 5 }}>参与记录</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={{ flexDirection: 'row-reverse', padding: 10, backgroundColor: '#fff', marginTop: 10 }}>
-                        <TouchableOpacity
+                    <View style={{  flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: '#fff', marginTop: 10 }}>
+                    <TouchableOpacity
                             style={styles.rowCenter}
                         >
                             <Icon name={'th-large'} size={20} />
                             <Text style={{ marginLeft: 5 }}>全部商品</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.rowCenter}
+                        >
+                            <Icon name={'user-o'} size={20} />
+                            <Text style={{ marginLeft: 5 }}>我的兑换</Text>
                         </TouchableOpacity>
                     </View>
                     {this.state.data.exchanges.length > 0 ?

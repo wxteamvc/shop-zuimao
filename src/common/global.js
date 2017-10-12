@@ -98,7 +98,8 @@ export const DELETEHISTORY_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=
 export const RECHARGERECORD_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=member.log.get_list&mid=3773';
 //消息提醒设置地址
 export const MEMBERNOTICE_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=member.notice&mid=3773';
-
+//积分商城兑换记录地址
+export const CREDITSHOPRECORD_URL =BASIC_URL +'?i=1&c=entry&m=ice_shop&do=mobile&r=creditshop.creditlog.getlist&mid=3773';
 
 
 

@@ -47,7 +47,9 @@ import MemberNotice from './pages/memberNoticeView';
 import Recharge from './pages/rechargeView';
 import MemberInfo from './pages/memberInfoView';
 import MemberBind from './pages/memberBindView';
-import CreditGoodInfo from './pages/creditGoodInfo';
+import CreditGoodInfo from './pages/creditGoodInfoView';
+import CreditShopRecord from './pages/creditShopRecordView';
+import MyRecordView from './pages/myRecordView';
 
 const App = StackNavigator({
     HomeTab: {
@@ -304,6 +306,15 @@ const App = StackNavigator({
         navigationOptions: ({ navigation }) => ({
             headerStyle:{height:40},
             headerTitle: '签到商品详情',
+            headerTitleStyle: { alignSelf: 'center' },
+            headerRight: <Text></Text>
+        }),
+    },
+    CreditShopRecord: {
+        screen: CreditShopRecord,
+        navigationOptions: ({ navigation }) => ({
+            headerStyle:{height:40},
+            headerTitle: '参与记录',
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: <Text></Text>
         }),

@@ -68,20 +68,23 @@ class Launch extends Component {
   }
 
   componentDidMount() {
-  Animated.sequence([
+    //发送首页信息请求动作
+    this.props.dispatch(init());
+    
+    Animated.sequence([
       Animated.timing(
-        this.state.bounceValue, { 
+        this.state.bounceValue, {
           toValue: 1.2,
-          duration: 700 
+          duration: 700
         }
       ),
       Animated.timing(
         this.state.bounceValue, {
           toValue: 1,
-          duration:300
+          duration: 300
         }
       ),
-  ]).start();
+    ]).start();
 
     //设置跳转倒计时
     this.timer = setInterval(() => {
@@ -94,8 +97,6 @@ class Launch extends Component {
         });
       }
     }, 1000)
-    //发送首页信息请求动作
-    this.props.dispatch(init());
   }
 
   componentWillUnmount() {
